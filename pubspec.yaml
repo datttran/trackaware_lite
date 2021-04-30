@@ -1,0 +1,85 @@
+name: trackaware_lite
+description: An application to track shipments
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.2.2 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^0.1.2
+  rxdart: ^0.22.0
+  bloc: ^0.14.0
+
+  flutter_bloc: ^0.20.0
+  http: 0.12.1
+  equatable: ^0.4.0
+  logger: ^0.8.3
+  flutter_keychain: 1.0.0
+  flutter_svg: 0.18.0
+  flutter_barcode_scanner: ^0.1.7
+  toast: 0.1.5
+  sqflite: 1.3.1
+  dio: 3.0.9
+  device_info: 0.4.2+2
+  flutter_launcher_icons: "^0.7.3"
+  location: "3.0.0"
+  path_provider: 1.6.11
+  image_picker: 0.6.7+2
+  signature: 3.1.2
+  modal_bottom_sheet: 0.2.0+1
+  flutter_image_compress: 0.7.0
+  cupertino_back_gesture: 0.0.3
+  url_launcher: 5.7.10
+  flutter_icons: 1.1.0
+  progress_state_button: "^1.0.2"
+  animated_button: 0.1.3
+  flutter_slidable: 0.5.7
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  test: ^1.3.0
+  mockito: ^3.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - images/
+    - assets/
+
+
+  fonts:
+    - family: SourceSansPro
+      fonts:
+        - asset: fonts/SourceSansPro-Black.ttf
+        - asset: fonts/SourceSansPro-Black.ttf
+        - asset: fonts/SourceSansPro-BlackItalic.ttf
+        - asset: fonts/SourceSansPro-Bold.ttf
+        - asset: fonts/SourceSansPro-BoldItalic.ttf
+        - asset: fonts/SourceSansPro-ExtraLight.ttf
+        - asset: fonts/SourceSansPro-ExtraLightItalic.ttf
+        - asset: fonts/SourceSansPro-Italic.ttf
+        - asset: fonts/SourceSansPro-Light.ttf
+        - asset: fonts/SourceSansPro-LightItalic.ttf
+        - asset: fonts/SourceSansPro-Regular.ttf
+        - asset: fonts/SourceSansPro-SemiBold.ttf
+        - asset: fonts/SourceSansPro-SemiBoldItalic.ttf
+    - family: Nu
+      fonts:
+        - asset: fonts/Nunito-Regular.ttf
+    - family: Default
+      fonts:
+        - asset: fonts/ProximaNova-Regular.otf
+
+
+
+
+flutter_icons:
+  android: "ic_launcher"
+  ios: true
+  image_path: "images/ic_trackaware_logo.png"

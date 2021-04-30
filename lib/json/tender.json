@@ -1,0 +1,16 @@
+[
+    {
+        "order_no": "123",
+        "priority" : "P1",
+        "location" : "CA1-R",
+        "Qty" : 1,
+        "Destination" : "CA1-R"
+    },
+    {
+        "order_no" : "123",
+        "priority" : "P1",
+        "location" : "CA1-R",
+        "Qty" : 1,
+        "Destination" : "CA1-R"
+    }
+]
