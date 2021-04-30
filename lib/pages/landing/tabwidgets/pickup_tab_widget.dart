@@ -84,12 +84,14 @@ class PickUpTab extends State<PickUpTabWidget> {
     setState(() {
       _scanBarcode = barcodeScanRes;
 
-      if(_scanBarcode == -1){
-        print('this is -1');
-      }
+
+        if(_scanBarcode != '-1'){
+          createTicket();
+        }
 
 
-      createTicket();
+
+
 
 
 
