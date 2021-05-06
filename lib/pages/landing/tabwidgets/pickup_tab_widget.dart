@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:trackaware_lite/pages/pickup/add_popup.dart';
 import 'package:animated_button/animated_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -113,6 +113,8 @@ class PickUpTab extends State<PickUpTabWidget> {
 
 
   }
+
+
 
   Widget getPickUpList() {
     return Expanded(
@@ -357,6 +359,8 @@ class PickUpTab extends State<PickUpTabWidget> {
                   ),
                 ),
                 onPressed: (){
+                  showCupertinoModalPopup(context: context, builder: (BuildContext context) =>
+                      Pop(0));
                   print(globals.pickupList.toString());
 
 

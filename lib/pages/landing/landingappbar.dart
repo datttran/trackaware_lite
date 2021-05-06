@@ -194,9 +194,9 @@ class LandingAppBarImageState extends State<LandingAppBarImage> {
                       children: [
                         SizedBox(height: 30,),
                         Text('T R A C K A W A R E',
-                            style: TextStyle(color: Color(0xff7e7eff), fontSize: 15)),
+                            style: TextStyle(color: Color(0xff6868fd), fontSize: verticalPixel*2)),
                         Text('  DELIVERY EXPERIENCE PLATFORM',
-                            style: TextStyle(color: Color(0xff7e7eff), fontSize: 7)),
+                            style: TextStyle(color: Color(0xff9393ee), fontSize: verticalPixel*.85)),
                       ],
                     ),
 
@@ -227,9 +227,9 @@ class LandingAppBarImageState extends State<LandingAppBarImage> {
           new TabBar(
 
             isScrollable: true,
-            unselectedLabelColor: Color(0xff7e7eff).withOpacity(0.8),
-            indicatorPadding: EdgeInsets.symmetric(horizontal: 5,vertical: 1),
-            labelPadding: EdgeInsets.symmetric(horizontal:SizeConfig.blockSizeVertical *10),
+            unselectedLabelColor: Color(0xff6868fd).withOpacity(0.8),
+            indicatorPadding: EdgeInsets.symmetric(horizontal: horizontalPixel*10,vertical: 1),
+            labelPadding: EdgeInsets.symmetric(horizontal:SizeConfig.blockSizeVertical *8),
             labelColor: Colors.white,
             indicatorSize: TabBarIndicatorSize.tab,
             indicator: new BubbleTabIndicator(

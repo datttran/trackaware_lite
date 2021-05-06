@@ -70,20 +70,20 @@ class _SettingsPageState extends State<SettingsPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 /*GestureDetector(
-                        child: _userProfileImage,
-                        onTap: () {
-                          Navigator.of(context).pushNamed('/Profile');
-                        },
-                      ),*/
+                      child: _userProfileImage,
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/Profile');
+                      },
+                    ),*/
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     SizedBox(height: 30,),
                                     Text('T R A C K A W A R E',
-                                        style: TextStyle(color: Color(0xff7e7eff), fontSize: 15)),
+                                        style: TextStyle(color: Color(0xff6868fd), fontSize: verticalPixel*2)),
                                     Text('  DELIVERY EXPERIENCE PLATFORM',
-                                        style: TextStyle(color: Color(0xff7e7eff), fontSize: 7)),
+                                        style: TextStyle(color: Color(0xff9393ee), fontSize: verticalPixel*.85)),
                                   ],
                                 ),
 
@@ -92,7 +92,6 @@ class _SettingsPageState extends State<SettingsPage> {
                                   child: Column(
                                     children: [
                                       SizedBox(height: 25,),
-
 
                                     ],
                                   ),

@@ -189,6 +189,8 @@ class _MyAppState extends State<MyApp>  {
             child: MaterialApp(
                 debugShowCheckedModeBanner: false,
                 theme: ThemeData(
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
 
 
                     unselectedWidgetColor: Colors.white70.withOpacity(.5),
