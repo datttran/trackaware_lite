@@ -3,7 +3,7 @@ import 'package:trackaware_lite/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:trackaware_lite/globals.dart' as globals;
 class Pop extends StatefulWidget {
   final int showID;
   static String id = 'pop_up';
@@ -69,16 +69,18 @@ class _PopState extends State<Pop> {
   }
 
 
+
   PageController _pageController;
   @override
   Widget build(BuildContext context) {
     return  Column(
       children: <Widget>[
         SizedBox(
-          height: verticalPixel*39.3,
+          height: verticalPixel*12.3,
         ),
         Container(
-          height: verticalPixel*55,
+          height: verticalPixel*75,
+          width: horizontalPixel*90,
           child: Material(
             color: Colors.transparent,
             child: ClipRRect(
@@ -127,7 +129,7 @@ class _PopState extends State<Pop> {
 
 buildPageView() {
     return Container(
-      height: verticalPixel*40,
+      height: verticalPixel*65,
 
       child: PageView(
         onPageChanged: (int val){
@@ -141,7 +143,7 @@ buildPageView() {
           ConstrainedBox(
             constraints: BoxConstraints.expand(),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(
 
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -150,7 +152,7 @@ buildPageView() {
                 children: <Widget>[
 
                   SizedBox(
-                    height: 48.0,
+                    height: horizontalPixel*23,
 
                   ),
 

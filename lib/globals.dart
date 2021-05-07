@@ -58,7 +58,7 @@ PickUpExternal selectedPickUpExternal;
 TenderParts tenderParts;
 TenderExternal tenderExternal;
 
-
+int popup = 0;
 //List
 List pickupList = [];
 List deliveryList = [];

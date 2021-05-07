@@ -334,46 +334,16 @@ class PickUpTab extends State<PickUpTabWidget> {
 
             ),
           )),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ButtonTheme(
-              height: verticalPixel*2,
-              minWidth: horizontalPixel*10,
-              child: RaisedButton(
-                color: Color(0xff2C2C34),
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ) ,
-
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-                  child: Text(
-                    'Add',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                onPressed: (){
-                  showCupertinoModalPopup(context: context, builder: (BuildContext context) =>
-                      Pop(0));
-                  print(globals.pickupList.toString());
-
-
-                },
-              ),
-            ),
-            Visibility(
-              visible: globals.pickupList.length > 0,
-              child: ButtonTheme(
+        Visibility(
+        visible: globals.popup == 0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ButtonTheme(
                 height: verticalPixel*2,
                 minWidth: horizontalPixel*10,
                 child: RaisedButton(
-                  color: Color(0xffff2a46),
+                  color: Color(0xff2C2C34),
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -382,7 +352,7 @@ class PickUpTab extends State<PickUpTabWidget> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
                     child: Text(
-                      'Confirm',
+                      'Add',
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.white,
@@ -392,44 +362,84 @@ class PickUpTab extends State<PickUpTabWidget> {
                   ),
                   onPressed: (){
                     setState(() {
-                      globals.deliveryList =globals.pickupList;
-                      globals.pickupList =[];
+                      globals.popup = 1;
                     });
+                    showCupertinoModalPopup(context: context, builder: (BuildContext context) =>
+                        Pop(0)).then((value){
+                          setState(() {
+                            globals.popup = 0;
+                          });
+                    });
+                    print(globals.pickupList.toString());
 
 
                   },
                 ),
               ),
-            ),
-            ButtonTheme(
-              height: verticalPixel*2,
-              minWidth: horizontalPixel*10,
-              child: RaisedButton(
-                color: Color(0xff2C2C34),
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ) ,
+              Visibility(
+                visible: globals.pickupList.length > 0,
+                child: ButtonTheme(
+                  height: verticalPixel*2,
+                  minWidth: horizontalPixel*10,
+                  child: RaisedButton(
+                    color: Color(0xffff2a46),
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ) ,
 
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-                  child: Text(
-                    'Scan',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                      child: Text(
+                        'Confirm',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
+                    onPressed: (){
+                      setState(() {
+                        globals.deliveryList =globals.pickupList;
+                        globals.pickupList =[];
+                      });
+
+
+                    },
                   ),
                 ),
-                onPressed: (){
-                  scanBarcodeNormal();
-
-                },
               ),
-            ),
+              ButtonTheme(
+                height: verticalPixel*2,
+                minWidth: horizontalPixel*10,
+                child: RaisedButton(
+                  color: Color(0xff2C2C34),
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ) ,
 
-          ],
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                    child: Text(
+                      'Scan',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  onPressed: (){
+                    scanBarcodeNormal();
+
+                  },
+                ),
+              ),
+
+            ],
+          ),
         )
       ],
     );
