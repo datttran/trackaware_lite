@@ -3,7 +3,10 @@ import 'package:trackaware_lite/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:trackaware_lite/models/pickup_part_db.dart';
 import 'package:trackaware_lite/globals.dart' as globals;
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 class Pop extends StatefulWidget {
   final int showID;
   static String id = 'pop_up';
@@ -16,6 +19,7 @@ class Pop extends StatefulWidget {
 class _PopState extends State<Pop> {
   var left = Colors.black;
   var right =  Colors.white;
+
 
   int shareValue;
   colorCheck(){
@@ -34,12 +38,14 @@ class _PopState extends State<Pop> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     shareValue = widget.showID;
     userPages = colorCheck();
 
 
     _pageController = PageController(initialPage: shareValue);
     SystemChrome.setEnabledSystemUIOverlays([]);
+
   }
   void _onButtonPress(val) {
     _pageController.animateToPage(val,
@@ -69,6 +75,21 @@ class _PopState extends State<Pop> {
   }
 
 
+
+
+  void createTicket(barcode){
+
+
+    PickUpPart pickupItem = new PickUpPart();
+    pickupItem.orderNumber = barcode.toString();
+    pickupItem.location = globals.currentLocation.thoroughfare;
+    pickupItem.destination = "Unknown";
+
+    globals.pickupList.add(pickupItem);
+
+
+
+  }
 
   PageController _pageController;
   @override
@@ -159,41 +180,55 @@ buildPageView() {
                   SizedBox(
                     height: 8.0,
                   ),
-                  TextField(
-                    style: TextStyle(
-                      color: Color(0xffc5c5cb)
-                    ),
-                    keyboardType: TextInputType.number,
+                  Column(
+                    children: [
+                      TextField(
+                        style: TextStyle(
+                          color: Color(0xffc5c5cb)
+                        ),
+                        keyboardType: TextInputType.number,
 
-                    onChanged: (value) {
-                      //Do something with the user input.
-                    },
-                    decoration: InputDecoration(
+                        onChanged: (value) {
+                          globals.value = value;
+                          //Do something with the user input.
+                        },
+                        decoration: InputDecoration(
 
-                      hintText: 'Enter the barcode',
-                      hintStyle: TextStyle(
-                        color: Colors.white70.withOpacity(.2)
+                          hintText: 'Enter the barcode',
+                          hintStyle: TextStyle(
+                            color: Colors.white70.withOpacity(.2)
+                          ),
+                          contentPadding:
+                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                            BorderSide(color: Color(0xff3f3272), width: 1.0),
+                            borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                            BorderSide(color: Color(0xff3e27a4), width: 2.0),
+                            borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                          ),
+                        ),
                       ),
-                      contentPadding:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                      SizedBox(
+                        height: verticalPixel*3,
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                        BorderSide(color: Color(0xff3f3272), width: 1.0),
-                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Icon(Icons.location_on_rounded, color: Colors.white70,),
+
+                          Text( globals.currentLocation != null ? globals.currentLocation.street + ', ' + globals.currentLocation.locality + ', ' + globals.currentLocation.administrativeArea : 'UNKNOWN' , style: TextStyle( color: Colors.white70),),
+                        ],
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                        BorderSide(color: Color(0xff3e27a4), width: 2.0),
-                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                      ),
-                    ),
+                    ],
                   ),
-                  SizedBox(
-                    height: verticalPixel*6,
-                  ),
+
+
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 2),
                     child: MaterialButton(
@@ -202,6 +237,13 @@ buildPageView() {
                         padding: EdgeInsets.all(0),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                         onPressed: () {
+
+                          createTicket(globals.value);
+                          Navigator.pop(context);
+
+
+
+
 
                         },
 

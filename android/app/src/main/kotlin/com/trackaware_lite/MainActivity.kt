@@ -1,4 +1,4 @@
-package com.trackaware_lite
+package com.trackaware_app
 
 import io.flutter.embedding.android.FlutterActivity
 

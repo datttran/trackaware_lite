@@ -1,4 +1,7 @@
 import 'dart:ui';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:trackaware_lite/pages/landing/landing.dart';
 import 'package:trackaware_lite/pages/pickup/add_popup.dart';
 import 'package:animated_button/animated_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,9 +19,51 @@ import 'package:trackaware_lite/events/pickup_tab_event.dart';
 import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/utils.dart';
 import 'package:trackaware_lite/globals.dart' as globals;
+import 'package:location/location.dart' as location;
 import 'selectCard.dart';
 import 'package:trackaware_lite/models/pickup_part_db.dart';
-class PickUpTabWidget extends StatefulWidget {
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+
+var loca = new location.Location();
+bool _serviceEnabled;
+location.PermissionStatus _permissionGranted;
+location.LocationData _locationData;
+
+
+
+getLocation()async {
+  _serviceEnabled = await loca.serviceEnabled();
+  if (!_serviceEnabled) {
+    _serviceEnabled = await loca.requestService();
+    if (!_serviceEnabled) {
+      return;
+    }
+  }
+
+  _permissionGranted = await loca.hasPermission();
+  if (_permissionGranted == location.PermissionStatus.denied) {
+    _permissionGranted = await loca.requestPermission();
+    if (_permissionGranted != location.PermissionStatus.granted) {
+      return;
+    }
+  }
+
+  _locationData = await loca.getLocation();
+  List<Placemark> placeMarks = await placemarkFromCoordinates(_locationData.latitude, _locationData.longitude);
+  globals.currentLocation = placeMarks[0];
+  print(placeMarks);
+
+}
+
+
+
+
+
+
+
+  class PickUpTabWidget extends StatefulWidget {
+    final TabController tabController;
+    PickUpTabWidget({this.tabController});
   @override
   PickUpTab createState() => PickUpTab();
 }
@@ -33,6 +78,7 @@ class PickUpTab extends State<PickUpTabWidget> {
   String _scanBarcode = 'Unknown';
   String location = 'Home';
   String destination = 'Destination';
+
 
 
 
@@ -113,6 +159,22 @@ class PickUpTab extends State<PickUpTabWidget> {
 
 
   }
+
+
+  @override
+  void initState(){
+    super.initState();
+    getLocation();
+
+}
+
+  bool showPerformance = false;
+  onSettingCallback() {
+    setState(() {
+      showPerformance = !showPerformance;
+    });
+  }
+
 
 
 
@@ -277,112 +339,95 @@ class PickUpTab extends State<PickUpTabWidget> {
   @override
   Widget build(BuildContext context) {
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Container(
-          height: verticalPixel*68,
-          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-              child: Container(
+    return StyledToast(
+      locale: const Locale('en', 'US'),
+      //You have to set this parameters to your locale
+      textStyle: TextStyle(fontSize: 16.0, color: Colors.white),
+      backgroundColor: Color(0x99000000),
+      borderRadius: BorderRadius.circular(5.0),
+      textPadding: EdgeInsets.symmetric(horizontal: 17.0, vertical: 10.0),
+      toastAnimation: StyledToastAnimation.size,
+      reverseAnimation: StyledToastAnimation.size,
+      startOffset: Offset(0.0, -1.0),
+      reverseEndOffset: Offset(0.0, -1.0),
+      duration: Duration(seconds: 4),
+      animDuration: Duration(seconds: 1),
+      alignment: Alignment.center,
+      toastPositions: StyledToastPosition.center,
+      curve: Curves.fastOutSlowIn,
+      reverseCurve: Curves.fastOutSlowIn,
+      dismissOtherOnShow: true,
+      fullWidth: false,
+      isHideKeyboard: false,
+      isIgnoring: true,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
 
-                  decoration: BoxDecoration(
-                     color: Color(0xff2C2C34),
-                    borderRadius: BorderRadius.circular(20),
+          Container(
+              height: verticalPixel*68,
+              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  child: Container(
 
-                  ),
-                  margin: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                  child: Column(
-                    children: [
-                      globals.pickupList.isNotEmpty
-                          ? getPickUpList() :
-                      Expanded(
-                          child: Padding(
-                              padding: EdgeInsets.fromLTRB(16, 0.0, 16, 0),
-                              child: Align(
-                                  alignment: Alignment.center,
-                                  child: Material(
-                                      color: Colors.transparent,
-                                      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-                                        Padding(
-                                            padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  'Scan to add ',
-                                                  style: TextStyle(fontSize: 20.0, color: Colors.white),
-                                                ),
-                                                Text(
-                                                  'pick up ',
-                                                  style: TextStyle(fontSize: 20.0, color: Color(0xff9969ff)),
-                                                ),
-                                                Text(
-                                                  'item',
-                                                  style: TextStyle(fontSize: 20.0, color: Colors.white),
-                                                ),
-                                              ],
-                                            ))
-                                      ]))))),
-                    ],
-                  )),
+                      decoration: BoxDecoration(
+                        color: Color(0xff2C2C34),
+                        borderRadius: BorderRadius.circular(20),
 
-
-            ),
-          )),
-        Visibility(
-        visible: globals.popup == 0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ButtonTheme(
-                height: verticalPixel*2,
-                minWidth: horizontalPixel*10,
-                child: RaisedButton(
-                  color: Color(0xff2C2C34),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ) ,
-
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-                    child: Text(
-                      'Add',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
                       ),
-                    ),
-                  ),
-                  onPressed: (){
-                    setState(() {
-                      globals.popup = 1;
-                    });
-                    showCupertinoModalPopup(context: context, builder: (BuildContext context) =>
-                        Pop(0)).then((value){
-                          setState(() {
-                            globals.popup = 0;
-                          });
-                    });
-                    print(globals.pickupList.toString());
+                      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      child: Column(
+                        children: [
+                          globals.pickupList.isNotEmpty
+                              ? getPickUpList() :
+                          Expanded(
+                              child: Padding(
+                                  padding: EdgeInsets.fromLTRB(16, 0.0, 16, 0),
+                                  child: Align(
+                                      alignment: Alignment.center,
+                                      child: Material(
+                                          color: Colors.transparent,
+                                          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+                                            Padding(
+                                                padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'Scan to add ',
+                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                                    ),
+                                                    Text(
+                                                      'pick up ',
+                                                      style: TextStyle(fontSize: 20.0, color: Color(0xff9969ff)),
+                                                    ),
+                                                    Text(
+                                                      'item',
+                                                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                                                    ),
+                                                  ],
+                                                ))
+                                          ]))))),
+                        ],
+                      )),
 
 
-                  },
                 ),
-              ),
-              Visibility(
-                visible: globals.pickupList.length > 0,
-                child: ButtonTheme(
+              )),
+          Visibility(
+            visible: globals.popup == 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ButtonTheme(
                   height: verticalPixel*2,
                   minWidth: horizontalPixel*10,
                   child: RaisedButton(
-                    color: Color(0xffff2a46),
+                    color: Color(0xff2C2C34),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -391,7 +436,102 @@ class PickUpTab extends State<PickUpTabWidget> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
                       child: Text(
-                        'Confirm',
+                        'Add',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    onPressed: () async {
+                      getLocation();
+
+                      setState(() {
+                        globals.popup = 1;
+                      });
+                      showCupertinoModalPopup(context: context, builder: (BuildContext context) =>
+                          Pop(0)).then((value){
+                        setState(() {
+                          globals.popup = 0;
+                        });
+                      });
+                      print(globals.pickupList.toString());
+
+
+                    },
+                  ),
+                ),
+                Visibility(
+                  visible: globals.pickupList.length > 0,
+                  child: ButtonTheme(
+                    height: verticalPixel*2,
+                    minWidth: horizontalPixel*10,
+                    child: RaisedButton(
+                      color: Color(0xffff2a46),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ) ,
+
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                        child: Text(
+                          'Confirm',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      onPressed: (){
+                        try{
+                          setState(() {
+                            globals.pickupList.forEach((element) {
+                              globals.deliveryList.add(element);
+                            });
+
+                            globals.pickupList =[];
+                            showToast('Success!',
+                                context: context,
+                                axis: Axis.horizontal,
+                                alignment: Alignment.center,
+                                position: StyledToastPosition.center);
+                          });
+
+
+                        }
+                        catch(e){
+                          showToast('Fail!',
+                              context: context,
+                              axis: Axis.horizontal,
+                              alignment: Alignment.center,
+                              position: StyledToastPosition.center);
+
+
+                        }
+
+
+
+                      },
+                    ),
+                  ),
+                ),
+                ButtonTheme(
+                  height: verticalPixel*2,
+                  minWidth: horizontalPixel*10,
+                  child: RaisedButton(
+                    color: Color(0xff2C2C34),
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ) ,
+
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                      child: Text(
+                        'Scan',
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,
@@ -400,49 +540,22 @@ class PickUpTab extends State<PickUpTabWidget> {
                       ),
                     ),
                     onPressed: (){
-                      setState(() {
-                        globals.deliveryList =globals.pickupList;
-                        globals.pickupList =[];
-                      });
-
+                      scanBarcodeNormal();
 
                     },
                   ),
                 ),
-              ),
-              ButtonTheme(
-                height: verticalPixel*2,
-                minWidth: horizontalPixel*10,
-                child: RaisedButton(
-                  color: Color(0xff2C2C34),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ) ,
 
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-                    child: Text(
-                      'Scan',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  onPressed: (){
-                    scanBarcodeNormal();
-
-                  },
-                ),
-              ),
-
-            ],
-          ),
-        )
-      ],
+              ],
+            ),
+          )
+        ],
+      ),
     );
+
+
+
+
 
   }
 

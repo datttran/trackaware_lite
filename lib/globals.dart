@@ -1,6 +1,8 @@
 library trackaware_lite.globals;
 import 'dart:async';
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:trackaware_lite/models/pickup_external_db.dart';
 
 import 'package:trackaware_lite/models/pickup_part_db.dart';
@@ -59,6 +61,11 @@ TenderParts tenderParts;
 TenderExternal tenderExternal;
 
 int popup = 0;
+String value ;
+var currentAddress;
+Placemark currentLocation;
+var cameras;
+var selectedCard = 0;
 //List
 List pickupList = [];
 List deliveryList = [];

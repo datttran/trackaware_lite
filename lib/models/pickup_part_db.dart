@@ -21,6 +21,7 @@ class PickUpPart {
   int isScanned;
   int keepScannedValues;
   int isDelivered;
+  bool isSelected;
 
   PickUpPart(
       {this.id,
@@ -32,7 +33,8 @@ class PickUpPart {
       this.isSynced,
       this.isScanned,
       this.isDelivered,
-      this.keepScannedValues});
+      this.keepScannedValues,
+      this.isSelected});
   @override
   String toString() {
     return toJson().toString();

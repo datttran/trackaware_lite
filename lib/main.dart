@@ -2,6 +2,7 @@
 //password testtest / driver
 
 import 'package:bloc/bloc.dart';
+import 'package:camera/camera.dart';
 import 'package:cupertino_back_gesture/cupertino_back_gesture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -81,8 +82,12 @@ class SimpleBlocDelegate extends BlocDelegate {
     print(error);
   }
 }
+List<CameraDescription> cameras;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
+  globals.cameras = cameras.first;
 
-void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final userRepository =
   UserRespository(userApiClient: UserApiClient(httpClient: http.Client()));
@@ -161,6 +166,7 @@ class _MyAppState extends State<MyApp>  {
   void initState() {
     // TODO: implement initState
     super.initState();
+
 
 
 

@@ -38,6 +38,7 @@ import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/transactions.dart';
 import 'package:trackaware_lite/utils/utils.dart'; // ignore: unused_import
 import 'package:trackaware_lite/globals.dart' as globals;
+import 'package:geocoding/geocoding.dart' as geo;
 
 List<TenderExternal> _tenderListItems = <TenderExternal>[];
 List<TenderParts> _tenderPartsListItems = <TenderParts>[];
@@ -57,6 +58,8 @@ var deviceIdValue;
 File _imageFile;
 bool _displayScan = false;
 
+
+
 class LandingPage extends StatefulWidget {
   final LandingPageApiRepository landingPageApiRepository;
   final TenderApiRepository externalTenderApiRepository;
@@ -68,9 +71,9 @@ class LandingPage extends StatefulWidget {
 
   LandingPage(
       {Key key,
-      @required this.landingPageApiRepository,
-      @required this.externalTenderApiRepository,
-      @required this.deliveryApiRepository,
+      this.landingPageApiRepository,
+      this.externalTenderApiRepository,
+      this.deliveryApiRepository,
 
 
       })
@@ -133,6 +136,7 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
   TabController _tabController;
 
   Location location = new Location();
+  LocationData _locationData;
   StreamSubscription<LocationData> _locationSubscription;
   bool isPermissionEnabled = false;
 
@@ -140,7 +144,7 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
 
 
   @override
-  void initState() {
+  void initState(){
 
 
 
@@ -156,7 +160,7 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
 
 
     driverWidgets = <Widget>[
-      PickUpTabWidget(),
+      PickUpTabWidget(tabController: _tabController),
       DeliveryTabWidget(
         deliveryApiRepository: deliveryApiRepository,
       ),
@@ -172,12 +176,20 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
 
     ];
     super.initState();
+    local();
+
 
 
     //scanner
 
   }
 
+  void local() async{
+    _locationData = await location.getLocation();
+
+    List<geo.Placemark> placeMarks = await geo.placemarkFromCoordinates(_locationData.latitude, _locationData.longitude);
+    globals.currentLocation = placeMarks[0];
+  }
 
 
 
@@ -475,60 +487,41 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
                               Icon(EvilIcons.navicon, size: 30,color: Color(0xff7e7eff),),
                               _tabController),
                           resizeToAvoidBottomInset: false,
-                          body: RawKeyboardListener(
-                            autofocus: true,
-                            focusNode: FocusNode(),
-                            onKey: (RawKeyEvent event){
-
-                              if (event.runtimeType.toString() == 'RawKeyDownEvent') {
-
-                                checkForTrackNumOnDelivery(globals.barCode);
-
-
-
-                              }
-                            },
-                            child: Container(
-                                color: Color(0xfff0ccff).withOpacity(0),
-                                child: Stack(children: <Widget>[
-                                  Column(
-                                    children: <Widget>[
-                                      Flexible(
-                                        child: Container(
-                                          margin: EdgeInsets.symmetric(horizontal: 0,vertical: 0),
-                                          padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                          body: Container(
+                              color: Color(0xfff0ccff).withOpacity(0),
+                              child: Stack(children: <Widget>[
+                                Column(
+                                  children: <Widget>[
+                                    Flexible(
+                                      child: Container(
+                                        margin: EdgeInsets.symmetric(horizontal: 0,vertical: 0),
+                                        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
 
 
-                                          child: GestureDetector(
-                                            onDoubleTap: (){
-                                              checkForTrackNumOnDelivery(globals.barCode);
-                                            },
-                                            child: new TabBarView(
-                                              controller: _tabController,
-                                              children: globals.isDriverMode
-                                                  ? driverWidgets
-                                                  : tenderWidgets,
-                                            ),
-                                          ),
+                                        child: new TabBarView(
+                                          controller: _tabController,
+                                          children: globals.isDriverMode
+                                              ? driverWidgets
+                                              : tenderWidgets,
                                         ),
-                                        flex: globals.isDriverMode ? 2 : 2,
                                       ),
-                                      /* Flexible(
-                                      child:  */
+                                      flex: globals.isDriverMode ? 2 : 2,
+                                    ),
+                                    /* Flexible(
+                                    child:  */
 
-                                    ],
-                                  ),
-                                  Align(
-                                    child: _isLoading
-                                        ? CupertinoActivityIndicator(
-                                      animating: true,
-                                      radius: 20.0,
-                                    )
-                                        : Text(""),
-                                    alignment: AlignmentDirectional.center,
+                                  ],
+                                ),
+                                Align(
+                                  child: _isLoading
+                                      ? CupertinoActivityIndicator(
+                                    animating: true,
+                                    radius: 20.0,
                                   )
-                                ])),
-                          )),
+                                      : Text(""),
+                                  alignment: AlignmentDirectional.center,
+                                )
+                              ]))),
 
                     ],
                   );
