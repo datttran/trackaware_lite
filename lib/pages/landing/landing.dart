@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter_icons/flutter_icons.dart';
 
-
+import 'package:marquee/marquee.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -39,6 +39,8 @@ import 'package:trackaware_lite/utils/transactions.dart';
 import 'package:trackaware_lite/utils/utils.dart'; // ignore: unused_import
 import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:geocoding/geocoding.dart' as geo;
+
+import '../../constants.dart';
 
 List<TenderExternal> _tenderListItems = <TenderExternal>[];
 List<TenderParts> _tenderPartsListItems = <TenderParts>[];
@@ -484,44 +486,60 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
 
                           appBar: LandingAppBarImage(
                               Icon(EvilIcons.user, size: 10,color: Colors.white,),
-                              Icon(EvilIcons.navicon, size: 30,color: Color(0xff7e7eff),),
+                              Icon(EvilIcons.navicon, size: 30,color: Color(0xff68b0ff),),
                               _tabController),
                           resizeToAvoidBottomInset: false,
                           body: Container(
                               color: Color(0xfff0ccff).withOpacity(0),
-                              child: Stack(children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    Flexible(
-                                      child: Container(
-                                        margin: EdgeInsets.symmetric(horizontal: 0,vertical: 0),
-                                        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Container( height: verticalPixel*2,
+                                    margin: EdgeInsets.symmetric(horizontal: horizontalPixel*3.5),
+                                    decoration: BoxDecoration(
+
+                                      color: Color(0xff2C2C34),
+                                      borderRadius: BorderRadius.circular(7),
 
 
-                                        child: new TabBarView(
-                                          controller: _tabController,
-                                          children: globals.isDriverMode
-                                              ? driverWidgets
-                                              : tenderWidgets,
-                                        ),
-                                      ),
-                                      flex: globals.isDriverMode ? 2 : 2,
                                     ),
-                                    /* Flexible(
+                                    child: FutureBuilder(
+                                      builder: (context , data ){
+                                        if (globals.currentLocation != null){
+                                          return Marquee(
+                                            text: "Location:" + " " + globals.currentLocation.street + " " + globals.currentLocation.locality + "             |             "
+                                                + "Total order: " + globals.deliveryList.length.toString()  + "             |             "
+                                                + "Delivered: " + globals.delivered.toString() + "             |             ",
+                                            velocity: 30.0,
+                                            style: TextStyle( fontSize: 12 , color: Color(0xff090b1d)),
+                                          );
+                                        }
+                                        else{
+                                          return Marquee(
+                                            text: "                                Loading ...                                     |",
+                                            blankSpace: 1000,
+                                            velocity: 30.0,
+                                            style: TextStyle( fontSize: 12 , color: Color(0xff090b1d)),
+                                          );
+                                        }
+
+                                      },
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: new TabBarView(
+                                      controller: _tabController,
+                                      children: globals.isDriverMode
+                                          ? driverWidgets
+                                          : tenderWidgets,
+                                    ),
+                                    flex: globals.isDriverMode ? 2 : 2,
+                                  ),
+                                  /* Flexible(
                                     child:  */
 
-                                  ],
-                                ),
-                                Align(
-                                  child: _isLoading
-                                      ? CupertinoActivityIndicator(
-                                    animating: true,
-                                    radius: 20.0,
-                                  )
-                                      : Text(""),
-                                  alignment: AlignmentDirectional.center,
-                                )
-                              ]))),
+                                ],
+                              ),)),
 
                     ],
                   );

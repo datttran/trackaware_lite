@@ -1,13 +1,16 @@
 import 'dart:typed_data';
 import 'dart:ui';
-import 'package:trackaware_lite/globals.dart' as globals;
+
 import 'package:flutter/material.dart';
-import 'package:signature/signature.dart';
-import 'package:flutter_tags/flutter_tags.dart';
-import 'package:trackaware_lite/models/pickup_part_db.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:flutter_tags/flutter_tags.dart';
+import 'package:signature/signature.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
+import 'package:trackaware_lite/models/pickup_part_db.dart';
+
 List<PickUpPart> devList = [];
 List _items = [];
+
 /// example widget showing how to use signature widget
 class Sign extends StatefulWidget {
   @override
@@ -17,9 +20,8 @@ class Sign extends StatefulWidget {
 class _SignState extends State<Sign> {
   final SignatureController _controller = SignatureController(
     penStrokeWidth: 3,
-    penColor: Color(0xff2e0ee5),
+    penColor: Color(0xff539eff),
     exportBackgroundColor: Color(0xff171721),
-
   );
 
   @override
@@ -27,7 +29,6 @@ class _SignState extends State<Sign> {
     getDeliveryList();
     super.initState();
     _controller.addListener(() => print('Value changed'));
-
   }
 
   @override
@@ -36,9 +37,8 @@ class _SignState extends State<Sign> {
 
     super.dispose();
 
-
     _items.clear();
-    print('selected card num is' + globals.selectedCard.toString() );
+    print('selected card num is' + globals.selectedCard.toString());
   }
 
   final GlobalKey<TagsState> _tagStateKey = GlobalKey<TagsState>();
@@ -47,6 +47,7 @@ class _SignState extends State<Sign> {
     List<Item> lst = _tagStateKey.currentState?.getAllItem;
     if (lst != null) lst.where((a) => a.active == true).forEach((a) => print(a.title));
   }
+
   void getDeliveryList() {
     globals.deliveryList.forEach((element) {
       if (element.isSelected == true) {
@@ -55,6 +56,7 @@ class _SignState extends State<Sign> {
       }
     });
   }
+
   Widget getTags() {
     return Tags(
       key: _tagStateKey,
@@ -72,7 +74,7 @@ class _SignState extends State<Sign> {
           active: item.isSelected,
           pressEnabled: false,
 
-          activeColor: Color(0xff8068ec),
+          activeColor: Color(0xff446af3),
 
           textStyle: TextStyle(
             fontSize: 14,
@@ -98,9 +100,8 @@ class _SignState extends State<Sign> {
       },
     );
   }
+
   @override
-
-
   Widget build(BuildContext context) {
     return StyledToast(
       locale: const Locale('en', 'US'),
@@ -124,32 +125,33 @@ class _SignState extends State<Sign> {
       isHideKeyboard: false,
       isIgnoring: true,
       child: Scaffold(
-        backgroundColor:Color(0xff171721),
+        backgroundColor: Color(0xff171721),
         body: ListView(
           children: <Widget>[
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             getTags(),
 
             //SIGNATURE CANVAS
             Signature(
-
               controller: _controller,
               height: MediaQuery.of(context).size.height - 170,
               backgroundColor: Color(0xff171721),
             ),
             TextField(
+              onChanged: (value) {
+                globals.receiver = value;
+              },
               style: TextStyle(color: Colors.white70),
-
               decoration: InputDecoration(
-
-                  hintText: 'Name',
+                  hintText: "Receiver name",
                   filled: true,
                   fillColor: Color(0xff2C2C34),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(0),
                     borderSide: BorderSide.none,
-                  )
-              ),
+                  )),
             ),
             //OK AND CLEAR BUTTONS
             Container(
@@ -160,82 +162,53 @@ class _SignState extends State<Sign> {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   //SHOW EXPORTED IMAGE IN NEW ROUTE
+
+                  //CLEAR CANVAS
+                  IconButton(
+                    icon: const Icon(Icons.clear),
+                    color: Colors.redAccent,
+                    onPressed: () {
+                      setState(() => _controller.clear());
+                    },
+                  ),
                   IconButton(
                     icon: const Icon(Icons.check),
-                    color: Colors.blue,
+                    color: Colors.greenAccent,
                     onPressed: () async {
                       if (_controller.isNotEmpty) {
-                        final Uint8List data =
-                        await _controller.toPngBytes();
-                        if (data != null) {
-                          try{
+                        final Uint8List data = await _controller.toPngBytes();
+                        if (data != null && globals.receiver != null) {
+                          try {
                             setState(() {
                               _items.forEach((element) {
                                 globals.deliveryList.remove(element);
-
+                                globals.delivered = globals.delivered + 1;
+                                globals.selectedCard = globals.selectedCard - 1;
                               });
-                              showToast('Success!',
-                                  context: context,
-                                  axis: Axis.horizontal,
-                                  alignment: Alignment.center,
-                                  position: StyledToastPosition.center);
+                              showToast('Success!', context: context, axis: Axis.horizontal, alignment: Alignment.center, position: StyledToastPosition.center);
 
                               Navigator.pop(context);
                             });
-                          }
-                          catch(e){
-
-
-                            showToast('Please sign first!',
-                                context: context,
-                                axis: Axis.horizontal,
-                                alignment: Alignment.center,
-                                position: StyledToastPosition.center);
-
-
-
+                          } catch (e) {
+                            showToast('Please sign first!', context: context, axis: Axis.horizontal, alignment: Alignment.center, position: StyledToastPosition.center);
                           }
 
                           // Action here
 
-
-
-
-
+                        } else if (data != null && globals.receiver == null) {
+                          showToast('Please type in receiver name', context: context, axis: Axis.horizontal, alignment: Alignment.center, position: StyledToastPosition.center);
                         }
-
-
+                      } else {
+                        showToast('Please sign first!', context: context, axis: Axis.horizontal, alignment: Alignment.center, position: StyledToastPosition.center);
                       }
-                      else{
-
-                          showToast('Please sign first!',
-                              context: context,
-                              axis: Axis.horizontal,
-                              alignment: Alignment.center,
-                              position: StyledToastPosition.center);
-
-
-                      }
-                    },
-                  ),
-                  //CLEAR CANVAS
-                  IconButton(
-                    icon: const Icon(Icons.clear),
-                    color: Colors.blue,
-                    onPressed: () {
-                      setState(() => _controller.clear());
                     },
                   ),
                 ],
               ),
             ),
-
           ],
         ),
       ),
-    )
-
-      ;
+    );
   }
 }
-

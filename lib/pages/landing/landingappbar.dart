@@ -156,23 +156,24 @@ class LandingAppBarImageState extends State<LandingAppBarImage> {
   Widget build(BuildContext context) {
     //SizeConfig().init(context);
     return new Container(
+      height: verticalPixel*16.5,
+
       key: landingAppBarKey,
       decoration: new BoxDecoration(
         color: Colors.transparent,
       ),
       child: new Column(
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          ),
+
           ClipRRect(
             borderRadius: BorderRadius.vertical(top: Radius.circular(0), bottom: Radius.circular(15)),
 
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaY: 3, sigmaX: 3),
               child: Container(
+
                 padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-                margin: EdgeInsets.symmetric(horizontal: 15),
+                margin: EdgeInsets.symmetric(horizontal: horizontalPixel*3.5),
 
                 decoration: BoxDecoration(
                   color: Color(0xff2C2C34),
@@ -194,13 +195,13 @@ class LandingAppBarImageState extends State<LandingAppBarImage> {
                       children: [
                         SizedBox(height: 30,),
                         Text('T R A C K A W A R E',
-                            style: TextStyle(color: Color(0xff6868fd), fontSize: verticalPixel*2)),
+                            style: TextStyle(color: Color(0xff689ffd), fontSize: verticalPixel*2)),
                         Text('  DELIVERY EXPERIENCE PLATFORM',
-                            style: TextStyle(color: Color(0xff9393ee), fontSize: verticalPixel*.85)),
+                            style: TextStyle(color: Color(0xff93b1ee), fontSize: verticalPixel*.85)),
                       ],
                     ),
 
-                    SizedBox(width: 70,),
+                    SizedBox(width: verticalPixel*5,),
                     GestureDetector(
                       child: Column(
                         children: [
@@ -222,25 +223,28 @@ class LandingAppBarImageState extends State<LandingAppBarImage> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 24),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, verticalPixel*1),
           ),
           new TabBar(
 
             isScrollable: true,
-            unselectedLabelColor: Color(0xff6868fd).withOpacity(0.8),
-            indicatorPadding: EdgeInsets.symmetric(horizontal: horizontalPixel*10,vertical: 1),
-            labelPadding: EdgeInsets.symmetric(horizontal:SizeConfig.blockSizeVertical *8),
+            unselectedLabelColor: Color(0xff68b0fd).withOpacity(0.8),
+            indicatorPadding: EdgeInsets.symmetric(horizontal: horizontalPixel*1,vertical: 1),
+            labelPadding: EdgeInsets.symmetric(horizontal:horizontalPixel*18.45),
             labelColor: Colors.white,
             indicatorSize: TabBarIndicatorSize.tab,
             indicator: new BubbleTabIndicator(
               indicatorRadius: 10,
-              indicatorHeight: 25.0,
+              indicatorHeight: verticalPixel*5,
+
               indicatorColor: Color(0xff2C2C34).withOpacity(.6),
+
+
               tabBarIndicatorSize: TabBarIndicatorSize.tab,
             ),
             tabs: globals.isDriverMode ? driverTabs : tenderTabs,
             controller: _tabController,
-          )
+          ),
         ],
       ),
     );

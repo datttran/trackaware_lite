@@ -1,16 +1,14 @@
 library trackaware_lite.globals;
-import 'dart:async';
-import 'package:camera/camera.dart';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:trackaware_lite/models/pickup_external_db.dart';
-
 import 'package:trackaware_lite/models/pickup_part_db.dart';
 import 'package:trackaware_lite/models/tender_external_db.dart';
 import 'package:trackaware_lite/models/tender_parts_db.dart';
 import 'package:trackaware_lite/utils/strings.dart';
 
-import 'package:flutter/material.dart';
 bool isDriverMode = true;
 bool useToolNumber = false;
 String tenderProductionPartsDispName = Strings.TENDER_PRODUCTION_PARTS;
@@ -51,7 +49,6 @@ String navFrom = "";
 String barCode = "";
 String scannedCode = 'Empty';
 
-
 bool isPickUpOnTender = false;
 
 PickUpPart selectedPickUpPart;
@@ -61,14 +58,15 @@ TenderParts tenderParts;
 TenderExternal tenderExternal;
 
 int popup = 0;
-String value ;
+String value;
+String note;
 var currentAddress;
 Placemark currentLocation;
 var cameras;
 var selectedCard = 0;
+int delivered = 0;
+var receiver;
 //List
 List pickupList = [];
 List deliveryList = [];
 Color themeBackground = Color(0xfff0ccff);
-
-

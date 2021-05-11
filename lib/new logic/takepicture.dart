@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:trackaware_lite/globals.dart' as globals;
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:trackaware_lite/constants.dart';
-import 'package:trackaware_lite/models/pickup_part_db.dart';
-import 'package:flutter_tags/flutter_tags.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:flutter_tags/flutter_tags.dart';
+import 'package:trackaware_lite/constants.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
+import 'package:trackaware_lite/models/pickup_part_db.dart';
+
 List<PickUpPart> devList = [];
 List _items = [];
 
@@ -230,14 +232,13 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
       fullWidth: false,
       isHideKeyboard: false,
       isIgnoring: true,
-      child:  Scaffold(
+      child: Scaffold(
         //resizeToAvoidBottomInset: false,
         backgroundColor: Color(0xff171721),
 
         // The image is stored as a file on the device. Use the `Image.file`
         // constructor with the given path to display the image.
         body: SingleChildScrollView(
-
           child: ConstrainedBox(
             constraints: BoxConstraints(
               minWidth: MediaQuery.of(context).size.width,
@@ -273,8 +274,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              colors: [Color(0xffe4f2ff),
-                                Color(0xffece0ff)],
+                              colors: [Color(0xffe4f2ff), Color(0xffece0ff)],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
@@ -292,13 +292,11 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                       setState(() {
                         _items.forEach((element) {
                           globals.deliveryList.remove(element);
+                          globals.delivered = globals.delivered + 1;
+                          globals.selectedCard = globals.selectedCard - 1;
                         });
 
-                        showToast('Success!',
-                            context: context,
-                            axis: Axis.horizontal,
-                            alignment: Alignment.center,
-                            position: StyledToastPosition.center);
+                        showToast('Success!', context: context, axis: Axis.horizontal, alignment: Alignment.center, position: StyledToastPosition.center);
 
                         Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
                       });
@@ -332,12 +330,6 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
           ),
         ),
       ),
-    )
-
-
-
-
-
-     ;
+    );
   }
 }

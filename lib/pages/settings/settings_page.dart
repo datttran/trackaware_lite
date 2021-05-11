@@ -1,19 +1,19 @@
 import 'dart:io';
 import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toast/toast.dart';
 import 'package:trackaware_lite/blocs/settings_bloc.dart';
+import 'package:trackaware_lite/constants.dart';
 import 'package:trackaware_lite/events/settings_event.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/models/settings_db.dart';
 import 'package:trackaware_lite/states/settings_state.dart';
-import 'package:trackaware_lite/utils/colorstrings.dart';
 import 'package:trackaware_lite/utils/strings.dart';
-import 'package:trackaware_lite/utils/utils.dart';
-import 'package:trackaware_lite/globals.dart' as globals;
-import 'package:trackaware_lite/constants.dart';
+
 class SettingsPage extends StatefulWidget {
   @override
   State<SettingsPage> createState() {
@@ -44,110 +44,97 @@ class _SettingsPageState extends State<SettingsPage> {
 
     Widget getScaffold() {
       return CupertinoPageScaffold(
-
           child: Material(
-            child: Container(
-                decoration: BoxDecoration(
-                    color: Color(0xff171721),),
-                child: Stack(children: <Widget>[
-                  ListView(
-                    children: <Widget>[
-                      ClipRRect(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(0), bottom: Radius.circular(15)),
-
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaY: 3, sigmaX: 3),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-                            margin: EdgeInsets.symmetric(horizontal: 15),
-
-                            decoration: BoxDecoration(
-                              color: Color(0xff2C2C34),
-                              borderRadius: BorderRadius.vertical(top: Radius.circular(0), bottom: Radius.circular(15)),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                /*GestureDetector(
+        child: Container(
+            decoration: BoxDecoration(
+              color: Color(0xff171721),
+            ),
+            child: Stack(children: <Widget>[
+              ListView(
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(0), bottom: Radius.circular(15)),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaY: 3, sigmaX: 3),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                        margin: EdgeInsets.symmetric(horizontal: 15),
+                        decoration: BoxDecoration(
+                          color: Color(0xff2C2C34),
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(0), bottom: Radius.circular(15)),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            /*GestureDetector(
                       child: _userProfileImage,
                       onTap: () {
                         Navigator.of(context).pushNamed('/Profile');
                       },
                     ),*/
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height: 30,),
-                                    Text('T R A C K A W A R E',
-                                        style: TextStyle(color: Color(0xff6868fd), fontSize: verticalPixel*2)),
-                                    Text('  DELIVERY EXPERIENCE PLATFORM',
-                                        style: TextStyle(color: Color(0xff9393ee), fontSize: verticalPixel*.85)),
-                                  ],
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 30,
                                 ),
-
-                                SizedBox(width: 70,),
-                                GestureDetector(
-                                  child: Column(
-                                    children: [
-                                      SizedBox(height: 25,),
-
-                                    ],
-                                  ),
-                                  onTap: () async {
-                                    var result =
-                                    await Navigator.of(context).pushNamed('/Settings');
-
-                                    if (result?.toString()?.isNotEmpty == true) {}
-                                  },
-                                )
+                                Text('T R A C K A W A R E', style: TextStyle(color: Color(0xff6868fd), fontSize: verticalPixel * 2)),
+                                Text('  DELIVERY EXPERIENCE PLATFORM', style: TextStyle(color: Color(0xff9393ee), fontSize: verticalPixel * .85)),
                               ],
                             ),
-                          ),
+                            SizedBox(
+                              width: 70,
+                            ),
+                            GestureDetector(
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 25,
+                                  ),
+                                ],
+                              ),
+                              onTap: () async {
+                                var result = await Navigator.of(context).pushNamed('/Settings');
+
+                                if (result?.toString()?.isNotEmpty == true) {}
+                              },
+                            )
+                          ],
                         ),
                       ),
-                      SizedBox(height: verticalPixel*5,),
+                    ),
+                  ),
+                  SizedBox(
+                    height: verticalPixel * 5,
+                  ),
 
+                  Material(
+                      color: Color(0xff2C2C34),
+                      child: ListTile(
+                        title: Text(Strings.LOCATION,
+                            style: TextStyle(color: const Color(0xffffffff), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 16.0)),
+                        trailing: Image.asset("images/ic_chevron_right.png"),
+                        onTap: () {
+                          settingsBloc.dispatch(LocationClick());
+                        },
+                      )),
 
-                      Material(
-                          color: Color(0xff2C2C34),
-                          child: ListTile(
-                            title: Text(Strings.LOCATION,
-                                style: TextStyle(
-                                    color: const Color(0xffffffff),
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: "SourceSansPro",
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 16.0)),
-                            trailing: Image.asset("images/ic_chevron_right.png"),
-                            onTap: () {
-                              settingsBloc.dispatch(LocationClick());
-                            },
-                          )),
+                  //SizedBox(height: verticalPixel*1,),
+                  Material(
+                      color: Color(0xff2C2C34),
+                      child: ListTile(
+                        title: Text(Strings.SERVER,
+                            style: TextStyle(color: const Color(0xffffffff), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 16.0)),
+                        trailing: Image.asset("images/ic_chevron_right.png"),
+                        onTap: () {
+                          settingsBloc.dispatch(ServerClick());
+                        },
+                      )),
 
-                      //SizedBox(height: verticalPixel*1,),
-                      Material(
-                          color: Color(0xff2C2C34),
-                          child: ListTile(
-                            title: Text(Strings.SERVER,
-                                style: TextStyle(
-                                    color: const Color(0xffffffff),
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: "SourceSansPro",
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 16.0)),
-                            trailing: Image.asset("images/ic_chevron_right.png"),
-                            onTap: () {
-                              settingsBloc.dispatch(ServerClick());
-                            },
-                          )),
-
-
-
-
-                      //SizedBox(height: verticalPixel*1,),
-                      Material(
+                  //SizedBox(height: verticalPixel*1,),
+                  /*Material(
                           color: Color(0xff2C2C34),
                           child: ListTile(
                             title: Text(Strings.DRIVER_MODE, style: TextStyle(color: Colors.white),),
@@ -161,25 +148,26 @@ class _SettingsPageState extends State<SettingsPage> {
                             onTap: () {
                               //_updateDriverMode(!_driverMode);
                             },
-                          )),
-                      //SizedBox(height: verticalPixel*1,),
-                      Material(
-                          color: Color(0xffec2c45),
-                          child: ListTile(
-                            title: Text('Switch User', style: TextStyle(color: Colors.white),),
+                          )),*/
+                  //SizedBox(height: verticalPixel*1,),
+                  Material(
+                      color: Color(0xffec2c45),
+                      child: ListTile(
+                        title: Text(
+                          'Sign Out',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          _isLoading = false;
+                          Navigator.of(context).pushNamedAndRemoveUntil('/LoginScreen', (Route<dynamic> route) => false);
 
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              _isLoading = false;
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                  '/LoginScreen', (Route<dynamic> route) => false);
+                          //_updateDriverMode(!_driverMode);
+                        },
+                      )),
 
-                              //_updateDriverMode(!_driverMode);
-                            },
-                          )),
-
-                      //TODO - to be commented out when the server feature is needed
-                      /* Material(
+                  //TODO - to be commented out when the server feature is needed
+                  /* Material(
                           color: Colors.transparent,
                           child: ListTile(
                             title: Text(Strings.SERVER,
@@ -196,46 +184,43 @@ class _SettingsPageState extends State<SettingsPage> {
                           )),
                       Divider(thickness: 1.0, color: const Color(0xff979797)), */
 
-                      SizedBox(height: verticalPixel*40,),
-
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: horizontalPixel*20),
-                        child: RaisedButton(
-                          color: Color(0xff2C2C34),
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ) ,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            'Done', style: TextStyle(
-                            color: Colors.white70
-                          ),
-                          ),
-
-
-                        ),
-                      ),
-
-                    ],
+                  SizedBox(
+                    height: verticalPixel * 40,
                   ),
-                  Align(
-                    child: _isLoading
-                        ? CupertinoActivityIndicator(
-                            animating: true,
-                            radius: 20.0,
-                          )
-                        : Text(""),
-                    alignment: AlignmentDirectional.center,
-                  )
-                ])),
-          ));
+
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: horizontalPixel * 20),
+                    child: RaisedButton(
+                      color: Color(0xff2C2C34),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Done',
+                        style: TextStyle(color: Colors.white70),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Align(
+                child: _isLoading
+                    ? CupertinoActivityIndicator(
+                        animating: true,
+                        radius: 20.0,
+                      )
+                    : Text(""),
+                alignment: AlignmentDirectional.center,
+              )
+            ])),
+      ));
     }
 
-    Widget getCupertinoScaffold(
-        SettingsState state, SettingsBloc settingsBloc) {
+    Widget getCupertinoScaffold(SettingsState state, SettingsBloc settingsBloc) {
       return Platform.isAndroid
           ? WillPopScope(
               onWillPop: () {
@@ -290,8 +275,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
             globals.isDriverMode = _driverMode;
             globals.selectedTabIndex = 0;
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/LandingScreen', (Route<dynamic> route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil('/LandingScreen', (Route<dynamic> route) => false);
           }
 
           if (state is FetchUserSuccess) {
@@ -317,26 +301,22 @@ class _SettingsPageState extends State<SettingsPage> {
           }
 
           if (state is LocationResponseFetchSuccess) {
-            Toast.show("Done", context,
-                duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+            Toast.show("Done", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
             _isLoading = false;
           }
 
           if (state is PriorityResponseFetchSuccess) {
-            Toast.show("Done", context,
-                duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+            Toast.show("Done", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
             _isLoading = false;
           }
 
           if (state is LocationResponseFetchFailure) {
-            Toast.show("Sync failed", context,
-                duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+            Toast.show("Sync failed", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
             _isLoading = false;
           }
 
           if (state is PriorityResponseFetchFailure) {
-            Toast.show("Sync failed", context,
-                duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+            Toast.show("Sync failed", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
             _isLoading = false;
           }
         },
@@ -375,7 +355,6 @@ class _SettingsPageState extends State<SettingsPage> {
     settingsResponse.pickUpOnTender = value ? 1 : 0;
     settingsResponse.userName = _userName;
 
-    settingsBloc
-        .dispatch(PickUpOnTenderClick(settingsResponse: settingsResponse));
+    settingsBloc.dispatch(PickUpOnTenderClick(settingsResponse: settingsResponse));
   }
 }
