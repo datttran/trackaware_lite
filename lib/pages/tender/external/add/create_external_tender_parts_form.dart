@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:toast/toast.dart';
 import 'package:trackaware_lite/blocs/create_external_tender_bloc.dart';
 import 'package:trackaware_lite/events/create_external_tender_event.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/models/location_response.dart';
 import 'package:trackaware_lite/models/priority_response.dart';
 import 'package:trackaware_lite/models/tender_external_db.dart';
@@ -16,7 +17,6 @@ import 'package:trackaware_lite/utils/colorstrings.dart';
 import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/transactions.dart';
 import 'package:trackaware_lite/utils/utils.dart';
-import 'package:trackaware_lite/globals.dart' as globals;
 
 class CreateExternalTenderPartsForm extends StatefulWidget {
   CreateExternalTenderPartsForm();
@@ -57,8 +57,7 @@ var _formKey = GlobalKey<FormState>();
 String _deviceIdValue;
 String _userName;
 
-class _CreateExternalTenderFormState
-    extends State<CreateExternalTenderPartsForm> {
+class _CreateExternalTenderFormState extends State<CreateExternalTenderPartsForm> {
   _CreateExternalTenderFormState();
 
   @override
@@ -82,8 +81,7 @@ class _CreateExternalTenderFormState
 
   @override
   Widget build(BuildContext context) {
-    createExternalTenderBloc =
-        BlocProvider.of<CreateExternalTenderBloc>(context);
+    createExternalTenderBloc = BlocProvider.of<CreateExternalTenderBloc>(context);
 
     _saveTenderExternalToDb() {
       if (globals.tenderExternal != null || _validateForm()) {
@@ -98,9 +96,7 @@ class _CreateExternalTenderFormState
               ? Text("P2")
               : Text(
                   _priorityList[_selectedPriorityIndex].code,
-                  style: TextStyle(
-                      color: CupertinoDynamicColor.resolve(
-                          CupertinoColors.inactiveGray, context)),
+                  style: TextStyle(color: CupertinoDynamicColor.resolve(CupertinoColors.inactiveGray, context)),
                 ));
     }
 
@@ -111,9 +107,7 @@ class _CreateExternalTenderFormState
               ? Text("Select location")
               : Text(
                   _locationList[_selectedLocationIndex].code,
-                  style: TextStyle(
-                      color: CupertinoDynamicColor.resolve(
-                          CupertinoColors.inactiveGray, context)),
+                  style: TextStyle(color: CupertinoDynamicColor.resolve(CupertinoColors.inactiveGray, context)),
                 ));
     }
 
@@ -124,9 +118,7 @@ class _CreateExternalTenderFormState
               ? Text("Select destination")
               : Text(
                   _destinationList[_selectedDestinationIndex].code,
-                  style: TextStyle(
-                      color: CupertinoDynamicColor.resolve(
-                          CupertinoColors.inactiveGray, context)),
+                  style: TextStyle(color: CupertinoDynamicColor.resolve(CupertinoColors.inactiveGray, context)),
                 ));
     }
 
@@ -141,52 +133,41 @@ class _CreateExternalTenderFormState
                     color: HexColor(ColorStrings.BORDER),
                   ),
                   color: Colors.white),
-              child: Row(
+              child: Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.fromLTRB(20, 16, 0, 44),
+                    child: SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: SvgPicture.asset(
+                        "assets/ic_priority.svg",
+                        semanticsLabel: "priority icon",
+                        width: 24,
+                        height: 24,
+                      ),
+                    )),
+                Expanded(
+                    child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Padding(
-                        padding: EdgeInsets.fromLTRB(20, 16, 0, 44),
-                        child: SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: SvgPicture.asset(
-                            "assets/ic_priority.svg",
-                            semanticsLabel: "priority icon",
-                            width: 24,
-                            height: 24,
-                          ),
-                        )),
-                    Expanded(
-                        child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                            child: Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  Strings.PRIORITY,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: HexColor(ColorStrings.HEADING),
-                                      fontFamily: "SourceSansPro",
-                                      fontSize: 12.0,
-                                      fontStyle: FontStyle.normal),
-                                ))),
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                            child: globals.tenderExternal != null &&
-                                    _selectedPriorityIndex == -1
-                                ? Material(
-                                    color: Colors.transparent,
-                                    child:
-                                        Text(globals.tenderExternal.priority))
-                                : _buildPriorityPicker(context))
-                      ],
-                    ))
-                  ])));
+                        padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                        child: Material(
+                            color: Colors.transparent,
+                            child: Text(
+                              Strings.PRIORITY,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                            ))),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                        child: globals.tenderExternal != null && _selectedPriorityIndex == -1
+                            ? Material(color: Colors.transparent, child: Text(globals.tenderExternal.priority))
+                            : _buildPriorityPicker(context))
+                  ],
+                ))
+              ])));
     }
 
     Widget getQuantityWidget() {
@@ -222,54 +203,40 @@ class _CreateExternalTenderFormState
                         ),
                       )),
                   Expanded(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                            child: Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  Strings.QUANTITY,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: HexColor(ColorStrings.HEADING),
-                                      fontFamily: "SourceSansPro",
-                                      fontSize: 12.0,
-                                      fontStyle: FontStyle.normal),
-                                ))),
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                            child: new Material(
-                                color: Colors.transparent,
-                                child: new TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  style: TextStyle(
-                                      color: HexColor(ColorStrings.VALUES),
-                                      fontSize: 16),
-                                  autofocus: true,
-                                  decoration: InputDecoration.collapsed(
-                                      focusColor: HexColor(
-                                          ColorStrings.emailPwdTextColor),
-                                      hintText: "Enter quantity"),
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      return Strings
-                                          .QUANTITY_VALIDATION_MESSAGE;
-                                    }
-                                    return null;
-                                  },
-                                  controller: quanityController,
-                                  textInputAction: TextInputAction.next,
-                                  focusNode: quantityFocus,
-                                  onFieldSubmitted: (v) {
-                                    quantityFocus.unfocus();
-                                    FocusScope.of(context)
-                                        .requestFocus(orderNumberFocus);
-                                  },
-                                )))
-                      ]))
+                      child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                        child: Material(
+                            color: Colors.transparent,
+                            child: Text(
+                              Strings.QUANTITY,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                            ))),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                        child: new Material(
+                            color: Colors.transparent,
+                            child: new TextFormField(
+                              keyboardType: TextInputType.number,
+                              style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                              autofocus: false,
+                              decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: "Enter quantity"),
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return Strings.QUANTITY_VALIDATION_MESSAGE;
+                                }
+                                return null;
+                              },
+                              controller: quanityController,
+                              textInputAction: TextInputAction.next,
+                              focusNode: quantityFocus,
+                              onFieldSubmitted: (v) {
+                                quantityFocus.unfocus();
+                                FocusScope.of(context).requestFocus(orderNumberFocus);
+                              },
+                            )))
+                  ]))
                 ],
               )));
     }
@@ -300,33 +267,22 @@ class _CreateExternalTenderFormState
                         ),
                       )),
                   Expanded(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                            child: Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  Strings.LOCATION,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: HexColor(ColorStrings.HEADING),
-                                      fontFamily: "SourceSansPro",
-                                      fontSize: 12.0,
-                                      fontStyle: FontStyle.normal),
-                                ))),
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                            child: globals.tenderExternal != null &&
-                                    _selectedLocationIndex == -1
-                                ? Material(
-                                    color: Colors.transparent,
-                                    child:
-                                        Text(globals.tenderExternal.location))
-                                : _buildLocationPicker(context))
-                      ]))
+                      child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                        child: Material(
+                            color: Colors.transparent,
+                            child: Text(
+                              Strings.LOCATION,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                            ))),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                        child: globals.tenderExternal != null && _selectedLocationIndex == -1
+                            ? Material(color: Colors.transparent, child: Text(globals.tenderExternal.location))
+                            : _buildLocationPicker(context))
+                  ]))
                 ],
               )));
     }
@@ -357,33 +313,22 @@ class _CreateExternalTenderFormState
                         ),
                       )),
                   Expanded(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                            child: Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  Strings.DESTINATION,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: HexColor(ColorStrings.HEADING),
-                                      fontFamily: "SourceSansPro",
-                                      fontSize: 12.0,
-                                      fontStyle: FontStyle.normal),
-                                ))),
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                            child: globals.tenderParts != null &&
-                                    _selectedDestinationIndex == -1
-                                ? Material(
-                                    color: Colors.transparent,
-                                    child:
-                                        Text(globals.tenderParts.destination))
-                                : _buildDestLocationPicker(context))
-                      ]))
+                      child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                        child: Material(
+                            color: Colors.transparent,
+                            child: Text(
+                              Strings.DESTINATION,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                            ))),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                        child: globals.tenderParts != null && _selectedDestinationIndex == -1
+                            ? Material(color: Colors.transparent, child: Text(globals.tenderParts.destination))
+                            : _buildDestLocationPicker(context))
+                  ]))
                 ],
               )));
     }
@@ -391,8 +336,7 @@ class _CreateExternalTenderFormState
     Widget getOrderNumberWidget() {
       if (globals.tenderExternal != null) {
         orderNumberController.text = globals.tenderExternal.orderNumber;
-        orderNumberController.selection = TextSelection.fromPosition(
-            TextPosition(offset: orderNumberController.text.length));
+        orderNumberController.selection = TextSelection.fromPosition(TextPosition(offset: orderNumberController.text.length));
       }
 
       return Container(
@@ -411,67 +355,49 @@ class _CreateExternalTenderFormState
                       trackingNumberFocus.unfocus();
                       FocusScope.of(context).requestFocus(orderNumberFocus);
                     },
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                              child: Material(
-                                  color: Colors.transparent,
-                                  child: Text(
-                                    Strings.ORDER_NUMBER,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                        color: HexColor(ColorStrings.HEADING),
-                                        fontFamily: "SourceSansPro",
-                                        fontSize: 12.0,
-                                        fontStyle: FontStyle.normal),
-                                  ))),
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                              child: new Material(
-                                  color: Colors.transparent,
-                                  child: new TextFormField(
-                                    keyboardType: TextInputType.text,
-                                    textCapitalization:
-                                        TextCapitalization.sentences,
-                                    style: TextStyle(
-                                        color: HexColor(ColorStrings.VALUES),
-                                        fontSize: 16),
-                                    autofocus: true,
-                                    decoration: InputDecoration.collapsed(
-                                        focusColor: HexColor(
-                                            ColorStrings.emailPwdTextColor),
-                                        hintText: Strings.ENTER_ORDER_NUMBER),
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return Strings
-                                            .ORDER_NUMBER_VALIDATION_MESSAGE;
-                                      }
-                                      return null;
-                                    },
-                                    controller: orderNumberController,
-                                    textInputAction: TextInputAction.next,
-                                    focusNode: orderNumberFocus,
-                                    onFieldSubmitted: (v) {
-                                      orderNumberFocus.unfocus();
-                                      FocusScope.of(context)
-                                          .requestFocus(refNumberFocus);
-                                    },
-                                  )))
-                        ])),
+                    child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                          child: Material(
+                              color: Colors.transparent,
+                              child: Text(
+                                Strings.ORDER_NUMBER,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                              ))),
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                          child: new Material(
+                              color: Colors.transparent,
+                              child: new TextFormField(
+                                keyboardType: TextInputType.text,
+                                textCapitalization: TextCapitalization.sentences,
+                                style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                                autofocus: false,
+                                decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_ORDER_NUMBER),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return Strings.ORDER_NUMBER_VALIDATION_MESSAGE;
+                                  }
+                                  return null;
+                                },
+                                controller: orderNumberController,
+                                textInputAction: TextInputAction.next,
+                                focusNode: orderNumberFocus,
+                                onFieldSubmitted: (v) {
+                                  orderNumberFocus.unfocus();
+                                  FocusScope.of(context).requestFocus(refNumberFocus);
+                                },
+                              )))
+                    ])),
                 flex: 6),
             Flexible(
                 child: GestureDetector(
                   onTap: () {
-                    globals.scanOption =
-                        Strings.CREATE_TENDER_EXTERNAL_PACKAGES;
+                    globals.scanOption = Strings.CREATE_TENDER_EXTERNAL_PACKAGES;
                     createExternalTenderBloc.dispatch(OrderNumberScanEvent());
                   },
-                  child: Padding(
-                      child: Image.asset("images/ic_scan.png"),
-                      padding: EdgeInsets.fromLTRB(0, 16, 0, 16)),
+                  child: Padding(child: Image.asset("images/ic_scan.png"), padding: EdgeInsets.fromLTRB(0, 16, 0, 16)),
                 ),
                 flex: 1)
           ]));
@@ -480,8 +406,7 @@ class _CreateExternalTenderFormState
     Widget getRefNumberWidget() {
       if (globals.tenderExternal?.refNumber?.isNotEmpty == true) {
         refNumberController.text = globals.tenderExternal.refNumber;
-        refNumberController.selection = TextSelection.fromPosition(
-            TextPosition(offset: refNumberController.text.length));
+        refNumberController.selection = TextSelection.fromPosition(TextPosition(offset: refNumberController.text.length));
       }
 
       return Container(
@@ -500,68 +425,50 @@ class _CreateExternalTenderFormState
                     trackingNumberFocus.unfocus();
                     FocusScope.of(context).requestFocus(refNumberFocus);
                   },
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                            child: Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  Strings.REF_NUMBER,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: HexColor(ColorStrings.HEADING),
-                                      fontFamily: "SourceSansPro",
-                                      fontSize: 12.0,
-                                      fontStyle: FontStyle.normal),
-                                ))),
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                            child: new Material(
-                                color: Colors.transparent,
-                                child: new TextFormField(
-                                  keyboardType: TextInputType.text,
-                                  textCapitalization:
-                                      TextCapitalization.sentences,
-                                  style: TextStyle(
-                                      color: HexColor(ColorStrings.VALUES),
-                                      fontSize: 16),
-                                  autofocus: true,
-                                  decoration: InputDecoration.collapsed(
-                                      focusColor: HexColor(
-                                          ColorStrings.emailPwdTextColor),
-                                      hintText: Strings.ENTER_REF_NUMBER),
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      return Strings
-                                          .REF_NUMBER_VALIDATION_MESSAGE;
-                                    }
-                                    return null;
-                                  },
-                                  controller: refNumberController,
-                                  textInputAction: TextInputAction.next,
-                                  focusNode: refNumberFocus,
-                                  onFieldSubmitted: (v) {
-                                    refNumberFocus.unfocus();
-                                    FocusScope.of(context)
-                                        .requestFocus(partNumberFocus);
-                                  },
-                                )))
-                      ])),
+                  child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                        child: Material(
+                            color: Colors.transparent,
+                            child: Text(
+                              Strings.REF_NUMBER,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                            ))),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                        child: new Material(
+                            color: Colors.transparent,
+                            child: new TextFormField(
+                              keyboardType: TextInputType.text,
+                              textCapitalization: TextCapitalization.sentences,
+                              style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                              autofocus: false,
+                              decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_REF_NUMBER),
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return Strings.REF_NUMBER_VALIDATION_MESSAGE;
+                                }
+                                return null;
+                              },
+                              controller: refNumberController,
+                              textInputAction: TextInputAction.next,
+                              focusNode: refNumberFocus,
+                              onFieldSubmitted: (v) {
+                                refNumberFocus.unfocus();
+                                FocusScope.of(context).requestFocus(partNumberFocus);
+                              },
+                            )))
+                  ])),
               flex: 6,
             ),
             Flexible(
                 child: GestureDetector(
                   onTap: () {
-                    globals.scanOption =
-                        Strings.CREATE_TENDER_EXTERNAL_PACKAGES;
+                    globals.scanOption = Strings.CREATE_TENDER_EXTERNAL_PACKAGES;
                     createExternalTenderBloc.dispatch(RefNumberScanEvent());
                   },
-                  child: Padding(
-                      child: Image.asset("images/ic_scan.png"),
-                      padding: EdgeInsets.fromLTRB(0, 16, 0, 16)),
+                  child: Padding(child: Image.asset("images/ic_scan.png"), padding: EdgeInsets.fromLTRB(0, 16, 0, 16)),
                 ),
                 flex: 1)
           ]));
@@ -570,8 +477,7 @@ class _CreateExternalTenderFormState
     Widget getPartNumberWidget() {
       if (globals.tenderExternal?.partNumber?.isNotEmpty == true) {
         partNumberController.text = globals.tenderExternal.partNumber;
-        partNumberController.selection = TextSelection.fromPosition(
-            TextPosition(offset: partNumberController.text.length));
+        partNumberController.selection = TextSelection.fromPosition(TextPosition(offset: partNumberController.text.length));
       }
       return Container(
           decoration: BoxDecoration(
@@ -589,68 +495,50 @@ class _CreateExternalTenderFormState
                     trackingNumberFocus.unfocus();
                     FocusScope.of(context).requestFocus(partNumberFocus);
                   },
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                            child: Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  Strings.PART_NUMBER,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: HexColor(ColorStrings.HEADING),
-                                      fontFamily: "SourceSansPro",
-                                      fontSize: 12.0,
-                                      fontStyle: FontStyle.normal),
-                                ))),
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                            child: new Material(
-                                color: Colors.transparent,
-                                child: new TextFormField(
-                                  keyboardType: TextInputType.text,
-                                  textCapitalization:
-                                      TextCapitalization.sentences,
-                                  style: TextStyle(
-                                      color: HexColor(ColorStrings.VALUES),
-                                      fontSize: 16),
-                                  autofocus: true,
-                                  decoration: InputDecoration.collapsed(
-                                      focusColor: HexColor(
-                                          ColorStrings.emailPwdTextColor),
-                                      hintText: Strings.ENTER_PART_NUMBER),
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      return Strings
-                                          .PART_NUMBER_VALIDATION_MESSAGE;
-                                    }
-                                    return null;
-                                  },
-                                  controller: partNumberController,
-                                  textInputAction: TextInputAction.next,
-                                  focusNode: partNumberFocus,
-                                  onFieldSubmitted: (v) {
-                                    partNumberFocus.unfocus();
-                                    FocusScope.of(context)
-                                        .requestFocus(trackingNumberFocus);
-                                  },
-                                )))
-                      ])),
+                  child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                        child: Material(
+                            color: Colors.transparent,
+                            child: Text(
+                              Strings.PART_NUMBER,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                            ))),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                        child: new Material(
+                            color: Colors.transparent,
+                            child: new TextFormField(
+                              keyboardType: TextInputType.text,
+                              textCapitalization: TextCapitalization.sentences,
+                              style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                              autofocus: false,
+                              decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_PART_NUMBER),
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return Strings.PART_NUMBER_VALIDATION_MESSAGE;
+                                }
+                                return null;
+                              },
+                              controller: partNumberController,
+                              textInputAction: TextInputAction.next,
+                              focusNode: partNumberFocus,
+                              onFieldSubmitted: (v) {
+                                partNumberFocus.unfocus();
+                                FocusScope.of(context).requestFocus(trackingNumberFocus);
+                              },
+                            )))
+                  ])),
               flex: 6,
             ),
             Flexible(
                 child: GestureDetector(
                   onTap: () {
-                    globals.scanOption =
-                        Strings.CREATE_TENDER_EXTERNAL_PACKAGES;
+                    globals.scanOption = Strings.CREATE_TENDER_EXTERNAL_PACKAGES;
                     createExternalTenderBloc.dispatch(PartNumberScanEvent());
                   },
-                  child: Padding(
-                      child: Image.asset("images/ic_scan.png"),
-                      padding: EdgeInsets.fromLTRB(0, 16, 0, 16)),
+                  child: Padding(child: Image.asset("images/ic_scan.png"), padding: EdgeInsets.fromLTRB(0, 16, 0, 16)),
                 ),
                 flex: 1)
           ]));
@@ -659,8 +547,7 @@ class _CreateExternalTenderFormState
     Widget getTrackingNumberWidget() {
       if (globals.tenderExternal?.trackingNumber?.isNotEmpty == true) {
         trackingNumberController.text = globals.tenderExternal.trackingNumber;
-        trackingNumberController.selection = TextSelection.fromPosition(
-            TextPosition(offset: trackingNumberController.text.length));
+        trackingNumberController.selection = TextSelection.fromPosition(TextPosition(offset: trackingNumberController.text.length));
       }
       return Container(
           decoration: BoxDecoration(
@@ -678,74 +565,54 @@ class _CreateExternalTenderFormState
                       orderNumberFocus.unfocus();
                       FocusScope.of(context).requestFocus(trackingNumberFocus);
                     },
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                              child: Material(
-                                  color: Colors.transparent,
-                                  child: Text(
-                                    Strings.TRACKING_NUMBER,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                        color: HexColor(ColorStrings.HEADING),
-                                        fontFamily: "SourceSansPro",
-                                        fontSize: 12.0,
-                                        fontStyle: FontStyle.normal),
-                                  ))),
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                              child: new Material(
-                                  color: Colors.transparent,
-                                  child: new TextFormField(
-                                    keyboardType: TextInputType.text,
-                                    textCapitalization:
-                                        TextCapitalization.sentences,
-                                    style: TextStyle(
-                                        color: HexColor(ColorStrings.VALUES),
-                                        fontSize: 16),
-                                    autofocus: true,
-                                    decoration: InputDecoration.collapsed(
-                                        focusColor: HexColor(
-                                            ColorStrings.emailPwdTextColor),
-                                        hintText:
-                                            Strings.ENTER_TRACKING_NUMBER),
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return Strings
-                                            .TRACKING_NUMBER_VALIDATION_MESSAGE;
-                                      }
-                                      return null;
-                                    },
-                                    controller: trackingNumberController,
-                                    textInputAction: TextInputAction.done,
-                                    focusNode: trackingNumberFocus,
-                                    onFieldSubmitted: (v) {
-                                      trackingNumberFocus.unfocus();
-                                    },
-                                  )))
-                        ])),
+                    child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                          child: Material(
+                              color: Colors.transparent,
+                              child: Text(
+                                Strings.TRACKING_NUMBER,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                              ))),
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                          child: new Material(
+                              color: Colors.transparent,
+                              child: new TextFormField(
+                                keyboardType: TextInputType.text,
+                                textCapitalization: TextCapitalization.sentences,
+                                style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                                autofocus: false,
+                                decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_TRACKING_NUMBER),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return Strings.TRACKING_NUMBER_VALIDATION_MESSAGE;
+                                  }
+                                  return null;
+                                },
+                                controller: trackingNumberController,
+                                textInputAction: TextInputAction.done,
+                                focusNode: trackingNumberFocus,
+                                onFieldSubmitted: (v) {
+                                  trackingNumberFocus.unfocus();
+                                },
+                              )))
+                    ])),
                 flex: 6),
             Flexible(
                 child: GestureDetector(
                   onTap: () {
-                    globals.scanOption =
-                        Strings.CREATE_TENDER_EXTERNAL_PACKAGES;
-                    createExternalTenderBloc
-                        .dispatch(TrackingNumberScanEvent());
+                    globals.scanOption = Strings.CREATE_TENDER_EXTERNAL_PACKAGES;
+                    createExternalTenderBloc.dispatch(TrackingNumberScanEvent());
                   },
-                  child: Padding(
-                      child: Image.asset("images/ic_scan.png"),
-                      padding: EdgeInsets.fromLTRB(0, 16, 0, 16)),
+                  child: Padding(child: Image.asset("images/ic_scan.png"), padding: EdgeInsets.fromLTRB(0, 16, 0, 16)),
                 ),
                 flex: 1)
           ]));
     }
 
-    Widget getCheckBox(CreateExternalTenderState state,
-        CreateExternalTenderBloc createExternalTenderBloc) {
+    Widget getCheckBox(CreateExternalTenderState state, CreateExternalTenderBloc createExternalTenderBloc) {
       if (globals.tenderExternal != null) {
         _isKeepScannedValues = globals.tenderExternal.keepScannedValues == 1;
       }
@@ -759,8 +626,7 @@ class _CreateExternalTenderFormState
                 value: _isKeepScannedValues,
                 onChanged: (bool value) {
                   _isKeepScannedValues = value;
-                  createExternalTenderBloc.dispatch(
-                      new CheckBoxClick(isChecked: _isKeepScannedValues));
+                  createExternalTenderBloc.dispatch(new CheckBoxClick(isChecked: _isKeepScannedValues));
                 },
               )),
           Expanded(
@@ -768,12 +634,7 @@ class _CreateExternalTenderFormState
                   color: Colors.transparent,
                   child: Text(
                     Strings.KEEP_SCANNED_VALUES,
-                    style: const TextStyle(
-                        color: const Color(0xff030303),
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "SourceSansPro",
-                        fontStyle: FontStyle.normal,
-                        fontSize: 16.0),
+                    style: const TextStyle(color: const Color(0xff030303), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0),
                   ))),
         ],
       );
@@ -788,17 +649,8 @@ class _CreateExternalTenderFormState
                   elevation: 8.0,
                   clipBehavior: Clip.antiAlias,
                   padding: EdgeInsets.all(16),
-                  child: Text(
-                      globals.tenderExternal != null
-                          ? Strings.SEND
-                          : Strings.ADD_TO_LIST,
-                      style: TextStyle(
-                          color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR),
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "SourceSansPro",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 16.0),
-                      textAlign: TextAlign.center),
+                  child: Text(globals.tenderExternal != null ? Strings.SEND : Strings.ADD_TO_LIST,
+                      style: TextStyle(color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0), textAlign: TextAlign.center),
                   onPressed: () {
                     createExternalTenderBloc.dispatch(FetchPriorityResponse());
                   },
@@ -808,8 +660,7 @@ class _CreateExternalTenderFormState
     Widget getScaffold(CreateExternalTenderState state) {
       return CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
-              backgroundColor:
-                  HexColor(ColorStrings.boxBackground).withAlpha(30),
+              backgroundColor: HexColor(ColorStrings.boxBackground).withAlpha(30),
               leading: GestureDetector(
                 onTap: () {
                   navBack();
@@ -822,9 +673,7 @@ class _CreateExternalTenderFormState
           child: Form(
               key: _formKey,
               child: Container(
-                  decoration: BoxDecoration(
-                      color:
-                          HexColor(ColorStrings.boxBackground).withAlpha(30)),
+                  decoration: BoxDecoration(color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
                   child: Stack(children: <Widget>[
                     ListView(children: <Widget>[
                       getPriorityWidget(),
@@ -836,9 +685,7 @@ class _CreateExternalTenderFormState
                       getPartNumberWidget(),
                       getTrackingNumberWidget(),
                       getCheckBox(state, createExternalTenderBloc),
-                      Padding(
-                          child: Text(""),
-                          padding: EdgeInsets.fromLTRB(0, 0, 0, 60)),
+                      Padding(child: Text(""), padding: EdgeInsets.fromLTRB(0, 0, 0, 60)),
                     ]),
                     Align(
                       child: _isLoading
@@ -856,8 +703,7 @@ class _CreateExternalTenderFormState
                   ]))));
     }
 
-    Widget getCupertinoScaffold(
-        CreateExternalTenderState state, createExternalTenderBloc) {
+    Widget getCupertinoScaffold(CreateExternalTenderState state, createExternalTenderBloc) {
       return Platform.isAndroid
           ? WillPopScope(
               onWillPop: () {
@@ -883,29 +729,25 @@ class _CreateExternalTenderFormState
           if (state is OrderNumberScanSuccess) {
             globals.orderNumber = state.barCode;
             orderNumberController.text = globals.orderNumber;
-            orderNumberController.selection = TextSelection.fromPosition(
-                TextPosition(offset: orderNumberController.text.length));
+            orderNumberController.selection = TextSelection.fromPosition(TextPosition(offset: orderNumberController.text.length));
           }
 
           if (state is PartNumberScanSuccess) {
             globals.partNumber = state.barCode;
             partNumberController.text = globals.partNumber;
-            partNumberController.selection = TextSelection.fromPosition(
-                TextPosition(offset: partNumberController.text.length));
+            partNumberController.selection = TextSelection.fromPosition(TextPosition(offset: partNumberController.text.length));
           }
 
           if (state is TrackingNumberScanSuccess) {
             globals.toolNumber = state.barCode;
             trackingNumberController.text = globals.toolNumber;
-            trackingNumberController.selection = TextSelection.fromPosition(
-                TextPosition(offset: trackingNumberController.text.length));
+            trackingNumberController.selection = TextSelection.fromPosition(TextPosition(offset: trackingNumberController.text.length));
           }
 
           if (state is RefNumberScanSuccess) {
             globals.refNumber = state.barCode;
             refNumberController.text = globals.refNumber;
-            refNumberController.selection = TextSelection.fromPosition(
-                TextPosition(offset: refNumberController.text.length));
+            refNumberController.selection = TextSelection.fromPosition(TextPosition(offset: refNumberController.text.length));
           }
 
           if (state is ScanSuccess) {
@@ -932,8 +774,7 @@ class _CreateExternalTenderFormState
 
           if (state is TenderExternalSaved) {
             resetValues();
-            Toast.show("Tender external created", context,
-                duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+            Toast.show("Tender external created", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
             Navigator.pop(context, "Saved");
           }
 
@@ -951,38 +792,26 @@ class _CreateExternalTenderFormState
             _userName = state.userName;
 
             if (globals.tenderExternal != null) {
-              createExternalTenderBloc.dispatch(SendExternalButtonClick(
-                  generateTransactionList(
-                      globals.tenderExternal, _deviceIdValue, _userName),
-                  globals.tenderExternal,
-                  _deviceIdValue,
-                  _userName));
+              createExternalTenderBloc.dispatch(SendExternalButtonClick(generateTransactionList(globals.tenderExternal, _deviceIdValue, _userName), globals.tenderExternal, _deviceIdValue, _userName));
             } else {
               TenderExternal tenderExternal = TenderExternal();
-              tenderExternal.priority =
-                  _priorityList[_selectedPriorityIndex].code;
+              tenderExternal.priority = _priorityList[_selectedPriorityIndex].code;
               tenderExternal.quantity = int.parse(quanityController.text);
-              tenderExternal.location =
-                  _locationList[_selectedLocationIndex].code;
-              tenderExternal.destination =
-                  _destinationList[_selectedDestinationIndex].code;
+              tenderExternal.location = _locationList[_selectedLocationIndex].code;
+              tenderExternal.destination = _destinationList[_selectedDestinationIndex].code;
               tenderExternal.orderNumber = orderNumberController.text;
               tenderExternal.partNumber = partNumberController.text;
               tenderExternal.refNumber = refNumberController.text;
               tenderExternal.trackingNumber = trackingNumberController.text;
               tenderExternal.keepScannedValues = _isKeepScannedValues ? 1 : 0;
-              tenderExternal.scanTime =
-                  (DateTime.now().millisecondsSinceEpoch / 1000).round();
+              tenderExternal.scanTime = (DateTime.now().millisecondsSinceEpoch / 1000).round();
               tenderExternal.isSynced = 0;
               tenderExternal.isScanned = 0;
-              createExternalTenderBloc
-                  .dispatch(AddToListExternalButtonClick(tenderExternal));
+              createExternalTenderBloc.dispatch(AddToListExternalButtonClick(tenderExternal));
             }
           }
 
-          if (state is PriorityApiCallLoading ||
-              state is LocationApiCallLoading ||
-              state is DestinationApiCallLoading) {
+          if (state is PriorityApiCallLoading || state is LocationApiCallLoading || state is DestinationApiCallLoading) {
             _isLoading = true;
           }
 
@@ -1002,9 +831,7 @@ class _CreateExternalTenderFormState
             _priorityList.clear();
             _priorityList.addAll(state.priorityResponse);
 
-            final FixedExtentScrollController scrollController =
-                FixedExtentScrollController(
-                    initialItem: _selectedPriorityIndex);
+            final FixedExtentScrollController scrollController = FixedExtentScrollController(initialItem: _selectedPriorityIndex);
             showCupertinoModalPopup<void>(
               context: context,
               builder: (BuildContext context) {
@@ -1012,13 +839,11 @@ class _CreateExternalTenderFormState
                   child: CupertinoPicker(
                     scrollController: scrollController,
                     itemExtent: _kPickerItemHeight,
-                    backgroundColor:
-                        CupertinoColors.systemBackground.resolveFrom(context),
+                    backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
                     onSelectedItemChanged: (int index) {
                       setState(() => _selectedPriorityIndex = index);
                     },
-                    children: List<Widget>.generate(_priorityList.length,
-                        (int index) {
+                    children: List<Widget>.generate(_priorityList.length, (int index) {
                       return Center(
                         child: Text(_priorityList[index].code),
                       );
@@ -1034,9 +859,7 @@ class _CreateExternalTenderFormState
             _locationList.clear();
             _locationList.addAll(state.locationResponse);
 
-            final FixedExtentScrollController scrollController =
-                FixedExtentScrollController(
-                    initialItem: _selectedLocationIndex);
+            final FixedExtentScrollController scrollController = FixedExtentScrollController(initialItem: _selectedLocationIndex);
             showCupertinoModalPopup<void>(
               context: context,
               builder: (BuildContext context) {
@@ -1044,13 +867,11 @@ class _CreateExternalTenderFormState
                   child: CupertinoPicker(
                     scrollController: scrollController,
                     itemExtent: _kPickerItemHeight,
-                    backgroundColor:
-                        CupertinoColors.systemBackground.resolveFrom(context),
+                    backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
                     onSelectedItemChanged: (int index) {
                       setState(() => _selectedLocationIndex = index);
                     },
-                    children: List<Widget>.generate(_locationList.length,
-                        (int index) {
+                    children: List<Widget>.generate(_locationList.length, (int index) {
                       return Center(
                         child: Text(_locationList[index].code),
                       );
@@ -1066,9 +887,7 @@ class _CreateExternalTenderFormState
             _destinationList.clear();
             _destinationList.addAll(state.locationResponse);
 
-            final FixedExtentScrollController scrollController =
-                FixedExtentScrollController(
-                    initialItem: _selectedDestinationIndex);
+            final FixedExtentScrollController scrollController = FixedExtentScrollController(initialItem: _selectedDestinationIndex);
             showCupertinoModalPopup<void>(
               context: context,
               builder: (BuildContext context) {
@@ -1076,13 +895,11 @@ class _CreateExternalTenderFormState
                   child: CupertinoPicker(
                     scrollController: scrollController,
                     itemExtent: _kPickerItemHeight,
-                    backgroundColor:
-                        CupertinoColors.systemBackground.resolveFrom(context),
+                    backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
                     onSelectedItemChanged: (int index) {
                       setState(() => _selectedDestinationIndex = index);
                     },
-                    children: List<Widget>.generate(_destinationList.length,
-                        (int index) {
+                    children: List<Widget>.generate(_destinationList.length, (int index) {
                       return Center(
                         child: Text(_destinationList[index].code),
                       );

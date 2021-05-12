@@ -18,8 +18,7 @@ class HexColor extends Color {
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
 
-showAlertDialog(BuildContext context, String message,
-    AlertClickCallBack alertClickCallBack) {
+showAlertDialog(BuildContext context, String message, AlertClickCallBack alertClickCallBack) {
   showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -55,11 +54,7 @@ Widget getDataListWidget(Map<String, String> dataMap) {
                 child: Text(
               Strings.DETAILS,
               textAlign: TextAlign.start,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: "SourceSansPro",
-                  fontSize: 18.0,
-                  fontStyle: FontStyle.normal),
+              style: TextStyle(color: Colors.black, fontSize: 18.0, fontStyle: FontStyle.normal),
             )))),
     Padding(
         padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
@@ -78,38 +73,27 @@ Widget getDataListWidget(Map<String, String> dataMap) {
 List<Widget> getFieldContainer(Map<String, String> dataMap) {
   var widgetList = List<Widget>();
   dataMap.forEach((key, value) {
-    widgetList.add(Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-              padding: EdgeInsets.fromLTRB(14, 8, 10, 8),
-              child: Material(
-                  color: Colors.transparent,
-                  child: Text(
-                    key,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                        color: HexColor(ColorStrings.HEADING),
-                        fontFamily: "SourceSansPro",
-                        fontSize: 12.0,
-                        fontStyle: FontStyle.normal),
-                  ))),
-          Padding(
-              padding: EdgeInsets.fromLTRB(14, 8, 10, 8),
-              child: Material(
-                  color: Colors.transparent,
-                  child: Text(
-                    value,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                        color: HexColor(ColorStrings.HEADING),
-                        fontFamily: "SourceSansPro",
-                        fontSize: 12.0,
-                        fontStyle: FontStyle.normal),
-                  ))),
-          Divider(thickness: 1.0, color: const Color(0xff979797))
-        ]));
+    widgetList.add(Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+      Padding(
+          padding: EdgeInsets.fromLTRB(14, 8, 10, 8),
+          child: Material(
+              color: Colors.transparent,
+              child: Text(
+                key,
+                textAlign: TextAlign.start,
+                style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+              ))),
+      Padding(
+          padding: EdgeInsets.fromLTRB(14, 8, 10, 8),
+          child: Material(
+              color: Colors.transparent,
+              child: Text(
+                value,
+                textAlign: TextAlign.start,
+                style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+              ))),
+      Divider(thickness: 1.0, color: const Color(0xff979797))
+    ]));
   });
 
   return widgetList;

@@ -65,9 +65,7 @@ class _CreateArriveFormState extends State<CreateArriveForm> {
                   ? Text("Select location")
                   : Text(
                       _locationList[_selectedLocationIndex].code,
-                      style: TextStyle(
-                          color: CupertinoDynamicColor.resolve(
-                              CupertinoColors.inactiveGray, context)),
+                      style: TextStyle(color: CupertinoDynamicColor.resolve(CupertinoColors.inactiveGray, context)),
                     )));
     }
 
@@ -93,27 +91,18 @@ class _CreateArriveFormState extends State<CreateArriveForm> {
                     ),
                   )),
               Expanded(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                        child: Material(
-                            color: Colors.transparent,
-                            child: Text(
-                              Strings.LOCATION,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  color: HexColor(ColorStrings.HEADING),
-                                  fontFamily: "SourceSansPro",
-                                  fontSize: 12.0,
-                                  fontStyle: FontStyle.normal),
-                            ))),
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                        child: _buildLocationPicker(context))
-                  ]))
+                  child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                    child: Material(
+                        color: Colors.transparent,
+                        child: Text(
+                          Strings.LOCATION,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                        ))),
+                Padding(padding: EdgeInsets.fromLTRB(14, 10, 10, 16), child: _buildLocationPicker(context))
+              ]))
             ],
           ));
     }
@@ -128,13 +117,7 @@ class _CreateArriveFormState extends State<CreateArriveForm> {
                   clipBehavior: Clip.antiAlias,
                   padding: EdgeInsets.all(16),
                   child: Text(Strings.SUBMIT,
-                      style: TextStyle(
-                          color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR),
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "SourceSansPro",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 16.0),
-                      textAlign: TextAlign.center),
+                      style: TextStyle(color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0), textAlign: TextAlign.center),
                   onPressed: () {
                     _saveArriveItemToDb();
                   },
@@ -144,8 +127,7 @@ class _CreateArriveFormState extends State<CreateArriveForm> {
     Widget getScaffold() {
       return CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
-              backgroundColor:
-                  HexColor(ColorStrings.boxBackground).withAlpha(30),
+              backgroundColor: HexColor(ColorStrings.boxBackground).withAlpha(30),
               leading: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
@@ -156,13 +138,10 @@ class _CreateArriveFormState extends State<CreateArriveForm> {
               ),
               middle: Text(Strings.arriveTitle)),
           child: Container(
-              decoration: BoxDecoration(
-                  color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
+              decoration: BoxDecoration(color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
               child: Stack(children: <Widget>[
                 ListView(children: <Widget>[getLocationWidget()]),
-                Align(
-                    child: getSubmitButton(),
-                    alignment: AlignmentDirectional.bottomCenter),
+                Align(child: getSubmitButton(), alignment: AlignmentDirectional.bottomCenter),
                 Align(
                   child: _isLoading
                       ? CupertinoActivityIndicator(
@@ -175,8 +154,7 @@ class _CreateArriveFormState extends State<CreateArriveForm> {
               ])));
     }
 
-    Widget getCupertinoScaffold(
-        CreateArriveState state, CreateArriveBloc createArriveBloc) {
+    Widget getCupertinoScaffold(CreateArriveState state, CreateArriveBloc createArriveBloc) {
       return Platform.isAndroid
           ? WillPopScope(
               onWillPop: () {
@@ -190,8 +168,7 @@ class _CreateArriveFormState extends State<CreateArriveForm> {
     return BlocListener<CreateArriveBloc, CreateArriveState>(
         listener: (context, state) {
           if (state is ArriveItemSaved) {
-            Toast.show("Arrive entry created", context,
-                duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+            Toast.show("Arrive entry created", context, duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
             Navigator.pop(context, "saved");
           }
 
@@ -204,11 +181,9 @@ class _CreateArriveFormState extends State<CreateArriveForm> {
             _userName = state.userName;
             Arrive arrive = Arrive();
             arrive.location = _locationList[_selectedLocationIndex].code;
-            arrive.scanTime =
-                (DateTime.now().millisecondsSinceEpoch / 1000).round();
+            arrive.scanTime = (DateTime.now().millisecondsSinceEpoch / 1000).round();
             arrive.isSynced = 1;
-            createArriveBloc.dispatch(SubmitButtonClick(arrive,
-                generateDeliveryList(arrive, _deviceIdValue, _userName)));
+            createArriveBloc.dispatch(SubmitButtonClick(arrive, generateDeliveryList(arrive, _deviceIdValue, _userName)));
           }
 
           if (state is LocationApiCallLoading || state is DeliveryLoading) {
@@ -220,9 +195,7 @@ class _CreateArriveFormState extends State<CreateArriveForm> {
             _locationList.clear();
             _locationList.addAll(state.locationResponse);
 
-            final FixedExtentScrollController scrollController =
-                FixedExtentScrollController(
-                    initialItem: _selectedLocationIndex);
+            final FixedExtentScrollController scrollController = FixedExtentScrollController(initialItem: _selectedLocationIndex);
             showCupertinoModalPopup<void>(
               context: context,
               builder: (BuildContext context) {
@@ -230,13 +203,11 @@ class _CreateArriveFormState extends State<CreateArriveForm> {
                   child: CupertinoPicker(
                     scrollController: scrollController,
                     itemExtent: _kPickerItemHeight,
-                    backgroundColor:
-                        CupertinoColors.systemBackground.resolveFrom(context),
+                    backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
                     onSelectedItemChanged: (int index) {
                       setState(() => _selectedLocationIndex = index);
                     },
-                    children: List<Widget>.generate(_locationList.length,
-                        (int index) {
+                    children: List<Widget>.generate(_locationList.length, (int index) {
                       return Center(
                         child: Text(_locationList[index].code),
                       );

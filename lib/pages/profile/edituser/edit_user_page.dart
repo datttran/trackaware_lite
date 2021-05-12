@@ -94,23 +94,18 @@ class _EditUserPageState extends State<EditUserPage> {
               context: context,
               child: CupertinoActionSheet(
                   title: const Text('Select source'),
-                  message:
-                      const Text('Please select from the below two options'),
+                  message: const Text('Please select from the below two options'),
                   actions: <Widget>[
                     CupertinoActionSheetAction(
                       child: const Text('Camera'),
                       onPressed: () {
-                        profileBloc.dispatch(ImageButtonClick(
-                            imageSource: ImageSource.camera,
-                            imagePicker: picker));
+                        profileBloc.dispatch(ImageButtonClick(imageSource: ImageSource.camera, imagePicker: picker));
                       },
                     ),
                     CupertinoActionSheetAction(
                       child: const Text('Gallery'),
                       onPressed: () {
-                        profileBloc.dispatch(ImageButtonClick(
-                            imageSource: ImageSource.gallery,
-                            imagePicker: picker));
+                        profileBloc.dispatch(ImageButtonClick(imageSource: ImageSource.gallery, imagePicker: picker));
                       },
                     ),
                   ],
@@ -137,25 +132,16 @@ class _EditUserPageState extends State<EditUserPage> {
                 Align(
                   child: Material(
                       color: Colors.transparent,
-                      child: Text(Strings.EMAIL,
-                          style: TextStyle(
-                              color: const Color(0xff202020),
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "SourceSansPro",
-                              fontStyle: FontStyle.normal,
-                              fontSize: 16.0))),
+                      child: Text(Strings.EMAIL, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0))),
                   alignment: Alignment.centerLeft,
                 ),
                 new Material(
                     color: Colors.transparent,
                     child: new TextFormField(
                       keyboardType: TextInputType.emailAddress,
-                      style: TextStyle(
-                          color: HexColor(ColorStrings.VALUES), fontSize: 16),
-                      autofocus: true,
-                      decoration: InputDecoration.collapsed(
-                          focusColor: HexColor(ColorStrings.emailPwdTextColor),
-                          hintText: Strings.ENTER_EMAIL),
+                      style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                      autofocus: false,
+                      decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_EMAIL),
                       validator: (value) {
                         if (validateEmail(value)) {
                           return Strings.PLEASE_CHECK_EMAIL_ENTERED;
@@ -187,25 +173,16 @@ class _EditUserPageState extends State<EditUserPage> {
                 Align(
                   child: Material(
                       color: Colors.transparent,
-                      child: Text(Strings.FIRST_NAME,
-                          style: TextStyle(
-                              color: const Color(0xff202020),
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "SourceSansPro",
-                              fontStyle: FontStyle.normal,
-                              fontSize: 16.0))),
+                      child: Text(Strings.FIRST_NAME, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0))),
                   alignment: Alignment.centerLeft,
                 ),
                 new Material(
                     color: Colors.transparent,
                     child: new TextFormField(
                       keyboardType: TextInputType.text,
-                      style: TextStyle(
-                          color: HexColor(ColorStrings.VALUES), fontSize: 16),
-                      autofocus: true,
-                      decoration: InputDecoration.collapsed(
-                          focusColor: HexColor(ColorStrings.emailPwdTextColor),
-                          hintText: Strings.ENTER_FIRST_NAME),
+                      style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                      autofocus: false,
+                      decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_FIRST_NAME),
                       validator: (value) {
                         if (value.isEmpty) {
                           return Strings.FIELD_CANNOT_BE_EMPTY;
@@ -238,25 +215,16 @@ class _EditUserPageState extends State<EditUserPage> {
                 Align(
                   child: Material(
                       color: Colors.transparent,
-                      child: Text(Strings.LAST_NAME,
-                          style: TextStyle(
-                              color: const Color(0xff202020),
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "SourceSansPro",
-                              fontStyle: FontStyle.normal,
-                              fontSize: 16.0))),
+                      child: Text(Strings.LAST_NAME, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0))),
                   alignment: Alignment.centerLeft,
                 ),
                 new Material(
                     color: Colors.transparent,
                     child: new TextFormField(
                       keyboardType: TextInputType.text,
-                      style: TextStyle(
-                          color: HexColor(ColorStrings.VALUES), fontSize: 16),
-                      autofocus: true,
-                      decoration: InputDecoration.collapsed(
-                          focusColor: HexColor(ColorStrings.emailPwdTextColor),
-                          hintText: Strings.ENTER_LAST_NAME),
+                      style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                      autofocus: false,
+                      decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_LAST_NAME),
                       validator: (value) {
                         if (value.isEmpty) {
                           return Strings.FIELD_CANNOT_BE_EMPTY;
@@ -289,25 +257,16 @@ class _EditUserPageState extends State<EditUserPage> {
                 Align(
                   child: Material(
                       color: Colors.transparent,
-                      child: Text(Strings.USER_NAME_HEADING,
-                          style: TextStyle(
-                              color: const Color(0xff202020),
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "SourceSansPro",
-                              fontStyle: FontStyle.normal,
-                              fontSize: 16.0))),
+                      child: Text(Strings.USER_NAME_HEADING, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0))),
                   alignment: Alignment.centerLeft,
                 ),
                 new Material(
                     color: Colors.transparent,
                     child: new TextFormField(
                       keyboardType: TextInputType.text,
-                      style: TextStyle(
-                          color: HexColor(ColorStrings.VALUES), fontSize: 16),
-                      autofocus: true,
-                      decoration: InputDecoration.collapsed(
-                          focusColor: HexColor(ColorStrings.emailPwdTextColor),
-                          hintText: Strings.ENTER_USERNAME),
+                      style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                      autofocus: false,
+                      decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_USERNAME),
                       validator: (value) {
                         if (value.isEmpty) {
                           return Strings.FIELD_CANNOT_BE_EMPTY;
@@ -340,25 +299,16 @@ class _EditUserPageState extends State<EditUserPage> {
                 Align(
                   child: Material(
                       color: Colors.transparent,
-                      child: Text(Strings.PASSWORD,
-                          style: TextStyle(
-                              color: const Color(0xff202020),
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "SourceSansPro",
-                              fontStyle: FontStyle.normal,
-                              fontSize: 16.0))),
+                      child: Text(Strings.PASSWORD, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0))),
                   alignment: Alignment.centerLeft,
                 ),
                 new Material(
                     color: Colors.transparent,
                     child: new TextFormField(
                       keyboardType: TextInputType.visiblePassword,
-                      style: TextStyle(
-                          color: HexColor(ColorStrings.VALUES), fontSize: 16),
-                      autofocus: true,
-                      decoration: InputDecoration.collapsed(
-                          focusColor: HexColor(ColorStrings.emailPwdTextColor),
-                          hintText: Strings.ENTER_PASSWORD),
+                      style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                      autofocus: false,
+                      decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_PASSWORD),
                       validator: (value) {
                         if (value.isEmpty) {
                           return Strings.FIELD_CANNOT_BE_EMPTY;
@@ -386,13 +336,7 @@ class _EditUserPageState extends State<EditUserPage> {
                   clipBehavior: Clip.antiAlias,
                   padding: EdgeInsets.all(16),
                   child: Text(Strings.SAVE,
-                      style: TextStyle(
-                          color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR),
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "SourceSansPro",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 16.0),
-                      textAlign: TextAlign.center),
+                      style: TextStyle(color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0), textAlign: TextAlign.center),
                   onPressed: () {
                     _saveUser();
                   },
@@ -402,8 +346,7 @@ class _EditUserPageState extends State<EditUserPage> {
     Widget getCupertinoScaffold(ProfileState state, ProfileBloc signUpBloc) {
       return CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
-              backgroundColor:
-                  HexColor(ColorStrings.boxBackground).withAlpha(30),
+              backgroundColor: HexColor(ColorStrings.boxBackground).withAlpha(30),
               leading: GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushReplacementNamed('/LoginScreen');
@@ -416,9 +359,7 @@ class _EditUserPageState extends State<EditUserPage> {
           child: Form(
               key: _createUserFormKey,
               child: Container(
-                  decoration: BoxDecoration(
-                      color:
-                          HexColor(ColorStrings.boxBackground).withAlpha(30)),
+                  decoration: BoxDecoration(color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
                   child: Stack(children: <Widget>[
                     ListView(
                       children: <Widget>[
@@ -431,9 +372,7 @@ class _EditUserPageState extends State<EditUserPage> {
                         lastName,
                         userName,
                         password,
-                        Align(
-                            child: getSaveButton(),
-                            alignment: AlignmentDirectional.bottomCenter)
+                        Align(child: getSaveButton(), alignment: AlignmentDirectional.bottomCenter)
                       ],
                     ),
                     Align(
@@ -454,8 +393,7 @@ class _EditUserPageState extends State<EditUserPage> {
             _isLoading = false;
             _userName = state.users[0].userName;
             _token = state.users[0].token;
-            profileBloc.dispatch(
-                FetchUserDetailsResponse(userName: _userName, token: _token));
+            profileBloc.dispatch(FetchUserDetailsResponse(userName: _userName, token: _token));
           }
 
           if (state is ProfileSuccess) {
@@ -465,8 +403,7 @@ class _EditUserPageState extends State<EditUserPage> {
             email = userDetailsResponse.email;
             phoneNo = userDetailsResponse.username;
 
-            profileBloc.dispatch(
-                FetchUserProfileImage(userName: _userName, token: _token));
+            profileBloc.dispatch(FetchUserProfileImage(userName: _userName, token: _token));
           }
 
           if (state is ProfileLoading) {
@@ -477,8 +414,7 @@ class _EditUserPageState extends State<EditUserPage> {
             _isLoading = false;
             var error = state.error;
             print(error);
-            profileBloc.dispatch(
-                FetchUserProfileImage(userName: _userName, token: _token));
+            profileBloc.dispatch(FetchUserProfileImage(userName: _userName, token: _token));
           }
 
           if (state is FetchUserProfileImageSuccess) {

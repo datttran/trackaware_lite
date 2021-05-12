@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trackaware_lite/blocs/pickup_config_bloc.dart';
 import 'package:trackaware_lite/events/pickup_config_event.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/states/pickup_config_state.dart';
 import 'package:trackaware_lite/utils/colorstrings.dart';
 import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/utils.dart';
-import 'package:trackaware_lite/globals.dart' as globals;
 
 class PickUpConfigPage extends StatefulWidget {
   @override
@@ -33,8 +33,7 @@ class _PickUpConfigPageState extends State<PickUpConfigPage> {
     Widget getScaffold() {
       return CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
-              backgroundColor:
-                  HexColor(ColorStrings.boxBackground).withAlpha(30),
+              backgroundColor: HexColor(ColorStrings.boxBackground).withAlpha(30),
               leading: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
@@ -45,42 +44,27 @@ class _PickUpConfigPageState extends State<PickUpConfigPage> {
               ),
               middle: Text(Strings.pickUpTitle)),
           child: Container(
-              decoration: BoxDecoration(
-                  color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
+              decoration: BoxDecoration(color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
               child: Stack(children: <Widget>[
                 ListView(
                   children: <Widget>[
                     Material(
                         color: Colors.transparent,
                         child: ListTile(
-                          title: Text(Strings.PICKUP_PRODUCTION_PARTS,
-                              style: TextStyle(
-                                  color: const Color(0xff202020),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "SourceSansPro",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16.0)),
+                          title: Text(Strings.PICKUP_PRODUCTION_PARTS, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0)),
                           trailing: Image.asset("images/ic_chevron_right.png"),
                           onTap: () {
-                            pickUpConfigBloc
-                                .dispatch(PickUpProductionPartsClickAction());
+                            pickUpConfigBloc.dispatch(PickUpProductionPartsClickAction());
                           },
                         )),
                     Divider(thickness: 1.0, color: const Color(0xff979797)),
                     Material(
                         color: Colors.transparent,
                         child: ListTile(
-                          title: Text(Strings.PICKUP_EXTERNAL_PACKAGES,
-                              style: TextStyle(
-                                  color: const Color(0xff202020),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "SourceSansPro",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16.0)),
+                          title: Text(Strings.PICKUP_EXTERNAL_PACKAGES, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0)),
                           trailing: Image.asset("images/ic_chevron_right.png"),
                           onTap: () {
-                            pickUpConfigBloc
-                                .dispatch(PickUpExternalPackagesClickAction());
+                            pickUpConfigBloc.dispatch(PickUpExternalPackagesClickAction());
                           },
                         )),
                     Divider(thickness: 1.0, color: const Color(0xff979797))
@@ -89,8 +73,7 @@ class _PickUpConfigPageState extends State<PickUpConfigPage> {
               ])));
     }
 
-    Widget getCupertinoScaffold(
-        PickUpConfigState state, PickUpConfigBloc pickUpConfigBloc) {
+    Widget getCupertinoScaffold(PickUpConfigState state, PickUpConfigBloc pickUpConfigBloc) {
       return Platform.isAndroid
           ? WillPopScope(
               onWillPop: () {

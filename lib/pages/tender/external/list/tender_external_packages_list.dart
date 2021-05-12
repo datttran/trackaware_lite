@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/blocs/list_external_tender_bloc.dart';
 import 'package:trackaware_lite/events/list_tender_external_event.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/models/tender_external_db.dart';
 import 'package:trackaware_lite/models/transaction_request.dart';
 import 'package:trackaware_lite/states/list_external_tender_state.dart';
@@ -43,11 +43,9 @@ class _TenderExternalState extends State<TenderExternalPage> {
                     return GestureDetector(
                         onTap: () async {
                           globals.tenderExternal = tenderListItems[position];
-                          var result = await Navigator.of(context)
-                              .pushNamed('/NewTenderExternalScreen');
+                          var result = await Navigator.of(context).pushNamed('/NewTenderExternalScreen');
                           if (result?.toString()?.isNotEmpty == true) {
-                            listExternalTenderBloc
-                                .dispatch(ListExternalTenderItemsEvent());
+                            listExternalTenderBloc.dispatch(ListExternalTenderItemsEvent());
                           }
                         },
                         child: Card(
@@ -57,10 +55,8 @@ class _TenderExternalState extends State<TenderExternalPage> {
                               decoration: new BoxDecoration(
                                 gradient: new LinearGradient(
                                     colors: [
-                                      HexColor(ColorStrings
-                                          .tenderPartsGradientColorFirst),
-                                      HexColor(ColorStrings
-                                          .tenderPartsGradientColorSecond),
+                                      HexColor(ColorStrings.tenderPartsGradientColorFirst),
+                                      HexColor(ColorStrings.tenderPartsGradientColorSecond),
                                     ],
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
@@ -70,144 +66,68 @@ class _TenderExternalState extends State<TenderExternalPage> {
                               child: Column(
                                 children: <Widget>[
                                   Container(
-                                      padding: EdgeInsets.fromLTRB(
-                                          20, 12.0, 0.0, 0.0),
+                                      padding: EdgeInsets.fromLTRB(20, 12.0, 0.0, 0.0),
                                       child: Align(
                                           alignment: Alignment.topLeft,
                                           child: Text(
-                                            "# " +
-                                                tenderListItems[position]
-                                                    .orderNumber,
-                                            style: TextStyle(
-                                                fontSize: 16.0,
-                                                fontFamily: 'SourceSansPro',
-                                                fontWeight: FontWeight.bold,
-                                                fontStyle: FontStyle.normal),
+                                            "# " + tenderListItems[position].orderNumber,
+                                            style: TextStyle(fontSize: 16.0, fontFamily: 'SourceSansPro', fontWeight: FontWeight.bold, fontStyle: FontStyle.normal),
                                           ))),
                                   Container(
-                                      padding: EdgeInsets.fromLTRB(
-                                          20, 12.0, 0.0, 0.0),
+                                      padding: EdgeInsets.fromLTRB(20, 12.0, 0.0, 0.0),
                                       child: Align(
                                         alignment: Alignment.topLeft,
                                         child: Container(
-                                            padding: EdgeInsets.fromLTRB(
-                                                20.0, 8.0, 20.0, 8.0),
+                                            padding: EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0),
                                             decoration: new BoxDecoration(
                                                 color: Colors.red,
-                                                borderRadius: new BorderRadius
-                                                        .only(
-                                                    topLeft:
-                                                        const Radius.circular(
-                                                            16.0),
-                                                    topRight:
-                                                        const Radius.circular(
-                                                            16.0),
-                                                    bottomLeft:
-                                                        const Radius.circular(
-                                                            16.0),
-                                                    bottomRight:
-                                                        const Radius.circular(
-                                                            16.0))),
+                                                borderRadius: new BorderRadius.only(
+                                                    topLeft: const Radius.circular(16.0),
+                                                    topRight: const Radius.circular(16.0),
+                                                    bottomLeft: const Radius.circular(16.0),
+                                                    bottomRight: const Radius.circular(16.0))),
                                             child: Text(
-                                              tenderListItems[position]
-                                                  .priority,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14.0,
-                                                  fontFamily: 'SourceSansPro',
-                                                  fontStyle: FontStyle.normal),
+                                              tenderListItems[position].priority,
+                                              style: TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SourceSansPro', fontStyle: FontStyle.normal),
                                             )),
                                       )),
                                   Expanded(
                                       child: Container(
-                                    margin:
-                                        EdgeInsets.fromLTRB(18, 0.0, 18.0, 0.0),
-                                    child: Divider(
-                                        color: HexColor(ColorStrings.divider)),
+                                    margin: EdgeInsets.fromLTRB(18, 0.0, 18.0, 0.0),
+                                    child: Divider(color: HexColor(ColorStrings.divider)),
                                   )),
                                   Container(
-                                      padding: EdgeInsets.fromLTRB(
-                                          18.0, 8.0, 18.0, 14.0),
+                                      padding: EdgeInsets.fromLTRB(18.0, 8.0, 18.0, 14.0),
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Column(
                                             children: <Widget>[
                                               Text(
                                                 "Location",
-                                                style: TextStyle(
-                                                    color: HexColor(ColorStrings
-                                                        .tenderHeading),
-                                                    fontSize: 13.0,
-                                                    fontFamily: 'SourceSansPro',
-                                                    fontStyle:
-                                                        FontStyle.normal),
+                                                style: TextStyle(color: HexColor(ColorStrings.tenderHeading), fontSize: 13.0, fontFamily: 'SourceSansPro', fontStyle: FontStyle.normal),
                                               ),
                                               Text(
-                                                tenderListItems[position]
-                                                    .location,
-                                                style: TextStyle(
-                                                    color: HexColor(ColorStrings
-                                                        .tenderValues),
-                                                    fontSize: 13.0,
-                                                    fontFamily: 'SourceSansPro',
-                                                    fontStyle:
-                                                        FontStyle.normal),
+                                                tenderListItems[position].location,
+                                                style: TextStyle(color: HexColor(ColorStrings.tenderValues), fontSize: 13.0, fontFamily: 'SourceSansPro', fontStyle: FontStyle.normal),
                                               )
                                             ],
                                           ),
                                           Column(
                                             children: <Widget>[
-                                              Text("Qty",
-                                                  style: TextStyle(
-                                                      color: HexColor(
-                                                          ColorStrings
-                                                              .tenderHeading),
-                                                      fontSize: 13.0,
-                                                      fontFamily:
-                                                          'SourceSansPro',
-                                                      fontStyle:
-                                                          FontStyle.normal)),
+                                              Text("Qty", style: TextStyle(color: HexColor(ColorStrings.tenderHeading), fontSize: 13.0, fontFamily: 'SourceSansPro', fontStyle: FontStyle.normal)),
                                               Text(
-                                                tenderListItems[position]
-                                                    .quantity
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    color: HexColor(ColorStrings
-                                                        .tenderValues),
-                                                    fontSize: 13.0,
-                                                    fontFamily: 'SourceSansPro',
-                                                    fontStyle:
-                                                        FontStyle.normal),
+                                                tenderListItems[position].quantity.toString(),
+                                                style: TextStyle(color: HexColor(ColorStrings.tenderValues), fontSize: 13.0, fontFamily: 'SourceSansPro', fontStyle: FontStyle.normal),
                                               )
                                             ],
                                           ),
                                           Column(
                                             children: <Widget>[
                                               Text("Destination",
-                                                  style: TextStyle(
-                                                      color: HexColor(
-                                                          ColorStrings
-                                                              .tenderHeading),
-                                                      fontSize: 13.0,
-                                                      fontFamily:
-                                                          'SourceSansPro',
-                                                      fontStyle:
-                                                          FontStyle.normal)),
-                                              Text(
-                                                  tenderListItems[position]
-                                                      .destination
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      color: HexColor(
-                                                          ColorStrings
-                                                              .tenderValues),
-                                                      fontSize: 13.0,
-                                                      fontFamily:
-                                                          'SourceSansPro',
-                                                      fontStyle:
-                                                          FontStyle.normal))
+                                                  style: TextStyle(color: HexColor(ColorStrings.tenderHeading), fontSize: 13.0, fontFamily: 'SourceSansPro', fontStyle: FontStyle.normal)),
+                                              Text(tenderListItems[position].destination.toString(),
+                                                  style: TextStyle(color: HexColor(ColorStrings.tenderValues), fontSize: 13.0, fontFamily: 'SourceSansPro', fontStyle: FontStyle.normal))
                                             ],
                                           ),
                                         ],
@@ -216,8 +136,7 @@ class _TenderExternalState extends State<TenderExternalPage> {
                               )),
                         ));
                   },
-                  itemCount:
-                      tenderListItems.isNotEmpty ? tenderListItems.length : 0,
+                  itemCount: tenderListItems.isNotEmpty ? tenderListItems.length : 0,
                 ))));
   }
 
@@ -244,12 +163,10 @@ class _TenderExternalState extends State<TenderExternalPage> {
                 children: <Widget>[
                   GestureDetector(
                       onTap: () async {
-                        var result = await Navigator.of(context)
-                            .pushNamed('/NewTenderExternalScreen');
+                        var result = await Navigator.of(context).pushNamed('/NewTenderExternalScreen');
 
                         if (result?.toString()?.isNotEmpty == true) {
-                          listExternalTenderBloc
-                              .dispatch(ListExternalTenderItemsEvent());
+                          listExternalTenderBloc.dispatch(ListExternalTenderItemsEvent());
                         }
                       },
                       child: Padding(
@@ -260,25 +177,20 @@ class _TenderExternalState extends State<TenderExternalPage> {
                             decoration: new BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: new BorderRadius.only(
-                                    topLeft: const Radius.circular(8.0),
-                                    topRight: const Radius.circular(8.0),
-                                    bottomLeft: const Radius.circular(8.0),
-                                    bottomRight: const Radius.circular(8.0))),
+                                    topLeft: const Radius.circular(8.0), topRight: const Radius.circular(8.0), bottomLeft: const Radius.circular(8.0), bottomRight: const Radius.circular(8.0))),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      20.0, 0, 16.0, 0),
+                                  padding: const EdgeInsets.fromLTRB(20.0, 0, 16.0, 0),
                                   child: Image.asset('images/ic_add.png'),
                                 ),
                                 Material(
                                     color: Colors.transparent,
                                     child: Text(
                                       Strings.ADD_NEW,
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 18.0),
+                                      style: TextStyle(color: Colors.black, fontSize: 18.0),
                                     ))
                               ],
                             )),
@@ -293,25 +205,18 @@ class _TenderExternalState extends State<TenderExternalPage> {
                                   alignment: Alignment.center,
                                   child: Material(
                                       color: Colors.transparent,
-                                      child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            SvgPicture.asset(
-                                              "assets/ic_box.svg",
-                                              semanticsLabel: "empty icon",
-                                            ),
-                                            Padding(
-                                                padding: EdgeInsets.fromLTRB(
-                                                    0, 8, 0, 0),
-                                                child: Text(
-                                                  Strings.NO_TENDER_ITEMS,
-                                                  style: TextStyle(
-                                                      fontSize: 20.0,
-                                                      backgroundColor:
-                                                          Colors.transparent),
-                                                ))
-                                          ]))))),
+                                      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+                                        SvgPicture.asset(
+                                          "assets/ic_box.svg",
+                                          semanticsLabel: "empty icon",
+                                        ),
+                                        Padding(
+                                            padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                                            child: Text(
+                                              Strings.NO_TENDER_ITEMS,
+                                              style: TextStyle(fontSize: 20.0, backgroundColor: Colors.transparent),
+                                            ))
+                                      ]))))),
                   Align(
                       alignment: Alignment.bottomCenter,
                       child: Padding(
@@ -325,17 +230,10 @@ class _TenderExternalState extends State<TenderExternalPage> {
                                       clipBehavior: Clip.antiAlias,
                                       padding: EdgeInsets.all(16),
                                       child: Text(Strings.SEND,
-                                          style: TextStyle(
-                                              color: HexColor(ColorStrings
-                                                  .SEND_BUTTON_TEXT_COLOR),
-                                              fontWeight: FontWeight.w400,
-                                              fontFamily: "SourceSansPro",
-                                              fontStyle: FontStyle.normal,
-                                              fontSize: 16.0),
+                                          style: TextStyle(color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0),
                                           textAlign: TextAlign.center),
                                       onPressed: () {
-                                        listExternalTenderBloc
-                                            .dispatch(FetchUserName());
+                                        listExternalTenderBloc.dispatch(FetchUserName());
                                       },
                                       color: const Color(0xff424e53))))))
                 ],
@@ -372,8 +270,7 @@ class _TenderExternalState extends State<TenderExternalPage> {
       tenderListItems.forEach((_generateTransactionList));
     }
 
-    Widget getCupertinoScaffold(
-        BuildContext context, ListExternalTenderState state) {
+    Widget getCupertinoScaffold(BuildContext context, ListExternalTenderState state) {
       return Platform.isAndroid
           ? WillPopScope(
               onWillPop: () {
@@ -389,7 +286,6 @@ class _TenderExternalState extends State<TenderExternalPage> {
           if (state is ExternalTenderListFetchSuccess) {
             tenderListItems.clear();
             tenderListItems.addAll(state.tenderExternalResponse.reversed);
-
           }
 
           if (state is TransactionLoading) {
@@ -402,8 +298,7 @@ class _TenderExternalState extends State<TenderExternalPage> {
             if (_transactionRequestItems.isNotEmpty) {
               for (var i = 0; i < _transactionRequestItems.length; i++) {
                 transactionCount += 1;
-                listExternalTenderBloc.dispatch(SendExternalButtonClick(
-                    _transactionRequestItems[i], _deviceIdValue, _userName));
+                listExternalTenderBloc.dispatch(SendExternalButtonClick(_transactionRequestItems[i], _deviceIdValue, _userName));
               }
             } else {
               print("No transactions to be synced");
@@ -417,18 +312,12 @@ class _TenderExternalState extends State<TenderExternalPage> {
 
           if (state is ScanSuccess) {
             var scanCount = state.scanCount;
-            showAlertDialog(
-                context,
-                scanCount == 1
-                    ? "$scanCount item picked up."
-                    : "$scanCount items picked up.",
-                null);
+            showAlertDialog(context, scanCount == 1 ? "$scanCount item picked up." : "$scanCount items picked up.", null);
             listExternalTenderBloc.dispatch(ListExternalTenderItemsEvent());
           }
 
           if (state is TenderExternalSaved) {
-            if (transactionCount != 0 &&
-                transactionCount == _transactionRequestItems.length) {
+            if (transactionCount != 0 && transactionCount == _transactionRequestItems.length) {
               transactionCount = 0;
               _isLoading = false;
               print(state.message);

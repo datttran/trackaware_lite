@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:trackaware_lite/blocs/profile_bloc.dart';
 import 'package:trackaware_lite/events/profile_event.dart';
 import 'package:trackaware_lite/states/profile_state.dart';
 import 'package:trackaware_lite/utils/colorstrings.dart';
 import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/utils.dart';
-import 'package:path_provider/path_provider.dart';
 
 var profileBloc;
 var _userName;
@@ -87,8 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 new CupertinoDialogAction(
                   child: new Text("Ok"),
                   onPressed: () {
-                    profileBloc
-                        .dispatch(LogoutClickAction(userName: _userName));
+                    profileBloc.dispatch(LogoutClickAction(userName: _userName));
                   },
                 )
               ],
@@ -126,8 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 )),
           ),
           child: Container(
-              decoration: BoxDecoration(
-                  color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
+              decoration: BoxDecoration(color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
               child: Stack(children: <Widget>[
                 ListView(
                   children: <Widget>[
@@ -149,13 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             )),
                         Material(
                             color: Colors.transparent,
-                            child: Text(name == null ? " - " : name,
-                                style: const TextStyle(
-                                    color: const Color(0xff000000),
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: "SourceSansPro",
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 16.0))),
+                            child: Text(name == null ? " - " : name, style: const TextStyle(color: const Color(0xff000000), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0))),
                       ],
                     ),
                     Divider(thickness: 1.0, color: const Color(0xff979797)),
@@ -174,13 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           )),
                       Material(
                           color: Colors.transparent,
-                          child: Text(email == null ? " - " : email,
-                              style: TextStyle(
-                                  color: const Color(0xff202020),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "SourceSansPro",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16.0)))
+                          child: Text(email == null ? " - " : email, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0)))
                     ]),
                     Divider(thickness: 1.0, color: const Color(0xff979797)),
                     Row(
@@ -200,12 +186,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Material(
                             color: Colors.transparent,
                             child: Text(phoneNo == null ? " - " : phoneNo,
-                                style: const TextStyle(
-                                    color: const Color(0xff000000),
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: "SourceSansPro",
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 16.0))),
+                                style: const TextStyle(color: const Color(0xff000000), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0))),
                       ],
                     ),
                     Divider(thickness: 1.0, color: const Color(0xff979797))
@@ -254,8 +235,7 @@ class _ProfilePageState extends State<ProfilePage> {
             _userName = state.users[0].userName;
             _password = state.users[0].password;
             _token = state.users[0].token;
-            profileBloc.dispatch(
-                FetchUserDetailsResponse(userName: _userName, token: _token));
+            profileBloc.dispatch(FetchUserDetailsResponse(userName: _userName, token: _token));
           }
 
           if (state is ProfileSuccess) {
@@ -265,8 +245,7 @@ class _ProfilePageState extends State<ProfilePage> {
             email = userDetailsResponse.email;
             phoneNo = userDetailsResponse.username;
 
-            profileBloc.dispatch(
-                FetchUserProfileImage(userName: _userName, token: _token));
+            profileBloc.dispatch(FetchUserProfileImage(userName: _userName, token: _token));
           }
 
           if (state is ProfileLoading) {
@@ -278,11 +257,9 @@ class _ProfilePageState extends State<ProfilePage> {
             var error = state.error;
 
             if (error == "{'User Details Not Found! Check Extract Info.'}") {
-              profileBloc.dispatch(
-                  RefreshTokenEvent(userName: _userName, password: _password));
+              profileBloc.dispatch(RefreshTokenEvent(userName: _userName, password: _password));
             } else {
-              profileBloc.dispatch(
-                  FetchUserProfileImage(userName: _userName, token: _token));
+              profileBloc.dispatch(FetchUserProfileImage(userName: _userName, token: _token));
             }
             print(error);
           }
@@ -291,8 +268,7 @@ class _ProfilePageState extends State<ProfilePage> {
             var loginResponse = state.loginResponse;
             _token = loginResponse.accessToken;
 
-            profileBloc.dispatch(
-                FetchUserProfileImage(userName: _userName, token: _token));
+            profileBloc.dispatch(FetchUserProfileImage(userName: _userName, token: _token));
           }
 
           if (state is RefreshTokenFailure) {
@@ -320,8 +296,7 @@ class _ProfilePageState extends State<ProfilePage> {
           if (state is LogoutSuccess) {
             Navigator.of(context).pop();
             _isLoading = false;
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/LoginScreen', (Route<dynamic> route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil('/LoginScreen', (Route<dynamic> route) => false);
           }
 
           if (state is LogoutFailure) {

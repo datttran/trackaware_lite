@@ -1,14 +1,15 @@
 import 'dart:io';
-import 'package:flutter/services.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:toast/toast.dart';
 import 'package:trackaware_lite/blocs/create_external_tender_bloc.dart';
 import 'package:trackaware_lite/events/create_external_tender_event.dart';
-import 'package:trackaware_lite/events/tender_tab_event.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/models/location_response.dart';
 import 'package:trackaware_lite/models/priority_response.dart';
 import 'package:trackaware_lite/models/tender_parts_db.dart';
@@ -17,7 +18,6 @@ import 'package:trackaware_lite/utils/colorstrings.dart';
 import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/transactions.dart';
 import 'package:trackaware_lite/utils/utils.dart';
-import 'package:trackaware_lite/globals.dart' as globals;
 
 class CreateTenderPartsForm extends StatefulWidget {
   final String barCode;
@@ -58,20 +58,15 @@ var _formKey = GlobalKey<FormState>();
 String _deviceIdValue;
 String _userName;
 
-class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
+class _CreateTenderPartsFormState extends State<CreateTenderPartsForm> {
   _CreateTenderPartsFormState();
 //SCAN SETTINGS
-
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-
   }
-
-
 
   @override
   void dispose() {
@@ -89,14 +84,11 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
     globals.tenderParts = null;
 
     super.dispose();
-
-
   }
 
   @override
   Widget build(BuildContext context) {
-    createExternalTenderBloc =
-        BlocProvider.of<CreateExternalTenderBloc>(context);
+    createExternalTenderBloc = BlocProvider.of<CreateExternalTenderBloc>(context);
 
     _saveTenderExternalToDb() {
       if (globals.tenderParts != null || _validateForm()) {
@@ -111,9 +103,7 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
               ? Text(" ")
               : Text(
                   _priorityList[_selectedPriorityIndex].code,
-                  style: TextStyle(
-                      color: CupertinoDynamicColor.resolve(
-                          CupertinoColors.inactiveGray, context)),
+                  style: TextStyle(color: CupertinoDynamicColor.resolve(CupertinoColors.inactiveGray, context)),
                 ));
     }
 
@@ -124,9 +114,7 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
               ? Text("Select location")
               : Text(
                   _locationList[_selectedLocationIndex].code,
-                  style: TextStyle(
-                      color: CupertinoDynamicColor.resolve(
-                          CupertinoColors.inactiveGray, context)),
+                  style: TextStyle(color: CupertinoDynamicColor.resolve(CupertinoColors.inactiveGray, context)),
                 ));
     }
 
@@ -137,18 +125,14 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
               ? Text("Select destination")
               : Text(
                   _destinationList[_selectedDestinationIndex].code,
-                  style: TextStyle(
-                      color: CupertinoDynamicColor.resolve(
-                          CupertinoColors.inactiveGray, context)),
+                  style: TextStyle(color: CupertinoDynamicColor.resolve(CupertinoColors.inactiveGray, context)),
                 ));
     }
 
     Widget getPriorityWidget() {
       return GestureDetector(
-
           onTap: () {
             createExternalTenderBloc.dispatch(PriorityViewClick());
-
           },
           child: Container(
               decoration: BoxDecoration(
@@ -156,51 +140,41 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
                     color: HexColor(ColorStrings.BORDER),
                   ),
                   color: Colors.white),
-              child: Row(
+              child: Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.fromLTRB(20, 16, 0, 44),
+                    child: SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: SvgPicture.asset(
+                        "assets/ic_priority.svg",
+                        semanticsLabel: "priority icon",
+                        width: 24,
+                        height: 24,
+                      ),
+                    )),
+                Expanded(
+                    child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Padding(
-                        padding: EdgeInsets.fromLTRB(20, 16, 0, 44),
-                        child: SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: SvgPicture.asset(
-                            "assets/ic_priority.svg",
-                            semanticsLabel: "priority icon",
-                            width: 24,
-                            height: 24,
-                          ),
-                        )),
-                    Expanded(
-                        child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                            child: Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  Strings.PRIORITY,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: HexColor(ColorStrings.HEADING),
-                                      fontFamily: "SourceSansPro",
-                                      fontSize: 12.0,
-                                      fontStyle: FontStyle.normal),
-                                ))),
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                            child: globals.tenderParts != null &&
-                                    _selectedPriorityIndex == -1
-                                ? Material(
-                                    color: Colors.transparent,
-                                    child: Text(globals.tenderParts.priority))
-                                : _buildPriorityPicker(context))
-                      ],
-                    ))
-                  ])));
+                        padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                        child: Material(
+                            color: Colors.transparent,
+                            child: Text(
+                              Strings.PRIORITY,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                            ))),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                        child: globals.tenderParts != null && _selectedPriorityIndex == -1
+                            ? Material(color: Colors.transparent, child: Text(globals.tenderParts.priority))
+                            : _buildPriorityPicker(context))
+                  ],
+                ))
+              ])));
     }
 
     Widget getQuantityWidget() {
@@ -229,53 +203,40 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
                       ),
                     )),
                 Expanded(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                      Padding(
-                          padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                          child: Material(
-                              color: Colors.transparent,
-                              child: Text(
-                                Strings.QUANTITY,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    color: HexColor(ColorStrings.HEADING),
-                                    fontFamily: "SourceSansPro",
-                                    fontSize: 12.0,
-                                    fontStyle: FontStyle.normal),
-                              ))),
-                      Padding(
-                          padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                          child: new Material(
-                              color: Colors.transparent,
-                              child: new TextFormField(
-                                keyboardType: TextInputType.number,
-                                style: TextStyle(
-                                    color: HexColor(ColorStrings.VALUES),
-                                    fontSize: 16),
-                                autofocus: false,
-                                decoration: InputDecoration.collapsed(
-                                    focusColor: HexColor(
-                                        ColorStrings.emailPwdTextColor),
-                                    hintText: "Enter quantity"),
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return Strings.QUANTITY_VALIDATION_MESSAGE;
-                                  }
-                                  return null;
-                                },
-                                controller: quantityController,
-                                textInputAction: TextInputAction.next,
-                                focusNode: quantityFocus,
-                                onFieldSubmitted: (v) {
-                                  quantityFocus.unfocus();
-                                  FocusScope.of(context)
-                                      .requestFocus(orderNumberFocus);
-                                },
-                              )))
-                    ]))
+                    child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                      child: Material(
+                          color: Colors.transparent,
+                          child: Text(
+                            Strings.QUANTITY,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                          ))),
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                      child: new Material(
+                          color: Colors.transparent,
+                          child: new TextFormField(
+                            keyboardType: TextInputType.number,
+                            style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                            autofocus: false,
+                            decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: "Enter quantity"),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return Strings.QUANTITY_VALIDATION_MESSAGE;
+                              }
+                              return null;
+                            },
+                            controller: quantityController,
+                            textInputAction: TextInputAction.next,
+                            focusNode: quantityFocus,
+                            onFieldSubmitted: (v) {
+                              quantityFocus.unfocus();
+                              FocusScope.of(context).requestFocus(orderNumberFocus);
+                            },
+                          )))
+                ]))
               ],
             )),
         onTap: () {
@@ -313,32 +274,22 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
                         ),
                       )),
                   Expanded(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                            child: Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  Strings.LOCATION,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: HexColor(ColorStrings.HEADING),
-                                      fontFamily: "SourceSansPro",
-                                      fontSize: 12.0,
-                                      fontStyle: FontStyle.normal),
-                                ))),
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                            child: globals.tenderParts != null &&
-                                    _selectedLocationIndex == -1
-                                ? Material(
-                                    color: Colors.transparent,
-                                    child: Text(globals.tenderParts.location))
-                                : _buildLocationPicker(context))
-                      ]))
+                      child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                        child: Material(
+                            color: Colors.transparent,
+                            child: Text(
+                              Strings.LOCATION,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                            ))),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                        child: globals.tenderParts != null && _selectedLocationIndex == -1
+                            ? Material(color: Colors.transparent, child: Text(globals.tenderParts.location))
+                            : _buildLocationPicker(context))
+                  ]))
                 ],
               )));
     }
@@ -369,33 +320,22 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
                         ),
                       )),
                   Expanded(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                            child: Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  Strings.DESTINATION,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: HexColor(ColorStrings.HEADING),
-                                      fontFamily: "SourceSansPro",
-                                      fontSize: 12.0,
-                                      fontStyle: FontStyle.normal),
-                                ))),
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                            child: globals.tenderParts != null &&
-                                    _selectedDestinationIndex == -1
-                                ? Material(
-                                    color: Colors.transparent,
-                                    child:
-                                        Text(globals.tenderParts.destination))
-                                : _buildDestLocationPicker(context))
-                      ]))
+                      child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                        child: Material(
+                            color: Colors.transparent,
+                            child: Text(
+                              Strings.DESTINATION,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                            ))),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                        child: globals.tenderParts != null && _selectedDestinationIndex == -1
+                            ? Material(color: Colors.transparent, child: Text(globals.tenderParts.destination))
+                            : _buildDestLocationPicker(context))
+                  ]))
                 ],
               )));
     }
@@ -403,8 +343,7 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
     Widget getOrderNumberWidget() {
       if (globals.tenderParts?.orderNumber?.isNotEmpty == true) {
         orderNumberController.text = globals.tenderParts.orderNumber;
-        orderNumberController.selection = TextSelection.fromPosition(
-            TextPosition(offset: orderNumberController.text.length));
+        orderNumberController.selection = TextSelection.fromPosition(TextPosition(offset: orderNumberController.text.length));
       }
       return Container(
           decoration: BoxDecoration(
@@ -421,83 +360,59 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
                       toolNumberFocus.unfocus();
                       FocusScope.of(context).requestFocus(orderNumberFocus);
                     },
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                              child: Material(
-                                  color: Colors.transparent,
-                                  child: Text(
-                                    Strings.ORDER_NUMBER,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                        color: HexColor(ColorStrings.HEADING),
-                                        fontFamily: "SourceSansPro",
-                                        fontSize: 12.0,
-                                        fontStyle: FontStyle.normal),
-                                  ))),
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                              child: new Material(
-                                  color: Colors.transparent,
-                                  child: new TextFormField(
-                                    onChanged: (value) async {
-                                      if (value.length == 9 || value.length == 11 ){
-                                        print('yes');
-                                        orderNumberFocus.unfocus();
-                                        FocusScope.of(context)
-                                            .requestFocus(partNumberFocus);
-                                      }
-                                    },
-
-                                    onTap: (){
-                                      setState(() {
-
-                                      });
-                                    },
-
-
-                                    keyboardType: TextInputType.text,
-                                    textCapitalization:
-                                        TextCapitalization.sentences,
-                                    style: TextStyle(
-                                        color: HexColor(ColorStrings.VALUES),
-                                        fontSize: 16),
-                                    autofocus: false,
-                                    decoration: InputDecoration.collapsed(
-                                        focusColor: HexColor(
-                                            ColorStrings.emailPwdTextColor),
-                                        hintText: Strings.ENTER_ORDER_NUMBER),
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return Strings
-                                            .ORDER_NUMBER_VALIDATION_MESSAGE;
-                                      }
-                                      return null;
-                                    },
-                                    controller: orderNumberController,
-
-                                    textInputAction: TextInputAction.next,
-                                    focusNode: orderNumberFocus,
-                                    onFieldSubmitted: (v) {
-                                      orderNumberFocus.unfocus();
-                                      FocusScope.of(context)
-                                          .requestFocus(partNumberFocus);
-                                    },
-                                  )))
-                        ])),
+                    child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                          child: Material(
+                              color: Colors.transparent,
+                              child: Text(
+                                Strings.ORDER_NUMBER,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                              ))),
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                          child: new Material(
+                              color: Colors.transparent,
+                              child: new TextFormField(
+                                onChanged: (value) async {
+                                  if (value.length == 9 || value.length == 11) {
+                                    print('yes');
+                                    orderNumberFocus.unfocus();
+                                    FocusScope.of(context).requestFocus(partNumberFocus);
+                                  }
+                                },
+                                onTap: () {
+                                  setState(() {});
+                                },
+                                keyboardType: TextInputType.text,
+                                textCapitalization: TextCapitalization.sentences,
+                                style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                                autofocus: false,
+                                decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_ORDER_NUMBER),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return Strings.ORDER_NUMBER_VALIDATION_MESSAGE;
+                                  }
+                                  return null;
+                                },
+                                controller: orderNumberController,
+                                textInputAction: TextInputAction.next,
+                                focusNode: orderNumberFocus,
+                                onFieldSubmitted: (v) {
+                                  orderNumberFocus.unfocus();
+                                  FocusScope.of(context).requestFocus(partNumberFocus);
+                                },
+                              )))
+                    ])),
                 flex: 6),
-
           ]));
     }
 
     Widget getPartNumberWidget() {
       if (globals.tenderParts?.partNumber?.isNotEmpty == true) {
         partNumberController.text = globals.tenderParts.partNumber;
-        partNumberController.selection = TextSelection.fromPosition(
-            TextPosition(offset: partNumberController.text.length));
+        partNumberController.selection = TextSelection.fromPosition(TextPosition(offset: partNumberController.text.length));
       }
       return Container(
           decoration: BoxDecoration(
@@ -515,87 +430,59 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
 
                       FocusScope.of(context).requestFocus(partNumberFocus);
                     },
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                              child: Material(
-                                  color: Colors.transparent,
-                                  child: Text(
-                                    Strings.PART_NUMBER,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                        color: HexColor(ColorStrings.HEADING),
-                                        fontFamily: "SourceSansPro",
-                                        fontSize: 12.0,
-                                        fontStyle: FontStyle.normal),
-                                  ))),
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                              child: new Material(
-                                  color: Colors.transparent,
-                                  child: new TextFormField(
-                                    onChanged: (value) async {
-                                      if (value.length == 14 || value.length == 11  ){
-
-                                        partNumberFocus.unfocus();
-                                        if (globals.toolNumber != null && globals.toolNumber.isNotEmpty) {
-                                          FocusScope.of(context).requestFocus(toolNumberFocus);
-                                        }
-                                      }
-                                    },
-
-
-
-                                    keyboardType: TextInputType.text,
-                                    textCapitalization:
-                                        TextCapitalization.sentences,
-                                    style: TextStyle(
-                                        color: HexColor(ColorStrings.VALUES),
-                                        fontSize: 16),
-                                    autofocus: false,
-                                    decoration: InputDecoration.collapsed(
-                                        focusColor: HexColor(
-                                            ColorStrings.emailPwdTextColor),
-                                        hintText: Strings.ENTER_PART_NUMBER),
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return Strings
-                                            .PART_NUMBER_VALIDATION_MESSAGE;
-                                      }
-                                      return null;
-                                    },
-                                    controller: partNumberController,
-                                    textInputAction: TextInputAction.next,
-                                    focusNode: partNumberFocus,
-
-
-                                    onFieldSubmitted: (v) {
-                                      partNumberFocus.unfocus();
-                                      if (globals.toolNumber != null && globals.toolNumber.isNotEmpty) {
-                                        FocusScope.of(context).requestFocus(toolNumberFocus);
-                                      }
-
-
-
-
-
-
-                                    },
-                                  )))
-                        ])),
+                    child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                          child: Material(
+                              color: Colors.transparent,
+                              child: Text(
+                                Strings.PART_NUMBER,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                              ))),
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                          child: new Material(
+                              color: Colors.transparent,
+                              child: new TextFormField(
+                                onChanged: (value) async {
+                                  if (value.length == 14 || value.length == 11) {
+                                    partNumberFocus.unfocus();
+                                    if (globals.toolNumber != null && globals.toolNumber.isNotEmpty) {
+                                      FocusScope.of(context).requestFocus(toolNumberFocus);
+                                    }
+                                  }
+                                },
+                                keyboardType: TextInputType.text,
+                                textCapitalization: TextCapitalization.sentences,
+                                style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                                autofocus: false,
+                                decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_PART_NUMBER),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return Strings.PART_NUMBER_VALIDATION_MESSAGE;
+                                  }
+                                  return null;
+                                },
+                                controller: partNumberController,
+                                textInputAction: TextInputAction.next,
+                                focusNode: partNumberFocus,
+                                onFieldSubmitted: (v) {
+                                  partNumberFocus.unfocus();
+                                  if (globals.toolNumber != null && globals.toolNumber.isNotEmpty) {
+                                    FocusScope.of(context).requestFocus(toolNumberFocus);
+                                  }
+                                },
+                              )))
+                    ])),
                 flex: 6),
-
           ]));
     }
 
     Widget getToolNumberWidget() {
       if (globals.toolNumber != null && globals.toolNumber.isNotEmpty) {
         toolNumberController.text = globals.toolNumber;
-        toolNumberController.selection = TextSelection.fromPosition(
-            TextPosition(offset: toolNumberController.text.length));
+        toolNumberController.selection = TextSelection.fromPosition(TextPosition(offset: toolNumberController.text.length));
       }
       return Visibility(
           visible: globals.useToolNumber,
@@ -613,69 +500,48 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
                             quantityFocus.unfocus();
                             orderNumberFocus.unfocus();
                             partNumberFocus.unfocus();
-                            FocusScope.of(context)
-                                .requestFocus(toolNumberFocus);
+                            FocusScope.of(context).requestFocus(toolNumberFocus);
                           },
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                    padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                                    child: Material(
-                                        color: Colors.transparent,
-                                        child: Text(
-                                          Strings.TOOL_NUMBER,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              color: HexColor(
-                                                  ColorStrings.HEADING),
-                                              fontFamily: "SourceSansPro",
-                                              fontSize: 12.0,
-                                              fontStyle: FontStyle.normal),
-                                        ))),
-                                Padding(
-                                    padding:
-                                        EdgeInsets.fromLTRB(14, 10, 10, 16),
-                                    child: new Material(
-                                        color: Colors.transparent,
-                                        child: new TextFormField(
-                                          keyboardType: TextInputType.text,
-                                          textCapitalization:
-                                              TextCapitalization.sentences,
-                                          style: TextStyle(
-                                              color:
-                                                  HexColor(ColorStrings.VALUES),
-                                              fontSize: 16),
-                                          autofocus: false,
-                                          decoration: InputDecoration.collapsed(
-                                              focusColor: HexColor(ColorStrings
-                                                  .emailPwdTextColor),
-                                              hintText:
-                                                  Strings.ENTER_TOOL_NUMBER),
-                                          validator: (value) {
-                                            if (value.isEmpty) {
-                                              return Strings
-                                                  .TOOL_NUMBER_VALIDATION_MESSAGE;
-                                            }
-                                            return null;
-                                          },
-                                          controller: toolNumberController,
-                                          textInputAction: TextInputAction.done,
-                                          focusNode: toolNumberFocus,
-                                          onFieldSubmitted: (v) {
-                                            toolNumberFocus.unfocus();
-                                          },
-                                        )))
-                              ])),
+                          child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                            Padding(
+                                padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                                child: Material(
+                                    color: Colors.transparent,
+                                    child: Text(
+                                      Strings.TOOL_NUMBER,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                                    ))),
+                            Padding(
+                                padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                                child: new Material(
+                                    color: Colors.transparent,
+                                    child: new TextFormField(
+                                      keyboardType: TextInputType.text,
+                                      textCapitalization: TextCapitalization.sentences,
+                                      style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                                      autofocus: false,
+                                      decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_TOOL_NUMBER),
+                                      validator: (value) {
+                                        if (value.isEmpty) {
+                                          return Strings.TOOL_NUMBER_VALIDATION_MESSAGE;
+                                        }
+                                        return null;
+                                      },
+                                      controller: toolNumberController,
+                                      textInputAction: TextInputAction.done,
+                                      focusNode: toolNumberFocus,
+                                      onFieldSubmitted: (v) {
+                                        toolNumberFocus.unfocus();
+                                      },
+                                    )))
+                          ])),
                       flex: 6),
-
                 ],
               )));
     }
 
-    Widget getCheckBox(CreateExternalTenderState state,
-        CreateExternalTenderBloc createExternalTenderBloc) {
+    Widget getCheckBox(CreateExternalTenderState state, CreateExternalTenderBloc createExternalTenderBloc) {
       if (globals.tenderParts != null) {
         _isKeepScannedValues = globals.tenderParts.keepScannedValues == 1;
       }
@@ -689,8 +555,7 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
                 value: _isKeepScannedValues,
                 onChanged: (bool value) {
                   _isKeepScannedValues = value;
-                  createExternalTenderBloc.dispatch(
-                      new CheckBoxClick(isChecked: _isKeepScannedValues));
+                  createExternalTenderBloc.dispatch(new CheckBoxClick(isChecked: _isKeepScannedValues));
                 },
               )),
           Expanded(
@@ -698,12 +563,7 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
                   color: Colors.transparent,
                   child: Text(
                     Strings.KEEP_SCANNED_VALUES,
-                    style: const TextStyle(
-                        color: const Color(0xff030303),
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "SourceSansPro",
-                        fontStyle: FontStyle.normal,
-                        fontSize: 16.0),
+                    style: const TextStyle(color: const Color(0xff030303), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0),
                   ))),
         ],
       );
@@ -716,29 +576,13 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
               elevation: 8.0,
               clipBehavior: Clip.antiAlias,
               padding: EdgeInsets.all(16),
-              child: Text(
-                  globals.tenderParts != null
-                      ? Strings.SEND
-                      : Strings.ADD_TO_LIST,
-                  style: TextStyle(
-                      color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR),
-                      fontWeight: FontWeight.w400,
-                      fontFamily: "SourceSansPro",
-                      fontStyle: FontStyle.normal,
-                      fontSize: 16.0),
-                  textAlign: TextAlign.center),
+              child: Text(globals.tenderParts != null ? Strings.SEND : Strings.ADD_TO_LIST,
+                  style: TextStyle(color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0), textAlign: TextAlign.center),
               onPressed: () {
                 createExternalTenderBloc.dispatch(FetchPriorityResponse());
 
-
-
                 /*Navigator.of(context)
                     .pushNamed('/TenderPartsScreen');*/
-
-
-
-
-
               },
               color: const Color(0xff424e53)));
     }
@@ -760,9 +604,7 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
           child: Form(
               key: _formKey,
               child: Container(
-                  decoration: BoxDecoration(
-                      color:
-                          HexColor(ColorStrings.boxBackground).withAlpha(30)),
+                  decoration: BoxDecoration(color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
                   child: Stack(children: <Widget>[
                     ListView(
                       children: <Widget>[
@@ -789,8 +631,7 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
                   ]))));
     }
 
-    Widget getCupertinoScaffold(
-        CreateExternalTenderState state, createExternalTenderBloc) {
+    Widget getCupertinoScaffold(CreateExternalTenderState state, createExternalTenderBloc) {
       return Platform.isAndroid
           ? WillPopScope(
               onWillPop: () {
@@ -816,15 +657,13 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
           if (state is OrderNumberScanSuccess) {
             globals.orderNumber = state.barCode;
             orderNumberController.text = globals.orderNumber;
-            orderNumberController.selection = TextSelection.fromPosition(
-                TextPosition(offset: orderNumberController.text.length));
+            orderNumberController.selection = TextSelection.fromPosition(TextPosition(offset: orderNumberController.text.length));
           }
 
           if (state is PartNumberScanSuccess) {
             globals.partNumber = state.barCode;
             partNumberController.text = globals.partNumber;
-            partNumberController.selection = TextSelection.fromPosition(
-                TextPosition(offset: partNumberController.text.length));
+            partNumberController.selection = TextSelection.fromPosition(TextPosition(offset: partNumberController.text.length));
           }
 
           if (state is ToolNumberScanSuccess) {
@@ -834,13 +673,11 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
 
           if (state is ScanSuccess) {
             orderNumberController.text = state.barCode;
-            orderNumberController.selection = TextSelection.fromPosition(
-                TextPosition(offset: orderNumberController.text.length));
+            orderNumberController.selection = TextSelection.fromPosition(TextPosition(offset: orderNumberController.text.length));
           }
           if (state is TenderPartsSaved) {
             resetValues();
-            Toast.show("Tender part created", context,
-                duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+            Toast.show("Tender part created", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
             Navigator.pop(context, "refresh");
           }
 
@@ -849,9 +686,7 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
             Navigator.pop(context, "Saved");
           }
 
-          if (state is PriorityApiCallLoading ||
-              state is LocationApiCallLoading ||
-              state is DestinationApiCallLoading) {
+          if (state is PriorityApiCallLoading || state is LocationApiCallLoading || state is DestinationApiCallLoading) {
             _isLoading = true;
           }
 
@@ -891,30 +726,22 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
           if (state is UserNameFetchSuccess) {
             _userName = state.userName;
             if (globals.tenderParts != null) {
-              createExternalTenderBloc.dispatch(SendPartsButtonClick(
-                  generateTransactionListFromTenderParts(
-                      globals.tenderParts, _deviceIdValue, _userName),
-                  globals.tenderParts,
-                  _deviceIdValue,
-                  _userName));
+              createExternalTenderBloc
+                  .dispatch(SendPartsButtonClick(generateTransactionListFromTenderParts(globals.tenderParts, _deviceIdValue, _userName), globals.tenderParts, _deviceIdValue, _userName));
             } else {
               TenderParts tenderParts = TenderParts();
               tenderParts.priority = _priorityList[_selectedPriorityIndex].code;
               tenderParts.quantity = int.parse(quantityController.text);
               tenderParts.location = _locationList[_selectedLocationIndex].code;
-              tenderParts.destination =
-                  _destinationList[_selectedDestinationIndex].code;
+              tenderParts.destination = _destinationList[_selectedDestinationIndex].code;
               tenderParts.orderNumber = orderNumberController.text;
               tenderParts.partNumber = partNumberController.text;
               tenderParts.toolNumber = toolNumberController.text;
               tenderParts.keepScannedValues = _isKeepScannedValues ? 1 : 0;
-              tenderParts.scanTime =
-                  (DateTime.now().millisecondsSinceEpoch / 1000).round();
+              tenderParts.scanTime = (DateTime.now().millisecondsSinceEpoch / 1000).round();
               tenderParts.isSynced = 0;
               tenderParts.isScanned = 0;
-              createExternalTenderBloc
-                  .dispatch(AddToListPartButtonClick(tenderParts));
-
+              createExternalTenderBloc.dispatch(AddToListPartButtonClick(tenderParts));
             }
           }
 
@@ -924,9 +751,7 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
             _priorityList.clear();
             _priorityList.addAll(state.priorityResponse);
 
-            final FixedExtentScrollController scrollController =
-                FixedExtentScrollController(
-                    initialItem: _selectedPriorityIndex);
+            final FixedExtentScrollController scrollController = FixedExtentScrollController(initialItem: _selectedPriorityIndex);
             showCupertinoModalPopup<void>(
               context: context,
               builder: (BuildContext context) {
@@ -934,13 +759,11 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
                   child: CupertinoPicker(
                     scrollController: scrollController,
                     itemExtent: _kPickerItemHeight,
-                    backgroundColor:
-                        CupertinoColors.systemBackground.resolveFrom(context),
+                    backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
                     onSelectedItemChanged: (int index) {
                       setState(() => _selectedPriorityIndex = index);
                     },
-                    children: List<Widget>.generate(_priorityList.length,
-                        (int index) {
+                    children: List<Widget>.generate(_priorityList.length, (int index) {
                       return Center(
                         child: Text(_priorityList[index].code),
                       );
@@ -956,9 +779,7 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
             _locationList.clear();
             _locationList.addAll(state.locationResponse);
 
-            final FixedExtentScrollController scrollController =
-                FixedExtentScrollController(
-                    initialItem: _selectedLocationIndex);
+            final FixedExtentScrollController scrollController = FixedExtentScrollController(initialItem: _selectedLocationIndex);
             showCupertinoModalPopup<void>(
               context: context,
               builder: (BuildContext context) {
@@ -966,13 +787,11 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
                   child: CupertinoPicker(
                     scrollController: scrollController,
                     itemExtent: _kPickerItemHeight,
-                    backgroundColor:
-                        CupertinoColors.systemBackground.resolveFrom(context),
+                    backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
                     onSelectedItemChanged: (int index) {
                       setState(() => _selectedLocationIndex = index);
                     },
-                    children: List<Widget>.generate(_locationList.length,
-                        (int index) {
+                    children: List<Widget>.generate(_locationList.length, (int index) {
                       return Center(
                         child: Text(_locationList[index].code),
                       );
@@ -988,9 +807,7 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
             _destinationList.clear();
             _destinationList.addAll(state.locationResponse);
 
-            final FixedExtentScrollController scrollController =
-                FixedExtentScrollController(
-                    initialItem: _selectedDestinationIndex);
+            final FixedExtentScrollController scrollController = FixedExtentScrollController(initialItem: _selectedDestinationIndex);
             showCupertinoModalPopup<void>(
               context: context,
               builder: (BuildContext context) {
@@ -998,13 +815,11 @@ class _CreateTenderPartsFormState extends State<CreateTenderPartsForm>{
                   child: CupertinoPicker(
                     scrollController: scrollController,
                     itemExtent: _kPickerItemHeight,
-                    backgroundColor:
-                        CupertinoColors.systemBackground.resolveFrom(context),
+                    backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
                     onSelectedItemChanged: (int index) {
                       setState(() => _selectedDestinationIndex = index);
                     },
-                    children: List<Widget>.generate(_destinationList.length,
-                        (int index) {
+                    children: List<Widget>.generate(_destinationList.length, (int index) {
                       return Center(
                         child: Text(_destinationList[index].code),
                       );

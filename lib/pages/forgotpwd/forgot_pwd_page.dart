@@ -40,8 +40,7 @@ class _ForgotPwdPageState extends State<ForgotPwdPage> {
     forgotPwdBloc = BlocProvider.of<ForgotPasswordBloc>(context);
 
     _sendEmail() {
-      if (_forgotPwdFormKey.currentState.validate())
-        forgotPwdBloc.dispatch(SendButtonClick(email: emailController.text));
+      if (_forgotPwdFormKey.currentState.validate()) forgotPwdBloc.dispatch(SendButtonClick(email: emailController.text));
     }
 
     Widget getSendButton() {
@@ -54,13 +53,7 @@ class _ForgotPwdPageState extends State<ForgotPwdPage> {
                   clipBehavior: Clip.antiAlias,
                   padding: EdgeInsets.all(16),
                   child: Text(Strings.SEND,
-                      style: TextStyle(
-                          color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR),
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "SourceSansPro",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 16.0),
-                      textAlign: TextAlign.center),
+                      style: TextStyle(color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0), textAlign: TextAlign.center),
                   onPressed: () {
                     _sendEmail();
                   },
@@ -74,59 +67,46 @@ class _ForgotPwdPageState extends State<ForgotPwdPage> {
                 color: HexColor(ColorStrings.BORDER),
               ),
               color: Colors.white),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                    padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                    child: Material(
-                        color: Colors.transparent,
-                        child: Text(
-                          Strings.USERNAME,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              color: HexColor(ColorStrings.HEADING),
-                              fontFamily: "SourceSansPro",
-                              fontSize: 12.0,
-                              fontStyle: FontStyle.normal),
-                        ))),
-                Padding(
-                    padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                    child: new Material(
-                        color: Colors.transparent,
-                        child: new TextFormField(
-                          keyboardType: TextInputType.text,
-                          style: TextStyle(
-                              color: HexColor(ColorStrings.VALUES),
-                              fontSize: 16),
-                          autofocus: true,
-                          decoration: InputDecoration.collapsed(
-                              focusColor:
-                                  HexColor(ColorStrings.emailPwdTextColor),
-                              hintText: Strings.ENTER_USERNAME),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return Strings.USER_NAME_CANNOT_BE_EMPTY;
-                            } else {
-                              return null;
-                            }
-                          },
-                          controller: emailController,
-                          textInputAction: TextInputAction.next,
-                          focusNode: emailFocus,
-                          onFieldSubmitted: (v) {
-                            emailFocus.unfocus();
-                          },
-                        )))
-              ]));
+          child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+            Padding(
+                padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                child: Material(
+                    color: Colors.transparent,
+                    child: Text(
+                      Strings.USERNAME,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                    ))),
+            Padding(
+                padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                child: new Material(
+                    color: Colors.transparent,
+                    child: new TextFormField(
+                      keyboardType: TextInputType.text,
+                      style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                      autofocus: false,
+                      decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_USERNAME),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return Strings.USER_NAME_CANNOT_BE_EMPTY;
+                        } else {
+                          return null;
+                        }
+                      },
+                      controller: emailController,
+                      textInputAction: TextInputAction.next,
+                      focusNode: emailFocus,
+                      onFieldSubmitted: (v) {
+                        emailFocus.unfocus();
+                      },
+                    )))
+          ]));
     }
 
     Widget getScaffold() {
       return CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
-              backgroundColor:
-                  HexColor(ColorStrings.boxBackground).withAlpha(30),
+              backgroundColor: HexColor(ColorStrings.boxBackground).withAlpha(30),
               leading: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
@@ -139,9 +119,7 @@ class _ForgotPwdPageState extends State<ForgotPwdPage> {
           child: Form(
               key: _forgotPwdFormKey,
               child: Container(
-                  decoration: BoxDecoration(
-                      color:
-                          HexColor(ColorStrings.boxBackground).withAlpha(30)),
+                  decoration: BoxDecoration(color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
                   child: Stack(children: <Widget>[
                     ListView(
                       children: <Widget>[getUserNameWidget()],
@@ -162,8 +140,7 @@ class _ForgotPwdPageState extends State<ForgotPwdPage> {
                   ]))));
     }
 
-    Widget getCupertinoScaffold(
-        ForgotPwdState state, ForgotPasswordBloc forgotPasswordBloc) {
+    Widget getCupertinoScaffold(ForgotPwdState state, ForgotPasswordBloc forgotPasswordBloc) {
       return Platform.isAndroid
           ? WillPopScope(
               onWillPop: () {

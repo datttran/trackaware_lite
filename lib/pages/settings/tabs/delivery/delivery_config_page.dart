@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trackaware_lite/blocs/delivery_config_bloc.dart';
 import 'package:trackaware_lite/events/delivery_config_event.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/states/delivery_config_state.dart';
 import 'package:trackaware_lite/utils/colorstrings.dart';
 import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/utils.dart';
-import 'package:trackaware_lite/globals.dart' as globals;
 
 class DeliveryConfigPage extends StatefulWidget {
   @override
@@ -33,8 +33,7 @@ class _DeliveryConfigPageState extends State<DeliveryConfigPage> {
     Widget getScaffold() {
       return CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
-              backgroundColor:
-                  HexColor(ColorStrings.boxBackground).withAlpha(30),
+              backgroundColor: HexColor(ColorStrings.boxBackground).withAlpha(30),
               leading: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
@@ -45,21 +44,14 @@ class _DeliveryConfigPageState extends State<DeliveryConfigPage> {
               ),
               middle: Text(Strings.deliveryTitle)),
           child: Container(
-              decoration: BoxDecoration(
-                  color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
+              decoration: BoxDecoration(color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
               child: Stack(children: <Widget>[
                 ListView(
                   children: <Widget>[
                     Material(
                         color: Colors.transparent,
                         child: ListTile(
-                          title: Text(Strings.departTitle,
-                              style: TextStyle(
-                                  color: const Color(0xff202020),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "SourceSansPro",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16.0)),
+                          title: Text(Strings.departTitle, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0)),
                           trailing: Image.asset("images/ic_chevron_right.png"),
                           onTap: () {
                             deliveryConfigBloc.dispatch(DepartClickAction());
@@ -69,13 +61,7 @@ class _DeliveryConfigPageState extends State<DeliveryConfigPage> {
                     Material(
                         color: Colors.transparent,
                         child: ListTile(
-                          title: Text(Strings.arriveTitle,
-                              style: TextStyle(
-                                  color: const Color(0xff202020),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "SourceSansPro",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16.0)),
+                          title: Text(Strings.arriveTitle, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0)),
                           trailing: Image.asset("images/ic_chevron_right.png"),
                           onTap: () {
                             deliveryConfigBloc.dispatch(ArriveClickAction());
@@ -87,8 +73,7 @@ class _DeliveryConfigPageState extends State<DeliveryConfigPage> {
               ])));
     }
 
-    Widget getCupertinoScaffold(
-        DeliveryConfigState state, DeliveryConfigBloc pickUpConfigBloc) {
+    Widget getCupertinoScaffold(DeliveryConfigState state, DeliveryConfigBloc pickUpConfigBloc) {
       return Platform.isAndroid
           ? WillPopScope(
               onWillPop: () {

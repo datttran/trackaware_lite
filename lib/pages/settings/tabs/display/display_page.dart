@@ -53,9 +53,7 @@ class _DisplayPageConfigState extends State<DisplayPage> {
 
     _saveDepartItemToDb() {
       if (_formKey.currentState.validate()) {
-        displayConfigBloc.dispatch(SaveDisplayConfigEvent(
-            keyName: keyName,
-            disciplineConfigValue: displayNameController.text));
+        displayConfigBloc.dispatch(SaveDisplayConfigEvent(keyName: keyName, disciplineConfigValue: displayNameController.text));
       }
     }
 
@@ -69,13 +67,7 @@ class _DisplayPageConfigState extends State<DisplayPage> {
                   clipBehavior: Clip.antiAlias,
                   padding: EdgeInsets.all(16),
                   child: Text(Strings.SAVE,
-                      style: TextStyle(
-                          color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR),
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "SourceSansPro",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 16.0),
-                      textAlign: TextAlign.center),
+                      style: TextStyle(color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0), textAlign: TextAlign.center),
                   onPressed: () {
                     _saveDepartItemToDb();
                   },
@@ -89,59 +81,46 @@ class _DisplayPageConfigState extends State<DisplayPage> {
                 color: HexColor(ColorStrings.BORDER),
               ),
               color: Colors.white),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                    padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                    child: Material(
-                        color: Colors.transparent,
-                        child: Text(
-                          Strings.DISPLAY_NAME,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              color: HexColor(ColorStrings.HEADING),
-                              fontFamily: "SourceSansPro",
-                              fontSize: 12.0,
-                              fontStyle: FontStyle.normal),
-                        ))),
-                Padding(
-                    padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                    child: new Material(
-                        color: Colors.transparent,
-                        child: new TextFormField(
-                          keyboardType: TextInputType.text,
-                          textCapitalization: TextCapitalization.sentences,
-                          style: TextStyle(
-                              color: HexColor(ColorStrings.VALUES),
-                              fontSize: 16),
-                          autofocus: true,
-                          decoration: InputDecoration.collapsed(
-                              focusColor:
-                                  HexColor(ColorStrings.emailPwdTextColor),
-                              hintText: Strings.ENTER_DISPLAY_NAME),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return Strings.DISPLAY_NAME_EMPTY_VALIDATION_MSG;
-                            }
-                            return null;
-                          },
-                          controller: displayNameController,
-                          textInputAction: TextInputAction.done,
-                          focusNode: displayNameFocus,
-                          onFieldSubmitted: (v) {
-                            displayNameFocus.unfocus();
-                          },
-                        )))
-              ]));
+          child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+            Padding(
+                padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                child: Material(
+                    color: Colors.transparent,
+                    child: Text(
+                      Strings.DISPLAY_NAME,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                    ))),
+            Padding(
+                padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                child: new Material(
+                    color: Colors.transparent,
+                    child: new TextFormField(
+                      keyboardType: TextInputType.text,
+                      textCapitalization: TextCapitalization.sentences,
+                      style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                      autofocus: false,
+                      decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_DISPLAY_NAME),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return Strings.DISPLAY_NAME_EMPTY_VALIDATION_MSG;
+                        }
+                        return null;
+                      },
+                      controller: displayNameController,
+                      textInputAction: TextInputAction.done,
+                      focusNode: displayNameFocus,
+                      onFieldSubmitted: (v) {
+                        displayNameFocus.unfocus();
+                      },
+                    )))
+          ]));
     }
 
     Widget getScaffold() {
       return CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
-              backgroundColor:
-                  HexColor(ColorStrings.boxBackground).withAlpha(30),
+              backgroundColor: HexColor(ColorStrings.boxBackground).withAlpha(30),
               leading: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
@@ -155,9 +134,7 @@ class _DisplayPageConfigState extends State<DisplayPage> {
           child: Form(
               key: _formKey,
               child: Container(
-                  decoration: BoxDecoration(
-                      color:
-                          HexColor(ColorStrings.boxBackground).withAlpha(30)),
+                  decoration: BoxDecoration(color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
                   child: Stack(children: <Widget>[
                     ListView(
                       children: <Widget>[
@@ -180,8 +157,7 @@ class _DisplayPageConfigState extends State<DisplayPage> {
                   ]))));
     }
 
-    Widget getCupertinoScaffold(
-        DisplayConfigState state, DisplayConfigBloc displayConfigBloc) {
+    Widget getCupertinoScaffold(DisplayConfigState state, DisplayConfigBloc displayConfigBloc) {
       return Platform.isAndroid
           ? WillPopScope(
               onWillPop: () {
@@ -202,10 +178,8 @@ class _DisplayPageConfigState extends State<DisplayPage> {
 
           if (state is FetchDisplayConfigSuccess) {
             disciplineConfigValues.addAll(state.disciplineConfigValues);
-            displayNameController.text =
-                disciplineConfigValues?.elementAt(0)?.displayName;
-            displayNameController.selection = TextSelection.fromPosition(
-                TextPosition(offset: displayNameController.text.length));
+            displayNameController.text = disciplineConfigValues?.elementAt(0)?.displayName;
+            displayNameController.selection = TextSelection.fromPosition(TextPosition(offset: displayNameController.text.length));
           }
         },
         child: BlocBuilder<DisplayConfigBloc, DisplayConfigState>(

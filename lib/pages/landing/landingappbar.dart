@@ -1,30 +1,27 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:trackaware_lite/responsive/size_config.dart';
+import 'package:trackaware_lite/constants.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/utils/bubble_tab_indicator.dart';
 import 'package:trackaware_lite/utils/colorstrings.dart';
 import 'package:trackaware_lite/utils/strings.dart';
-import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/utils/utils.dart';
-import 'package:trackaware_lite/constants.dart';
+
 class LandingAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Widget _userProfileImage;
   final Widget _settingsImage;
   final TabController _tabController;
 
-  LandingAppBar(
-      this._userProfileImage, this._settingsImage, this._tabController);
+  LandingAppBar(this._userProfileImage, this._settingsImage, this._tabController);
   @override
-  State<StatefulWidget> createState() =>
-      new LandingAppBarState(_userProfileImage, _settingsImage, _tabController);
+  State<StatefulWidget> createState() => new LandingAppBarState(_userProfileImage, _settingsImage, _tabController);
 
   @override
   Size get preferredSize => new Size.fromHeight(160.0);
 }
 
-GlobalKey<LandingAppBarState> landingAppBarKey =
-    GlobalKey<LandingAppBarState>();
+GlobalKey<LandingAppBarState> landingAppBarKey = GlobalKey<LandingAppBarState>();
 
 class LandingAppBarState extends State<LandingAppBar> {
   Widget _userProfileImage;
@@ -34,22 +31,17 @@ class LandingAppBarState extends State<LandingAppBar> {
   final List<Tab> driverTabs = <Tab>[
     new Tab(text: Strings.pickUpTitle),
     new Tab(text: Strings.deliveryTitle),
-
   ];
 
   final List<Tab> tenderTabs = <Tab>[
-
     new Tab(text: Strings.pickUpTitle),
     new Tab(text: Strings.deliveryTitle),
-
   ];
 
-  LandingAppBarState(
-      this._userProfileImage, this._settingsImage, this._tabController);
+  LandingAppBarState(this._userProfileImage, this._settingsImage, this._tabController);
 
   @override
   Widget build(BuildContext context) {
-
     return new Container(
       key: landingAppBarKey,
       decoration: new BoxDecoration(
@@ -71,10 +63,9 @@ class LandingAppBarState extends State<LandingAppBar> {
               ),
               Text(Strings.trackaware_title,
                   style: TextStyle(
-                      color: Color(0xff665a5a),
-                      fontSize: 15,
-                      fontFamily: 'SourceSansPro-Bold',
-
+                    color: Color(0xff665a5a),
+                    fontSize: 15,
+                    fontFamily: 'SourceSansPro-Bold',
                   )),
               GestureDetector(
                 child: _settingsImage,
@@ -121,14 +112,12 @@ class LandingAppBarImage extends StatefulWidget implements PreferredSizeWidget {
   final Widget _settingsImage;
   final TabController _tabController;
 
-  LandingAppBarImage(
-      this._userProfileImage, this._settingsImage, this._tabController);
+  LandingAppBarImage(this._userProfileImage, this._settingsImage, this._tabController);
   @override
-  State<StatefulWidget> createState() => new LandingAppBarImageState(
-      _userProfileImage, _settingsImage, _tabController);
+  State<StatefulWidget> createState() => new LandingAppBarImageState(_userProfileImage, _settingsImage, _tabController);
 
   @override
-  Size get preferredSize => new Size.fromHeight(160.0);
+  Size get preferredSize => new Size.fromHeight(verticalPixel * 13);
 }
 
 class LandingAppBarImageState extends State<LandingAppBarImage> {
@@ -137,47 +126,42 @@ class LandingAppBarImageState extends State<LandingAppBarImage> {
   TabController _tabController;
 
   final List<Tab> driverTabs = <Tab>[
-    new Tab(text: Strings.pickUpTitle),
+    new Tab(
+      text: Strings.pickUpTitle,
+    ),
     new Tab(text: Strings.deliveryTitle),
-
   ];
 
   final List<Tab> tenderTabs = <Tab>[
-
     new Tab(text: Strings.pickUpTitle),
     new Tab(text: Strings.deliveryTitle),
-
   ];
 
-  LandingAppBarImageState(
-      this._userProfileImage, this._settingsImage, this._tabController);
+  LandingAppBarImageState(this._userProfileImage, this._settingsImage, this._tabController);
 
   @override
   Widget build(BuildContext context) {
     //SizeConfig().init(context);
     return new Container(
-      height: verticalPixel*16.5,
-
+      height: verticalPixel * 40,
       key: landingAppBarKey,
       decoration: new BoxDecoration(
-        color: Colors.transparent,
+        color: Colors.red.withOpacity(0),
       ),
       child: new Column(
         children: <Widget>[
-
           ClipRRect(
             borderRadius: BorderRadius.vertical(top: Radius.circular(0), bottom: Radius.circular(15)),
-
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaY: 3, sigmaX: 3),
               child: Container(
-
+                height: verticalPixel * 12,
+                width: horizontalPixel * 97,
                 padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-                margin: EdgeInsets.symmetric(horizontal: horizontalPixel*3.5),
-
+                margin: EdgeInsets.symmetric(horizontal: horizontalPixel * 3.5),
                 decoration: BoxDecoration(
                   color: Color(0xff2C2C34),
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(0), bottom: Radius.circular(15)),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(0), bottom: Radius.circular(15)),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -190,60 +174,44 @@ class LandingAppBarImageState extends State<LandingAppBarImage> {
                       },
                     ),*/
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 30,),
-                        Text('T R A C K A W A R E',
-                            style: TextStyle(color: Color(0xff689ffd), fontSize: verticalPixel*2)),
-                        Text('  DELIVERY EXPERIENCE PLATFORM',
-                            style: TextStyle(color: Color(0xff93b1ee), fontSize: verticalPixel*.85)),
+                        SizedBox(
+                          height: 30,
+                          width: horizontalPixel * 80,
+                        ),
+                        Container(
+                          width: horizontalPixel * 80,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('T R A C K A W A R E', style: TextStyle(color: Color(0xff689ffd), fontSize: verticalPixel * 3.4)),
+                              GestureDetector(
+                                child: Column(
+                                  children: [
+                                    _settingsImage,
+                                  ],
+                                ),
+                                onTap: () async {
+                                  var result = await Navigator.of(context).pushNamed('/Settings');
+
+                                  if (result?.toString()?.isNotEmpty == true) {}
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(' DELIVERY EXPERIENCE PLATFORM', style: TextStyle(color: Color(0xff93b1ee), fontSize: verticalPixel * 1.3)),
                       ],
                     ),
-
-                    SizedBox(width: verticalPixel*5,),
-                    GestureDetector(
-                      child: Column(
-                        children: [
-                          SizedBox(height: 25,),
-                          _settingsImage,
-
-                        ],
-                      ),
-                      onTap: () async {
-                        var result =
-                            await Navigator.of(context).pushNamed('/Settings');
-
-                        if (result?.toString()?.isNotEmpty == true) {}
-                      },
-                    )
                   ],
                 ),
               ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 0, verticalPixel*1),
-          ),
-          new TabBar(
-
-            isScrollable: true,
-            unselectedLabelColor: Color(0xff68b0fd).withOpacity(0.8),
-            indicatorPadding: EdgeInsets.symmetric(horizontal: horizontalPixel*1,vertical: 1),
-            labelPadding: EdgeInsets.symmetric(horizontal:horizontalPixel*18.45),
-            labelColor: Colors.white,
-            indicatorSize: TabBarIndicatorSize.tab,
-            indicator: new BubbleTabIndicator(
-              indicatorRadius: 10,
-              indicatorHeight: verticalPixel*5,
-
-              indicatorColor: Color(0xff2C2C34).withOpacity(.6),
-
-
-              tabBarIndicatorSize: TabBarIndicatorSize.tab,
-            ),
-            tabs: globals.isDriverMode ? driverTabs : tenderTabs,
-            controller: _tabController,
+            padding: EdgeInsets.fromLTRB(0, 0, 0, verticalPixel * 1),
           ),
         ],
       ),

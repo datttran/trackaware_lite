@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trackaware_lite/blocs/scan_option_bloc.dart';
 import 'package:trackaware_lite/events/scan_option_event.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/states/scan_option_state.dart';
 import 'package:trackaware_lite/utils/colorstrings.dart';
 import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/utils.dart';
-import 'package:trackaware_lite/globals.dart' as globals;
 
 class ScanOptionPage extends StatefulWidget {
   @override
@@ -18,27 +18,13 @@ class ScanOptionPage extends StatefulWidget {
   }
 }
 
-final List<String> _tenderPartItems = <String>[
-  Strings.ORDER_NUMBER_SCAN,
-  Strings.PART_NUMBER_SCAN,
-  Strings.TOOL_NUMBER_SCAN
-];
+final List<String> _tenderPartItems = <String>[Strings.ORDER_NUMBER_SCAN, Strings.PART_NUMBER_SCAN, Strings.TOOL_NUMBER_SCAN];
 
-final List<String> _tenderExternalItems = <String>[
-  Strings.ORDER_NUMBER_SCAN,
-  Strings.REF_NUMBER_SCAN,
-  Strings.PART_NUMBER_SCAN,
-  Strings.TRACKING_NUMBER_SCAN
-];
+final List<String> _tenderExternalItems = <String>[Strings.ORDER_NUMBER_SCAN, Strings.REF_NUMBER_SCAN, Strings.PART_NUMBER_SCAN, Strings.TRACKING_NUMBER_SCAN];
 
-final List<String> _pickUpPartItems = <String>[
-  Strings.ORDER_NUMBER_SCAN,
-  Strings.PART_NUMBER_SCAN
-];
+final List<String> _pickUpPartItems = <String>[Strings.ORDER_NUMBER_SCAN, Strings.PART_NUMBER_SCAN];
 
-final List<String> _pickUpExternalItems = <String>[
-  Strings.TRACKING_NUMBER_SCAN
-];
+final List<String> _pickUpExternalItems = <String>[Strings.TRACKING_NUMBER_SCAN];
 
 var _scanOptionBloc;
 
@@ -55,8 +41,7 @@ class _ScanOptionPageState extends State<ScanOptionPage> {
     Widget getScaffold() {
       return CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
-              backgroundColor:
-                  HexColor(ColorStrings.boxBackground).withAlpha(30),
+              backgroundColor: HexColor(ColorStrings.boxBackground).withAlpha(30),
               leading: GestureDetector(
                 onTap: () {
                   navigationBack();
@@ -68,8 +53,7 @@ class _ScanOptionPageState extends State<ScanOptionPage> {
               middle: Text(Strings.PICK_SCAN_ITEM)),
           child: Container(
               padding: EdgeInsets.fromLTRB(0, 72, 0, 0),
-              decoration: BoxDecoration(
-                  color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
+              decoration: BoxDecoration(color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
@@ -79,13 +63,7 @@ class _ScanOptionPageState extends State<ScanOptionPage> {
                     Material(
                         color: Colors.transparent,
                         child: ListTile(
-                          title: Text(_getTitle(position),
-                              style: TextStyle(
-                                  color: const Color(0xff202020),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "SourceSansPro",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16.0)),
+                          title: Text(_getTitle(position), style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0)),
                           trailing: Image.asset("images/ic_chevron_right.png"),
                           onTap: () {
                             navigateToScan(position);
@@ -131,11 +109,7 @@ class _ScanOptionPageState extends State<ScanOptionPage> {
             globals.trackingNumber = state.barCode;
           }
 
-          if (state is OrderNumberScanSuccess ||
-              state is PartNumberScanSuccess ||
-              state is RefNumberScanSuccess ||
-              state is ToolNumberScanSuccess ||
-              state is TrackingNumberScanSuccess) {
+          if (state is OrderNumberScanSuccess || state is PartNumberScanSuccess || state is RefNumberScanSuccess || state is ToolNumberScanSuccess || state is TrackingNumberScanSuccess) {
             globals.navFrom = Strings.SCAN_OPTION;
             navigateToForm();
           }

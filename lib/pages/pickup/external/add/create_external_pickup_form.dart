@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:toast/toast.dart';
 import 'package:trackaware_lite/blocs/create_pickup_bloc.dart';
 import 'package:trackaware_lite/events/create_pickup_event.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/models/location_response.dart';
 import 'package:trackaware_lite/models/package_details_response.dart';
 import 'package:trackaware_lite/models/pickup_external_db.dart';
@@ -16,7 +17,6 @@ import 'package:trackaware_lite/utils/colorstrings.dart';
 import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/transactions.dart';
 import 'package:trackaware_lite/utils/utils.dart';
-import 'package:trackaware_lite/globals.dart' as globals;
 
 class CreateExternalPickUpForm extends StatefulWidget {
   final String barCode;
@@ -49,8 +49,7 @@ final _formKey = GlobalKey<FormState>();
 String _deviceIdValue;
 String _userName;
 
-class _CreateExternalPickUpFormFormState
-    extends State<CreateExternalPickUpForm> {
+class _CreateExternalPickUpFormFormState extends State<CreateExternalPickUpForm> {
   var barcode;
   PickUpExternal pickUpExternal;
   _CreateExternalPickUpFormFormState(this.barcode, this.pickUpExternal);
@@ -81,37 +80,25 @@ class _CreateExternalPickUpFormFormState
     _sendPickUpToDb(List<PackageDetailsResponse> packageDetails) {
       if (_validateForm()) {
         PickUpExternal pickUpExternalItem;
-        if (packageDetails != null &&
-            packageDetails.isNotEmpty &&
-            packageDetails[0].destination != null &&
-            packageDetails[0].destination.isNotEmpty) {
+        if (packageDetails != null && packageDetails.isNotEmpty && packageDetails[0].destination != null && packageDetails[0].destination.isNotEmpty) {
           if (pickUpExternal != null) {
             pickUpExternalItem = pickUpExternal;
           } else {
             pickUpExternalItem = PickUpExternal();
           }
-          pickUpExternalItem.pickUpSite = _selectedPickUpSiteIndex != -1
-              ? _pickUpSiteList[_selectedPickUpSiteIndex].code
-              : pickUpExternal.pickUpSite;
-          pickUpExternalItem.deliverySite = _selectedDeliverySiteIndex != -1
-              ? packageDetails[0].destination
-              : pickUpExternal.deliverySite;
+          pickUpExternalItem.pickUpSite = _selectedPickUpSiteIndex != -1 ? _pickUpSiteList[_selectedPickUpSiteIndex].code : pickUpExternal.pickUpSite;
+          pickUpExternalItem.deliverySite = _selectedDeliverySiteIndex != -1 ? packageDetails[0].destination : pickUpExternal.deliverySite;
           pickUpExternalItem.trackingNumber = trackingNumberController.text;
-          pickUpExternalItem.scanTime =
-              (DateTime.now().millisecondsSinceEpoch / 1000).round();
+          pickUpExternalItem.scanTime = (DateTime.now().millisecondsSinceEpoch / 1000).round();
           pickUpExternalItem.isSynced = 1;
           pickUpExternalItem.isScanned = 0;
           pickUpExternalItem.isDelivered = 0;
           pickUpExternalItem.isPart = 0;
           if (pickUpExternal != null) {
-            createExternalPickUpBloc.dispatch(SendButtonClick(
-                generateTransactionFromPickupExternal(
-                    pickUpExternalItem, _deviceIdValue, _userName),
-                pickUpExternal));
+            createExternalPickUpBloc.dispatch(SendButtonClick(generateTransactionFromPickupExternal(pickUpExternalItem, _deviceIdValue, _userName), pickUpExternal));
           } else {
             pickUpExternalItem.isSynced = 0;
-            createExternalPickUpBloc
-                .dispatch(AddToListExternalButtonClick(pickUpExternalItem));
+            createExternalPickUpBloc.dispatch(AddToListExternalButtonClick(pickUpExternalItem));
           }
         } else {
           PickUpExternal pickUpExternalItem;
@@ -120,37 +107,26 @@ class _CreateExternalPickUpFormFormState
           } else {
             pickUpExternalItem = PickUpExternal();
           }
-          pickUpExternalItem.pickUpSite =
-              _selectedPickUpSiteIndex != -1 && _pickUpSiteList.isNotEmpty
-                  ? _pickUpSiteList[_selectedPickUpSiteIndex].code
-                  : pickUpExternal.pickUpSite;
-          pickUpExternalItem.deliverySite = _selectedDeliverySiteIndex != -1
-              ? _deliverySiteList[_selectedDeliverySiteIndex].code
-              : pickUpExternal.deliverySite;
+          pickUpExternalItem.pickUpSite = _selectedPickUpSiteIndex != -1 && _pickUpSiteList.isNotEmpty ? _pickUpSiteList[_selectedPickUpSiteIndex].code : pickUpExternal.pickUpSite;
+          pickUpExternalItem.deliverySite = _selectedDeliverySiteIndex != -1 ? _deliverySiteList[_selectedDeliverySiteIndex].code : pickUpExternal.deliverySite;
           pickUpExternalItem.trackingNumber = trackingNumberController.text;
-          pickUpExternalItem.scanTime =
-              (DateTime.now().millisecondsSinceEpoch / 1000).round();
+          pickUpExternalItem.scanTime = (DateTime.now().millisecondsSinceEpoch / 1000).round();
           pickUpExternalItem.isSynced = 1;
           pickUpExternalItem.isScanned = 0;
           pickUpExternalItem.isDelivered = 0;
           pickUpExternalItem.isPart = 0;
           if (pickUpExternal != null) {
-            createExternalPickUpBloc.dispatch(SendButtonClick(
-                generateTransactionFromPickupExternal(
-                    pickUpExternalItem, _deviceIdValue, _userName),
-                pickUpExternal));
+            createExternalPickUpBloc.dispatch(SendButtonClick(generateTransactionFromPickupExternal(pickUpExternalItem, _deviceIdValue, _userName), pickUpExternal));
           } else {
             pickUpExternalItem.isSynced = 0;
-            createExternalPickUpBloc
-                .dispatch(AddToListExternalButtonClick(pickUpExternalItem));
+            createExternalPickUpBloc.dispatch(AddToListExternalButtonClick(pickUpExternalItem));
           }
         }
       }
     }
 
     _savePickUpExternalToDb() {
-      createExternalPickUpBloc
-          .dispatch(PackageDetailsValidation(_generateTagArray()));
+      createExternalPickUpBloc.dispatch(PackageDetailsValidation(_generateTagArray()));
     }
 
     Widget _buildPickUpSitePicker(BuildContext context) {
@@ -160,9 +136,7 @@ class _CreateExternalPickUpFormFormState
               ? Text("Select pickup site")
               : Text(
                   _pickUpSiteList[_selectedPickUpSiteIndex].code,
-                  style: TextStyle(
-                      color: CupertinoDynamicColor.resolve(
-                          CupertinoColors.inactiveGray, context)),
+                  style: TextStyle(color: CupertinoDynamicColor.resolve(CupertinoColors.inactiveGray, context)),
                 ));
     }
 
@@ -173,9 +147,7 @@ class _CreateExternalPickUpFormFormState
               ? Text("Select Delivery Site")
               : Text(
                   _deliverySiteList[_selectedDeliverySiteIndex].code,
-                  style: TextStyle(
-                      color: CupertinoDynamicColor.resolve(
-                          CupertinoColors.inactiveGray, context)),
+                  style: TextStyle(color: CupertinoDynamicColor.resolve(CupertinoColors.inactiveGray, context)),
                 ));
     }
 
@@ -205,32 +177,20 @@ class _CreateExternalPickUpFormFormState
                         ),
                       )),
                   Expanded(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                            child: Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  Strings.PICK_UP_SITE,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: HexColor(ColorStrings.HEADING),
-                                      fontFamily: "SourceSansPro",
-                                      fontSize: 12.0,
-                                      fontStyle: FontStyle.normal),
-                                ))),
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                            child: pickUpExternal != null &&
-                                    _selectedPickUpSiteIndex == -1
-                                ? Material(
-                                    color: Colors.transparent,
-                                    child: Text(pickUpExternal.pickUpSite))
-                                : _buildPickUpSitePicker(context))
-                      ]))
+                      child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                        child: Material(
+                            color: Colors.transparent,
+                            child: Text(
+                              Strings.PICK_UP_SITE,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                            ))),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                        child: pickUpExternal != null && _selectedPickUpSiteIndex == -1 ? Material(color: Colors.transparent, child: Text(pickUpExternal.pickUpSite)) : _buildPickUpSitePicker(context))
+                  ]))
                 ],
               )));
     }
@@ -261,32 +221,22 @@ class _CreateExternalPickUpFormFormState
                         ),
                       )),
                   Expanded(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                            child: Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  Strings.DELIVERY_SITE,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: HexColor(ColorStrings.HEADING),
-                                      fontFamily: "SourceSansPro",
-                                      fontSize: 12.0,
-                                      fontStyle: FontStyle.normal),
-                                ))),
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                            child: pickUpExternal != null &&
-                                    _selectedDeliverySiteIndex == -1
-                                ? Material(
-                                    color: Colors.transparent,
-                                    child: Text(pickUpExternal.deliverySite))
-                                : _buildDeliverySiteLocationPicker(context))
-                      ]))
+                      child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                        child: Material(
+                            color: Colors.transparent,
+                            child: Text(
+                              Strings.DELIVERY_SITE,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                            ))),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                        child: pickUpExternal != null && _selectedDeliverySiteIndex == -1
+                            ? Material(color: Colors.transparent, child: Text(pickUpExternal.deliverySite))
+                            : _buildDeliverySiteLocationPicker(context))
+                  ]))
                 ],
               )));
     }
@@ -294,12 +244,10 @@ class _CreateExternalPickUpFormFormState
     Widget getTrackingNumberWidget() {
       if (pickUpExternal != null) {
         trackingNumberController.text = pickUpExternal.trackingNumber;
-        trackingNumberController.selection = TextSelection.fromPosition(
-            TextPosition(offset: trackingNumberController.text.length));
+        trackingNumberController.selection = TextSelection.fromPosition(TextPosition(offset: trackingNumberController.text.length));
       } else if (globals.trackingNumber.isNotEmpty) {
         trackingNumberController.text = globals.trackingNumber;
-        trackingNumberController.selection = TextSelection.fromPosition(
-            TextPosition(offset: trackingNumberController.text.length));
+        trackingNumberController.selection = TextSelection.fromPosition(TextPosition(offset: trackingNumberController.text.length));
       }
 
       return Container(
@@ -314,67 +262,48 @@ class _CreateExternalPickUpFormFormState
                     onTap: () {
                       FocusScope.of(context).requestFocus(trackingNumberFocus);
                     },
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                              child: Material(
-                                  color: Colors.transparent,
-                                  child: Text(
-                                    Strings.TRACKING_NUMBER,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                        color: HexColor(ColorStrings.HEADING),
-                                        fontFamily: "SourceSansPro",
-                                        fontSize: 12.0,
-                                        fontStyle: FontStyle.normal),
-                                  ))),
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                              child: new Material(
-                                  color: Colors.transparent,
-                                  child: new TextFormField(
-                                    keyboardType: TextInputType.text,
-                                    textCapitalization:
-                                        TextCapitalization.sentences,
-                                    style: TextStyle(
-                                        color: HexColor(ColorStrings.VALUES),
-                                        fontSize: 16),
-                                    autofocus: true,
-                                    decoration: InputDecoration.collapsed(
-                                        focusColor: HexColor(
-                                            ColorStrings.emailPwdTextColor),
-                                        hintText:
-                                            Strings.ENTER_TRACKING_NUMBER),
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return Strings
-                                            .TRACKING_NUMBER_VALIDATION_MESSAGE;
-                                      }
-                                      return null;
-                                    },
-                                    controller: trackingNumberController,
-                                    textInputAction: TextInputAction.done,
-                                    focusNode: trackingNumberFocus,
-                                    onFieldSubmitted: (v) {
-                                      trackingNumberFocus.unfocus();
-                                    },
-                                  )))
-                        ])),
+                    child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                          child: Material(
+                              color: Colors.transparent,
+                              child: Text(
+                                Strings.TRACKING_NUMBER,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                              ))),
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                          child: new Material(
+                              color: Colors.transparent,
+                              child: new TextFormField(
+                                keyboardType: TextInputType.text,
+                                textCapitalization: TextCapitalization.sentences,
+                                style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                                autofocus: false,
+                                decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_TRACKING_NUMBER),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return Strings.TRACKING_NUMBER_VALIDATION_MESSAGE;
+                                  }
+                                  return null;
+                                },
+                                controller: trackingNumberController,
+                                textInputAction: TextInputAction.done,
+                                focusNode: trackingNumberFocus,
+                                onFieldSubmitted: (v) {
+                                  trackingNumberFocus.unfocus();
+                                },
+                              )))
+                    ])),
                 flex: 6),
             Flexible(
                 child: GestureDetector(
                   onTap: () {
-                    globals.scanOption =
-                        Strings.CREATE_PICKUP_EXTERNAL_PACKAGES;
-                    createExternalPickUpBloc
-                        .dispatch(TrackingNumberScanEvent());
+                    globals.scanOption = Strings.CREATE_PICKUP_EXTERNAL_PACKAGES;
+                    createExternalPickUpBloc.dispatch(TrackingNumberScanEvent());
                   },
-                  child: Padding(
-                      child: Image.asset("images/ic_scan.png"),
-                      padding: EdgeInsets.fromLTRB(0, 16, 0, 16)),
+                  child: Padding(child: Image.asset("images/ic_scan.png"), padding: EdgeInsets.fromLTRB(0, 16, 0, 16)),
                 ),
                 flex: 1)
           ]));
@@ -389,17 +318,8 @@ class _CreateExternalPickUpFormFormState
                   elevation: 8.0,
                   clipBehavior: Clip.antiAlias,
                   padding: EdgeInsets.all(16),
-                  child: Text(
-                      pickUpExternal != null
-                          ? Strings.SEND
-                          : Strings.ADD_TO_LIST,
-                      style: TextStyle(
-                          color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR),
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "SourceSansPro",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 16.0),
-                      textAlign: TextAlign.center),
+                  child: Text(pickUpExternal != null ? Strings.SEND : Strings.ADD_TO_LIST,
+                      style: TextStyle(color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0), textAlign: TextAlign.center),
                   onPressed: () {
                     createExternalPickUpBloc.dispatch(FetchDeviceId());
                     // _savePickUpExternalToDb();
@@ -410,8 +330,7 @@ class _CreateExternalPickUpFormFormState
     Widget getScaffold() {
       return CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
-              backgroundColor:
-                  HexColor(ColorStrings.boxBackground).withAlpha(30),
+              backgroundColor: HexColor(ColorStrings.boxBackground).withAlpha(30),
               leading: GestureDetector(
                 onTap: () {
                   navigateBack();
@@ -424,9 +343,7 @@ class _CreateExternalPickUpFormFormState
           child: Form(
               key: _formKey,
               child: Container(
-                  decoration: BoxDecoration(
-                      color:
-                          HexColor(ColorStrings.boxBackground).withAlpha(30)),
+                  decoration: BoxDecoration(color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
                   child: Stack(children: <Widget>[
                     ListView(
                       children: <Widget>[
@@ -451,8 +368,7 @@ class _CreateExternalPickUpFormFormState
                   ]))));
     }
 
-    Widget getCupertinoScaffold(
-        CreatePickUpState state, createExternalTenderBloc) {
+    Widget getCupertinoScaffold(CreatePickUpState state, createExternalTenderBloc) {
       return Platform.isAndroid
           ? WillPopScope(
               onWillPop: () {
@@ -468,14 +384,12 @@ class _CreateExternalPickUpFormFormState
           if (state is TrackingNumberScanSuccess) {
             globals.trackingNumber = state.barCode;
             trackingNumberController.text = globals.trackingNumber;
-            trackingNumberController.selection = TextSelection.fromPosition(
-                TextPosition(offset: trackingNumberController.text.length));
+            trackingNumberController.selection = TextSelection.fromPosition(TextPosition(offset: trackingNumberController.text.length));
           }
 
           if (state is PickUpExternalSaved) {
             globals.trackingNumber = "";
-            Toast.show(state.message, context,
-                duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+            Toast.show(state.message, context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
             globals.selectedPickUpExternal = null;
             Navigator.pop(context, "saved");
           }
@@ -505,9 +419,7 @@ class _CreateExternalPickUpFormFormState
             );
           }
 
-          if (state is PickUpApiCallLoading ||
-              state is DeliverySiteApiCallLoading ||
-              state is TransactionLoading) {
+          if (state is PickUpApiCallLoading || state is DeliverySiteApiCallLoading || state is TransactionLoading) {
             _isLoading = true;
           }
 
@@ -534,9 +446,7 @@ class _CreateExternalPickUpFormFormState
               }
             }
 
-            final FixedExtentScrollController scrollController =
-                FixedExtentScrollController(
-                    initialItem: _selectedPickUpSiteIndex);
+            final FixedExtentScrollController scrollController = FixedExtentScrollController(initialItem: _selectedPickUpSiteIndex);
             showCupertinoModalPopup<void>(
               context: context,
               builder: (BuildContext context) {
@@ -544,13 +454,11 @@ class _CreateExternalPickUpFormFormState
                   child: CupertinoPicker(
                     scrollController: scrollController,
                     itemExtent: _kPickerItemHeight,
-                    backgroundColor:
-                        CupertinoColors.systemBackground.resolveFrom(context),
+                    backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
                     onSelectedItemChanged: (int index) {
                       setState(() => _selectedPickUpSiteIndex = index);
                     },
-                    children: List<Widget>.generate(_pickUpSiteList.length,
-                        (int index) {
+                    children: List<Widget>.generate(_pickUpSiteList.length, (int index) {
                       return Center(
                         child: Text(_pickUpSiteList[index].code),
                       );
@@ -574,9 +482,7 @@ class _CreateExternalPickUpFormFormState
               }
             }
 
-            final FixedExtentScrollController scrollController =
-                FixedExtentScrollController(
-                    initialItem: _selectedDeliverySiteIndex);
+            final FixedExtentScrollController scrollController = FixedExtentScrollController(initialItem: _selectedDeliverySiteIndex);
             showCupertinoModalPopup<void>(
               context: context,
               builder: (BuildContext context) {
@@ -584,13 +490,11 @@ class _CreateExternalPickUpFormFormState
                   child: CupertinoPicker(
                     scrollController: scrollController,
                     itemExtent: _kPickerItemHeight,
-                    backgroundColor:
-                        CupertinoColors.systemBackground.resolveFrom(context),
+                    backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
                     onSelectedItemChanged: (int index) {
                       setState(() => _selectedDeliverySiteIndex = index);
                     },
-                    children: List<Widget>.generate(_deliverySiteList.length,
-                        (int index) {
+                    children: List<Widget>.generate(_deliverySiteList.length, (int index) {
                       return Center(
                         child: Text(_deliverySiteList[index].code),
                       );

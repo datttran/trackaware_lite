@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trackaware_lite/blocs/tender_pickup_scan_bloc.dart';
 import 'package:trackaware_lite/events/tender_pickup_scan_event.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/states/tender_pickup_scan_state.dart';
 import 'package:trackaware_lite/utils/colorstrings.dart';
 import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/utils.dart';
-import 'package:trackaware_lite/globals.dart' as globals;
 
 class TenderScanPage extends StatefulWidget {
   @override
@@ -18,15 +18,9 @@ class TenderScanPage extends StatefulWidget {
   }
 }
 
-final List<String> _tenderScanItems = <String>[
-  Strings.TENDER_PRODUCTION_PARTS,
-  Strings.TENDER_EXTERNAL_PACKAGES
-];
+final List<String> _tenderScanItems = <String>[Strings.TENDER_PRODUCTION_PARTS, Strings.TENDER_EXTERNAL_PACKAGES];
 
-final List<String> _pickUpScanItems = <String>[
-  Strings.PICKUP_PRODUCTION_PARTS,
-  Strings.PICKUP_EXTERNAL_PACKAGES
-];
+final List<String> _pickUpScanItems = <String>[Strings.PICKUP_PRODUCTION_PARTS, Strings.PICKUP_EXTERNAL_PACKAGES];
 
 var _tenderScanBloc;
 
@@ -43,8 +37,7 @@ class _TenderScanPageState extends State<TenderScanPage> {
     Widget getScaffold() {
       return CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
-              backgroundColor:
-                  HexColor(ColorStrings.boxBackground).withAlpha(30),
+              backgroundColor: HexColor(ColorStrings.boxBackground).withAlpha(30),
               leading: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
@@ -56,8 +49,7 @@ class _TenderScanPageState extends State<TenderScanPage> {
               middle: Text(Strings.SCAN)),
           child: Container(
               padding: EdgeInsets.fromLTRB(0, 72, 0, 0),
-              decoration: BoxDecoration(
-                  color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
+              decoration: BoxDecoration(color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
@@ -67,37 +59,23 @@ class _TenderScanPageState extends State<TenderScanPage> {
                     Material(
                         color: Colors.transparent,
                         child: ListTile(
-                          title: Text(
-                              globals.tabScanPosName == Strings.tenderTitle
-                                  ? _tenderScanItems[position]
-                                  : _pickUpScanItems[position],
-                              style: TextStyle(
-                                  color: const Color(0xff202020),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "SourceSansPro",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16.0)),
+                          title: Text(globals.tabScanPosName == Strings.tenderTitle ? _tenderScanItems[position] : _pickUpScanItems[position],
+                              style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0)),
                           trailing: Image.asset("images/ic_chevron_right.png"),
                           onTap: () {
                             if (globals.tabScanPosName == Strings.tenderTitle) {
-                              globals.pickScanOption =
-                                  _tenderScanItems[position];
+                              globals.pickScanOption = _tenderScanItems[position];
                               if (position == 0) {
-                                _tenderScanBloc
-                                    .dispatch(TenderProductionPartsEvent());
+                                _tenderScanBloc.dispatch(TenderProductionPartsEvent());
                               } else {
-                                _tenderScanBloc
-                                    .dispatch(TenderExternalPackagesEvent());
+                                _tenderScanBloc.dispatch(TenderExternalPackagesEvent());
                               }
                             } else {
-                              globals.pickScanOption =
-                                  _pickUpScanItems[position];
+                              globals.pickScanOption = _pickUpScanItems[position];
                               if (position == 0) {
-                                _tenderScanBloc
-                                    .dispatch(PickUpProductionPartsEvent());
+                                _tenderScanBloc.dispatch(PickUpProductionPartsEvent());
                               } else {
-                                _tenderScanBloc
-                                    .dispatch(PickUpExternalPackagesEvent());
+                                _tenderScanBloc.dispatch(PickUpExternalPackagesEvent());
                               }
                             }
                           },
@@ -105,9 +83,7 @@ class _TenderScanPageState extends State<TenderScanPage> {
                     Divider(thickness: 1.0, color: const Color(0xff979797))
                   ]);
                 },
-                itemCount: globals.tabScanPosName == Strings.tenderTitle
-                    ? _tenderScanItems.length
-                    : _pickUpScanItems.length,
+                itemCount: globals.tabScanPosName == Strings.tenderTitle ? _tenderScanItems.length : _pickUpScanItems.length,
               )));
     }
 

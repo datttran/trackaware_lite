@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:trackaware_lite/blocs/list_depart_bloc.dart';
 import 'package:trackaware_lite/events/list_depart_event.dart';
@@ -9,12 +10,11 @@ import 'package:trackaware_lite/states/list_depart_state.dart';
 import 'package:trackaware_lite/utils/colorstrings.dart';
 import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/utils.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+
 List<Depart> departItems = List<Depart>();
 var listDepartBloc;
 
-class
-DepartPage extends StatefulWidget {
+class DepartPage extends StatefulWidget {
   @override
   _DepartState createState() => new _DepartState();
 }
@@ -41,114 +41,54 @@ class _DepartState extends State<DepartPage> {
                               decoration: new BoxDecoration(
                                 gradient: new LinearGradient(
                                     colors: [
-                                      HexColor(ColorStrings
-                                          .tenderPartsGradientColorFirst),
-                                      HexColor(ColorStrings
-                                          .tenderPartsGradientColorSecond),
+                                      HexColor(ColorStrings.tenderPartsGradientColorFirst),
+                                      HexColor(ColorStrings.tenderPartsGradientColorSecond),
                                     ],
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
                                     stops: [0.0, 1.0],
                                     tileMode: TileMode.clamp),
                               ),
-                              padding:
-                                  EdgeInsets.fromLTRB(18.0, 5.0, 18.0, 14.0),
+                              padding: EdgeInsets.fromLTRB(18.0, 5.0, 18.0, 14.0),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Flexible(
                                       child: Column(
                                         children: <Widget>[
-                                          Text("Location",
-                                              style: const TextStyle(
-                                                  color:
-                                                      const Color(0xff767272),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: "SourceSansPro",
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 13.0)),
-                                          Text(
-                                              departItems[position].location !=
-                                                      null
-                                                  ? departItems[position]
-                                                      .location
-                                                  : "",
+                                          Text("Location", style: const TextStyle(color: const Color(0xff767272), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 13.0)),
+                                          Text(departItems[position].location != null ? departItems[position].location : "",
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                  color:
-                                                      const Color(0xff202020),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: "SourceSansPro",
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 13.0))
+                                              style: const TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 13.0))
                                         ],
                                       ),
                                       flex: 1),
                                   Flexible(
                                       child: Column(
                                         children: <Widget>[
-                                          Text("Tracking Number",
-                                              style: const TextStyle(
-                                                  color:
-                                                      const Color(0xff767272),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: "SourceSansPro",
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 13.0)),
-                                          departItems[position].trackingNo ==
-                                                  null
+                                          Text("Tracking Number", style: const TextStyle(color: const Color(0xff767272), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 13.0)),
+                                          departItems[position].trackingNo == null
                                               ? Text("")
-                                              : Text(
-                                                  departItems[position]
-                                                      .trackingNo,
+                                              : Text(departItems[position].trackingNo,
                                                   maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
+                                                  overflow: TextOverflow.ellipsis,
                                                   style: const TextStyle(
-                                                      color: const Color(
-                                                          0xff202020),
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontFamily:
-                                                          "SourceSansPro",
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontSize: 13.0))
+                                                      color: const Color(0xff202020), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 13.0))
                                         ],
                                       ),
                                       flex: 1),
                                   Flexible(
                                       child: Column(
                                         children: <Widget>[
-                                          Text("Scan Time",
-                                              style: const TextStyle(
-                                                  color:
-                                                      const Color(0xff767272),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: "SourceSansPro",
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 13.0)),
+                                          Text("Scan Time", style: const TextStyle(color: const Color(0xff767272), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 13.0)),
                                           departItems[position].scanTime == null
                                               ? Text("")
-                                              : Text(
-                                                  departItems[position]
-                                                      .scanTime
-                                                      .toString(),
+                                              : Text(departItems[position].scanTime.toString(),
                                                   maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
+                                                  overflow: TextOverflow.ellipsis,
                                                   style: const TextStyle(
-                                                      color: const Color(
-                                                          0xff202020),
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontFamily:
-                                                          "SourceSansPro",
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontSize: 13.0))
+                                                      color: const Color(0xff202020), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 13.0))
                                         ],
                                       ),
                                       flex: 1),
@@ -168,11 +108,12 @@ class _DepartState extends State<DepartPage> {
       return Container(
         child: Column(
           children: <Widget>[
-            SizedBox(height: 15,),
+            SizedBox(
+              height: 15,
+            ),
             GestureDetector(
               onTap: () async {
-                var result =
-                    await Navigator.of(context).pushNamed('/NewDepartScreen');
+                var result = await Navigator.of(context).pushNamed('/NewDepartScreen');
                 if (result?.toString()?.isNotEmpty == true) {
                   listDepartBloc.dispatch(ListDepartItemsEvent());
                 }
@@ -182,15 +123,7 @@ class _DepartState extends State<DepartPage> {
                   padding: EdgeInsets.fromLTRB(0, 16.0, 0, 16.0),
                   width: double.infinity,
                   decoration: new BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [
-                            Color(0xffdac2ff).withOpacity(.4),
-                            Color(0xffdac2ff).withOpacity(.6)
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          stops: [0, 1]
-                      ),
+                      gradient: LinearGradient(colors: [Color(0xffdac2ff).withOpacity(.4), Color(0xffdac2ff).withOpacity(.6)], begin: Alignment.topLeft, end: Alignment.bottomRight, stops: [0, 1]),
                       borderRadius: new BorderRadius.all(Radius.circular(20))),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,15 +131,16 @@ class _DepartState extends State<DepartPage> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20.0, 0, 16.0, 0),
-                        child: Icon(AntDesign.plus,color: Color(0xff7e7eff)),
+                        child: Icon(AntDesign.plus, color: Color(0xff7e7eff)),
                       ),
                       Column(
                         children: [
-                          SizedBox(height: 4,),
+                          SizedBox(
+                            height: 4,
+                          ),
                           Text(
                             Strings.ADD_NEW,
-                            style:
-                                TextStyle(color: Color(0xff35357a).withOpacity(.5), fontSize: 16.0),
+                            style: TextStyle(color: Color(0xff35357a).withOpacity(.5), fontSize: 16.0),
                           ),
                         ],
                       )
@@ -222,26 +156,19 @@ class _DepartState extends State<DepartPage> {
                             alignment: Alignment.center,
                             child: Material(
                                 color: Colors.transparent,
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      SvgPicture.asset(
-
-                                        "assets/ic_box.svg",
-                                        semanticsLabel: "empty icon",
-                                        height: 100,
-                                      ),
-                                      Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(0, 8, 0, 0),
-                                          child: Text(
-                                            Strings.NO_DEPART_ITEMS,
-                                            style: TextStyle(
-                                                fontSize: 20.0,
-                                                color:
-                                                Color(0xffeaeaff).withOpacity(.6)),
-                                          ))
-                                    ])))))
+                                child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+                                  SvgPicture.asset(
+                                    "assets/ic_box.svg",
+                                    semanticsLabel: "empty icon",
+                                    height: 100,
+                                  ),
+                                  Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                                      child: Text(
+                                        Strings.NO_DEPART_ITEMS,
+                                        style: TextStyle(fontSize: 20.0, color: Color(0xffeaeaff).withOpacity(.6)),
+                                      ))
+                                ])))))
           ],
         ),
       );

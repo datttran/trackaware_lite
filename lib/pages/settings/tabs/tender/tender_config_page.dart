@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trackaware_lite/blocs/tender_config_bloc.dart';
 import 'package:trackaware_lite/events/tender_config_event.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/states/tender_config_state.dart';
 import 'package:trackaware_lite/utils/colorstrings.dart';
 import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/utils.dart';
-import 'package:trackaware_lite/globals.dart' as globals;
 
 class TenderConfigPage extends StatefulWidget {
   @override
@@ -40,42 +40,27 @@ class _TenderConfigPageState extends State<TenderConfigPage> {
             ),
             middle: Text(Strings.tenderTitle)),
         child: Container(
-            decoration: BoxDecoration(
-                color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
+            decoration: BoxDecoration(color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
             child: Stack(children: <Widget>[
               ListView(
                 children: <Widget>[
                   Material(
                       color: Colors.transparent,
                       child: ListTile(
-                        title: Text(Strings.TENDER_PRODUCTION_PARTS,
-                            style: TextStyle(
-                                color: const Color(0xff202020),
-                                fontWeight: FontWeight.w400,
-                                fontFamily: "SourceSansPro",
-                                fontStyle: FontStyle.normal,
-                                fontSize: 16.0)),
+                        title: Text(Strings.TENDER_PRODUCTION_PARTS, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0)),
                         trailing: Image.asset("images/ic_chevron_right.png"),
                         onTap: () {
-                          tenderConfigBloc
-                              .dispatch(TenderProductionPartsClickAction());
+                          tenderConfigBloc.dispatch(TenderProductionPartsClickAction());
                         },
                       )),
                   Divider(thickness: 1.0, color: const Color(0xff979797)),
                   Material(
                       color: Colors.transparent,
                       child: ListTile(
-                        title: Text(Strings.TENDER_EXTERNAL_PACKAGES,
-                            style: TextStyle(
-                                color: const Color(0xff202020),
-                                fontWeight: FontWeight.w400,
-                                fontFamily: "SourceSansPro",
-                                fontStyle: FontStyle.normal,
-                                fontSize: 16.0)),
+                        title: Text(Strings.TENDER_EXTERNAL_PACKAGES, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0)),
                         trailing: Image.asset("images/ic_chevron_right.png"),
                         onTap: () {
-                          tenderConfigBloc
-                              .dispatch(TenderExternalPackagesClickAction());
+                          tenderConfigBloc.dispatch(TenderExternalPackagesClickAction());
                         },
                       )),
                   Divider(thickness: 1.0, color: const Color(0xff979797))
@@ -88,8 +73,7 @@ class _TenderConfigPageState extends State<TenderConfigPage> {
   Widget build(BuildContext context) {
     tenderConfigBloc = BlocProvider.of<TenderConfigBloc>(context);
 
-    Widget getCupertinoScaffold(
-        TenderConfigState state, TenderConfigBloc tenderConfigBloc) {
+    Widget getCupertinoScaffold(TenderConfigState state, TenderConfigBloc tenderConfigBloc) {
       return Platform.isAndroid
           ? WillPopScope(
               onWillPop: () {

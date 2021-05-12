@@ -220,7 +220,7 @@ class _DeliveryState extends State<DeliveryTabWidget> {
                                             ],
                                           ),
                                         ],
-                                      ))
+                                      )),
                                 ],
                               )),
                         ),
@@ -258,7 +258,7 @@ class _DeliveryState extends State<DeliveryTabWidget> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-              height: verticalPixel * 72,
+              height: verticalPixel * 65,
               margin: EdgeInsets.symmetric(horizontal: horizontalPixel * 3.5, vertical: verticalPixel * 1),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),

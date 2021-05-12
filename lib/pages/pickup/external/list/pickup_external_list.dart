@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:trackaware_lite/blocs/list_pickup_bloc.dart';
 import 'package:trackaware_lite/events/list_pickup_event.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/models/pickup_external_db.dart';
 import 'package:trackaware_lite/models/transaction_request.dart';
 import 'package:trackaware_lite/repositories/pickup_repository.dart';
@@ -14,7 +15,6 @@ import 'package:trackaware_lite/utils/colorstrings.dart';
 import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/transactions.dart';
 import 'package:trackaware_lite/utils/utils.dart';
-import 'package:trackaware_lite/globals.dart' as globals;
 
 List<PickUpExternal> pickUpItems = List<PickUpExternal>();
 var listPickUpBloc;
@@ -32,8 +32,7 @@ class PickUpExternalPage extends StatefulWidget {
         super(key: key);
 
   @override
-  _PickUpExternalState createState() =>
-      new _PickUpExternalState(pickUpApiRepository);
+  _PickUpExternalState createState() => new _PickUpExternalState(pickUpApiRepository);
 }
 
 class _PickUpExternalState extends State<PickUpExternalPage> {
@@ -54,13 +53,10 @@ class _PickUpExternalState extends State<PickUpExternalPage> {
                   itemBuilder: (context, position) {
                     return GestureDetector(
                         onTap: () async {
-                          globals.selectedPickUpExternal =
-                              pickUpItems[position];
-                          var result = await Navigator.of(context)
-                              .pushNamed('/NewPickUpExternalScreen');
+                          globals.selectedPickUpExternal = pickUpItems[position];
+                          var result = await Navigator.of(context).pushNamed('/NewPickUpExternalScreen');
                           if (result?.toString()?.isNotEmpty == true) {
-                            listPickUpBloc
-                                .dispatch(ListExternalPickUpItemsEvent());
+                            listPickUpBloc.dispatch(ListExternalPickUpItemsEvent());
                           }
                         },
                         child: Card(
@@ -70,10 +66,8 @@ class _PickUpExternalState extends State<PickUpExternalPage> {
                               decoration: new BoxDecoration(
                                 gradient: new LinearGradient(
                                     colors: [
-                                      HexColor(ColorStrings
-                                          .tenderPartsGradientColorFirst),
-                                      HexColor(ColorStrings
-                                          .tenderPartsGradientColorSecond),
+                                      HexColor(ColorStrings.tenderPartsGradientColorFirst),
+                                      HexColor(ColorStrings.tenderPartsGradientColorSecond),
                                     ],
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
@@ -83,119 +77,51 @@ class _PickUpExternalState extends State<PickUpExternalPage> {
                               child: Column(
                                 children: <Widget>[
                                   Container(
-                                      padding: EdgeInsets.fromLTRB(
-                                          20, 12.0, 0.0, 0.0),
+                                      padding: EdgeInsets.fromLTRB(20, 12.0, 0.0, 0.0),
                                       child: Align(
                                           alignment: Alignment.topLeft,
                                           child: Text("# Tracking Number",
                                               textAlign: TextAlign.right,
-                                              style: const TextStyle(
-                                                  color:
-                                                      const Color(0xff767272),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: "SourceSansPro",
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 13.0)))),
+                                              style: const TextStyle(color: const Color(0xff767272), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 13.0)))),
                                   Container(
-                                      padding: EdgeInsets.fromLTRB(
-                                          20.0, 2.0, 0.0, 0.0),
+                                      padding: EdgeInsets.fromLTRB(20.0, 2.0, 0.0, 0.0),
                                       child: Align(
                                         alignment: Alignment.topLeft,
                                         child: Container(
-                                            padding: EdgeInsets.fromLTRB(
-                                                0.0, 2.0, 20.0, 7.0),
-                                            child: Text(
-                                                pickUpItems[position]
-                                                            ?.trackingNumber ==
-                                                        null
-                                                    ? ""
-                                                    : pickUpItems[position]
-                                                        ?.trackingNumber,
+                                            padding: EdgeInsets.fromLTRB(0.0, 2.0, 20.0, 7.0),
+                                            child: Text(pickUpItems[position]?.trackingNumber == null ? "" : pickUpItems[position]?.trackingNumber,
                                                 textAlign: TextAlign.right,
-                                                style: const TextStyle(
-                                                    color:
-                                                        const Color(0xff000000),
-                                                    fontWeight: FontWeight.w400,
-                                                    fontFamily: "SourceSansPro",
-                                                    fontStyle: FontStyle.normal,
-                                                    fontSize: 18.0))),
+                                                style: const TextStyle(color: const Color(0xff000000), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 18.0))),
                                       )),
                                   Expanded(
                                       child: Container(
-                                          margin: EdgeInsets.fromLTRB(
-                                              18, 0.0, 18.0, 0.0),
+                                          margin: EdgeInsets.fromLTRB(18, 0.0, 18.0, 0.0),
                                           child: Divider(
                                             color: const Color(0xff484343),
                                           ))),
                                   Container(
-                                      padding: EdgeInsets.fromLTRB(
-                                          18.0, 5.0, 18.0, 14.0),
+                                      padding: EdgeInsets.fromLTRB(18.0, 5.0, 18.0, 14.0),
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Column(
                                             children: <Widget>[
                                               Text("Pick Up Site",
                                                   style: const TextStyle(
-                                                      color: const Color(
-                                                          0xff767272),
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontFamily:
-                                                          "SourceSansPro",
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontSize: 13.0)),
-                                              Text(
-                                                  pickUpItems[position]
-                                                              .pickUpSite !=
-                                                          null
-                                                      ? pickUpItems[position]
-                                                          .pickUpSite
-                                                      : "",
+                                                      color: const Color(0xff767272), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 13.0)),
+                                              Text(pickUpItems[position].pickUpSite != null ? pickUpItems[position].pickUpSite : "",
                                                   style: const TextStyle(
-                                                      color: const Color(
-                                                          0xff202020),
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontFamily:
-                                                          "SourceSansPro",
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontSize: 13.0))
+                                                      color: const Color(0xff202020), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 13.0))
                                             ],
                                           ),
                                           Column(
                                             children: <Widget>[
                                               Text("Delivery Site",
                                                   style: const TextStyle(
-                                                      color: const Color(
-                                                          0xff767272),
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontFamily:
-                                                          "SourceSansPro",
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontSize: 13.0)),
-                                              Text(
-                                                  pickUpItems[position]
-                                                              .deliverySite !=
-                                                          null
-                                                      ? pickUpItems[position]
-                                                          .deliverySite
-                                                      : "",
+                                                      color: const Color(0xff767272), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 13.0)),
+                                              Text(pickUpItems[position].deliverySite != null ? pickUpItems[position].deliverySite : "",
                                                   style: const TextStyle(
-                                                      color: const Color(
-                                                          0xff202020),
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontFamily:
-                                                          "SourceSansPro",
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontSize: 13.0))
+                                                      color: const Color(0xff202020), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 13.0))
                                             ],
                                           ),
                                         ],
@@ -230,8 +156,7 @@ class _PickUpExternalState extends State<PickUpExternalPage> {
               Column(children: <Widget>[
                 GestureDetector(
                     onTap: () async {
-                      var result = await Navigator.of(context)
-                          .pushNamed('/NewPickUpExternalScreen');
+                      var result = await Navigator.of(context).pushNamed('/NewPickUpExternalScreen');
                       if (result?.toString()?.isNotEmpty == true) {
                         listPickUpBloc.dispatch(ListExternalPickUpItemsEvent());
                       }
@@ -244,25 +169,20 @@ class _PickUpExternalState extends State<PickUpExternalPage> {
                           decoration: new BoxDecoration(
                               color: Colors.white,
                               borderRadius: new BorderRadius.only(
-                                  topLeft: const Radius.circular(8.0),
-                                  topRight: const Radius.circular(8.0),
-                                  bottomLeft: const Radius.circular(8.0),
-                                  bottomRight: const Radius.circular(8.0))),
+                                  topLeft: const Radius.circular(8.0), topRight: const Radius.circular(8.0), bottomLeft: const Radius.circular(8.0), bottomRight: const Radius.circular(8.0))),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(20.0, 0, 16.0, 0),
+                                padding: const EdgeInsets.fromLTRB(20.0, 0, 16.0, 0),
                                 child: Image.asset('images/ic_add.png'),
                               ),
                               Material(
                                   color: Colors.transparent,
                                   child: Text(
                                     Strings.ADD_NEW,
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 18.0),
+                                    style: TextStyle(color: Colors.black, fontSize: 18.0),
                                   ))
                             ],
                           )),
@@ -277,25 +197,18 @@ class _PickUpExternalState extends State<PickUpExternalPage> {
                                 alignment: Alignment.center,
                                 child: Material(
                                     color: Colors.transparent,
-                                    child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          SvgPicture.asset(
-                                            "assets/ic_box.svg",
-                                            semanticsLabel: "empty icon",
-                                          ),
-                                          Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  0, 8, 0, 0),
-                                              child: Text(
-                                                Strings.NO_PICKUP_ITEMS,
-                                                style: TextStyle(
-                                                    fontSize: 20.0,
-                                                    backgroundColor:
-                                                        Colors.transparent),
-                                              ))
-                                        ]))))),
+                                    child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+                                      SvgPicture.asset(
+                                        "assets/ic_box.svg",
+                                        semanticsLabel: "empty icon",
+                                      ),
+                                      Padding(
+                                          padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                                          child: Text(
+                                            Strings.NO_PICKUP_ITEMS,
+                                            style: TextStyle(fontSize: 20.0, backgroundColor: Colors.transparent),
+                                          ))
+                                    ]))))),
                 Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
@@ -309,13 +222,7 @@ class _PickUpExternalState extends State<PickUpExternalPage> {
                                     clipBehavior: Clip.antiAlias,
                                     padding: EdgeInsets.all(16),
                                     child: Text(Strings.SEND,
-                                        style: TextStyle(
-                                            color: HexColor(ColorStrings
-                                                .SEND_BUTTON_TEXT_COLOR),
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: "SourceSansPro",
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 16.0),
+                                        style: TextStyle(color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0),
                                         textAlign: TextAlign.center),
                                     onPressed: () {
                                       listPickUpBloc.dispatch(FetchUserName());
@@ -360,9 +267,7 @@ class _PickUpExternalState extends State<PickUpExternalPage> {
         transactionRequest.location = pickUpExternal.deliverySite;
         transactionRequest.status = Strings.PICKUP;
         transactionRequest.user = _userName;
-        transactionRequest.packages = [
-          getPackageFromPickUpExternal(pickUpExternal)
-        ];
+        transactionRequest.packages = [getPackageFromPickUpExternal(pickUpExternal)];
         _transactionRequestItems.add(transactionRequest);
       }
     }
@@ -389,8 +294,7 @@ class _PickUpExternalState extends State<PickUpExternalPage> {
             if (_transactionRequestItems.isNotEmpty) {
               for (var i = 0; i < _transactionRequestItems.length; i++) {
                 transactionCount += 1;
-                listPickUpBloc.dispatch(SendExternalButtonClick(
-                    _transactionRequestItems[i], _deviceIdValue, _userName));
+                listPickUpBloc.dispatch(SendExternalButtonClick(_transactionRequestItems[i], _deviceIdValue, _userName));
               }
             } else {
               print("No transactions to be synced");
@@ -402,8 +306,7 @@ class _PickUpExternalState extends State<PickUpExternalPage> {
           }
 
           if (state is PickUpExternalSaved) {
-            if (transactionCount != 0 &&
-                transactionCount == _transactionRequestItems.length) {
+            if (transactionCount != 0 && transactionCount == _transactionRequestItems.length) {
               transactionCount = 0;
               _isLoading = false;
               print(state.message);

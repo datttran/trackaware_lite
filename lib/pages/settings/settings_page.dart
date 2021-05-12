@@ -57,8 +57,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaY: 3, sigmaX: 3),
                       child: Container(
+                        height: verticalPixel * 12,
+                        width: horizontalPixel * 97,
                         padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-                        margin: EdgeInsets.symmetric(horizontal: 15),
+                        margin: EdgeInsets.symmetric(horizontal: horizontalPixel * 3.5),
                         decoration: BoxDecoration(
                           color: Color(0xff2C2C34),
                           borderRadius: BorderRadius.vertical(top: Radius.circular(0), bottom: Radius.circular(15)),
@@ -74,33 +76,25 @@ class _SettingsPageState extends State<SettingsPage> {
                       },
                     ),*/
                             Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(
                                   height: 30,
+                                  width: horizontalPixel * 80,
                                 ),
-                                Text('T R A C K A W A R E', style: TextStyle(color: Color(0xff6868fd), fontSize: verticalPixel * 2)),
-                                Text('  DELIVERY EXPERIENCE PLATFORM', style: TextStyle(color: Color(0xff9393ee), fontSize: verticalPixel * .85)),
+                                Container(
+                                  width: horizontalPixel * 80,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text('T R A C K A W A R E', style: TextStyle(color: Color(0xff689ffd), fontSize: verticalPixel * 3.4)),
+                                    ],
+                                  ),
+                                ),
+                                Text(' DELIVERY EXPERIENCE PLATFORM', style: TextStyle(color: Color(0xff93b1ee), fontSize: verticalPixel * 1.3)),
                               ],
                             ),
-                            SizedBox(
-                              width: 70,
-                            ),
-                            GestureDetector(
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: 25,
-                                  ),
-                                ],
-                              ),
-                              onTap: () async {
-                                var result = await Navigator.of(context).pushNamed('/Settings');
-
-                                if (result?.toString()?.isNotEmpty == true) {}
-                              },
-                            )
                           ],
                         ),
                       ),
@@ -113,8 +107,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   Material(
                       color: Color(0xff2C2C34),
                       child: ListTile(
-                        title: Text(Strings.LOCATION,
-                            style: TextStyle(color: const Color(0xffffffff), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 16.0)),
+                        title: Text(Strings.LOCATION, style: TextStyle(color: const Color(0xffffffff), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0)),
                         trailing: Image.asset("images/ic_chevron_right.png"),
                         onTap: () {
                           settingsBloc.dispatch(LocationClick());
@@ -125,8 +118,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   Material(
                       color: Color(0xff2C2C34),
                       child: ListTile(
-                        title: Text(Strings.SERVER,
-                            style: TextStyle(color: const Color(0xffffffff), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 16.0)),
+                        title: Text(Strings.SERVER, style: TextStyle(color: const Color(0xffffffff), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0)),
                         trailing: Image.asset("images/ic_chevron_right.png"),
                         onTap: () {
                           settingsBloc.dispatch(ServerClick());
@@ -174,7 +166,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 style: TextStyle(
                                     color: const Color(0xff202020),
                                     fontWeight: FontWeight.w400,
-                                    fontFamily: "SourceSansPro",
+
                                     fontStyle: FontStyle.normal,
                                     fontSize: 16.0)),
                             trailing: Image.asset("images/ic_chevron_right.png"),

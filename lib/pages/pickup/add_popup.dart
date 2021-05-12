@@ -167,15 +167,25 @@ class _PopState extends State<Pop> {
                   Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Icon(
                             Icons.location_on_rounded,
                             color: Colors.white70,
                           ),
                           Text(
-                            globals.currentLocation != null ? globals.currentLocation.street + ', ' + globals.currentLocation.locality + ', ' + globals.currentLocation.administrativeArea : 'UNKNOWN',
+                            globals.currentLocation != null
+                                ? "   " +
+                                    globals.currentLocation.street +
+                                    ', ' +
+                                    globals.currentLocation.locality +
+                                    ', ' +
+                                    globals.currentLocation.administrativeArea +
+                                    ' ' +
+                                    globals.currentLocation.postalCode
+                                : 'UNKNOWN',
                             style: TextStyle(color: Colors.white70),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
@@ -208,6 +218,7 @@ class _PopState extends State<Pop> {
                         height: verticalPixel * 3,
                       ),
                       TextField(
+                        textInputAction: TextInputAction.done,
                         minLines: 7,
                         maxLines: 10,
                         style: TextStyle(color: Color(0xffc5c5cb)),

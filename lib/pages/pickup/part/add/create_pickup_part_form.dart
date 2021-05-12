@@ -9,17 +9,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:toast/toast.dart';
 import 'package:trackaware_lite/blocs/create_pickup_bloc.dart';
 import 'package:trackaware_lite/events/create_pickup_event.dart';
-import 'package:trackaware_lite/events/pickup_tab_event.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/models/location_response.dart';
 import 'package:trackaware_lite/models/pickup_part_db.dart';
-import 'package:trackaware_lite/pages/pickup/external/add/create_external_pickup_form.dart';
 import 'package:trackaware_lite/states/create_pickup_state.dart';
-import 'package:trackaware_lite/states/pickup_tab_state.dart';
 import 'package:trackaware_lite/utils/colorstrings.dart';
 import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/transactions.dart';
 import 'package:trackaware_lite/utils/utils.dart';
-import 'package:trackaware_lite/globals.dart' as globals;
 
 class CreatePickUpPartForm extends StatefulWidget {
   final String barCode;
@@ -40,9 +37,6 @@ bool _isKeepScannedValues = false;
 final FocusNode orderNumberFocus = FocusNode();
 final FocusNode partNumberFocus = FocusNode();
 
-
-
-
 const double _kPickerItemHeight = 32.0;
 const double _kPickerSheetHeight = 216.0;
 
@@ -62,8 +56,6 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
   var barcode;
   PickUpPart receivedPickUpPart;
   _CreatePickUpPartFormFormState(this.barcode, this.receivedPickUpPart);
-
-
 
   @override
   void dispose() {
@@ -96,9 +88,7 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
               ? Text("Select location")
               : Text(
                   _locationList[_selectedLocationIndex].code,
-                  style: TextStyle(
-                      color: CupertinoDynamicColor.resolve(
-                          CupertinoColors.inactiveGray, context)),
+                  style: TextStyle(color: CupertinoDynamicColor.resolve(CupertinoColors.inactiveGray, context)),
                 ));
     }
 
@@ -109,9 +99,7 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
               ? Text("Select Destination")
               : Text(
                   _destinationList[_selectedDestinationIndex].code,
-                  style: TextStyle(
-                      color: CupertinoDynamicColor.resolve(
-                          CupertinoColors.inactiveGray, context)),
+                  style: TextStyle(color: CupertinoDynamicColor.resolve(CupertinoColors.inactiveGray, context)),
                 ));
     }
 
@@ -141,32 +129,21 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
                         ),
                       )),
                   Expanded(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                            child: Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  Strings.LOCATION,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: HexColor(ColorStrings.HEADING),
-                                      fontFamily: "SourceSansPro",
-                                      fontSize: 12.0,
-                                      fontStyle: FontStyle.normal),
-                                ))),
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                            child: receivedPickUpPart != null &&
-                                    _selectedLocationIndex == -1
-                                ? Material(
-                                    color: Colors.transparent,
-                                    child: Text(receivedPickUpPart.location))
-                                : _buildLocationPicker(context))
-                      ]))
+                      child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                        child: Material(
+                            color: Colors.transparent,
+                            child: Text(
+                              Strings.LOCATION,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                            ))),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                        child:
+                            receivedPickUpPart != null && _selectedLocationIndex == -1 ? Material(color: Colors.transparent, child: Text(receivedPickUpPart.location)) : _buildLocationPicker(context))
+                  ]))
                 ],
               )));
     }
@@ -197,33 +174,25 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
                         ),
                       )),
                   Expanded(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                            child: Material(
+                      child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                        child: Material(
+                            color: Colors.transparent,
+                            child: Text(
+                              Strings.DESTINATION,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                            ))),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                        child: receivedPickUpPart != null && _selectedDestinationIndex == -1
+                            ? Material(
                                 color: Colors.transparent,
-                                child: Text(
-                                  Strings.DESTINATION,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      color: HexColor(ColorStrings.HEADING),
-                                      fontFamily: "SourceSansPro",
-                                      fontSize: 12.0,
-                                      fontStyle: FontStyle.normal),
-                                ))),
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                            child: receivedPickUpPart != null &&
-                                    _selectedDestinationIndex == -1
-                                ? Material(
-                                    color: Colors.transparent,
-                                    child: Text(receivedPickUpPart.destination),
-                                  )
-                                : _buildDestinationPicker(context))
-                      ]))
+                                child: Text(receivedPickUpPart.destination),
+                              )
+                            : _buildDestinationPicker(context))
+                  ]))
                 ],
               )));
     }
@@ -231,12 +200,10 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
     Widget getOrderNumberWidget() {
       if (receivedPickUpPart != null) {
         orderNumberController.text = receivedPickUpPart.orderNumber;
-        orderNumberController.selection = TextSelection.fromPosition(
-            TextPosition(offset: orderNumberController.text.length));
+        orderNumberController.selection = TextSelection.fromPosition(TextPosition(offset: orderNumberController.text.length));
       } else if (globals.orderNumber.isNotEmpty) {
         orderNumberController.text = globals.orderNumber;
-        orderNumberController.selection = TextSelection.fromPosition(
-            TextPosition(offset: orderNumberController.text.length));
+        orderNumberController.selection = TextSelection.fromPosition(TextPosition(offset: orderNumberController.text.length));
       }
       return Container(
           decoration: BoxDecoration(
@@ -248,61 +215,44 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
             Flexible(
                 child: GestureDetector(
                     onTap: () {
-
                       partNumberFocus.unfocus();
                       FocusScope.of(context).requestFocus(orderNumberFocus);
                     },
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                              child: Material(
-                                  color: Colors.transparent,
-                                  child: Text(
-                                    Strings.ORDER_NUMBER,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                        color: HexColor(ColorStrings.HEADING),
-                                        fontFamily: "SourceSansPro",
-                                        fontSize: 12.0,
-                                        fontStyle: FontStyle.normal),
-                                  ))),
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                              child: new Material(
-
-                                  color: Colors.transparent,
-                                  child: new TextFormField(
-                                    keyboardType: TextInputType.text,
-                                    textCapitalization:
-                                        TextCapitalization.sentences,
-                                    style: TextStyle(
-                                        color: HexColor(ColorStrings.VALUES),
-                                        fontSize: 16),
-                                    autofocus: true,
-                                    decoration: InputDecoration.collapsed(
-                                        focusColor: HexColor(
-                                            ColorStrings.emailPwdTextColor),
-                                        hintText: Strings.ENTER_ORDER_NUMBER),
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return Strings
-                                            .ORDER_NUMBER_VALIDATION_MESSAGE;
-                                      }
-                                      return null;
-                                    },
-                                    controller: orderNumberController,
-                                    textInputAction: TextInputAction.next,
-                                    focusNode: orderNumberFocus,
-                                    onFieldSubmitted: (v) {
-                                      orderNumberFocus.unfocus();
-                                      FocusScope.of(context)
-                                          .requestFocus(partNumberFocus);
-                                    },
-                                  )))
-                        ])),
+                    child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                          child: Material(
+                              color: Colors.transparent,
+                              child: Text(
+                                Strings.ORDER_NUMBER,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                              ))),
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                          child: new Material(
+                              color: Colors.transparent,
+                              child: new TextFormField(
+                                keyboardType: TextInputType.text,
+                                textCapitalization: TextCapitalization.sentences,
+                                style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                                autofocus: false,
+                                decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_ORDER_NUMBER),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return Strings.ORDER_NUMBER_VALIDATION_MESSAGE;
+                                  }
+                                  return null;
+                                },
+                                controller: orderNumberController,
+                                textInputAction: TextInputAction.next,
+                                focusNode: orderNumberFocus,
+                                onFieldSubmitted: (v) {
+                                  orderNumberFocus.unfocus();
+                                  FocusScope.of(context).requestFocus(partNumberFocus);
+                                },
+                              )))
+                    ])),
                 flex: 6),
             Flexible(
                 child: GestureDetector(
@@ -310,9 +260,7 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
                     globals.scanOption = Strings.CREATE_PICKUP_PRODUCTION_PARTS;
                     createPickUpBloc.dispatch(OrderNumberScanEvent());
                   },
-                  child: Padding(
-                      child: Image.asset("images/ic_scan.png"),
-                      padding: EdgeInsets.fromLTRB(0, 16, 0, 16)),
+                  child: Padding(child: Image.asset("images/ic_scan.png"), padding: EdgeInsets.fromLTRB(0, 16, 0, 16)),
                 ),
                 flex: 1)
           ]));
@@ -321,12 +269,10 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
     Widget getPartNumberWidget() {
       if (receivedPickUpPart != null) {
         partNumberController.text = receivedPickUpPart.partNumber;
-        partNumberController.selection = TextSelection.fromPosition(
-            TextPosition(offset: partNumberController.text.length));
+        partNumberController.selection = TextSelection.fromPosition(TextPosition(offset: partNumberController.text.length));
       } else if (globals.partNumber.isNotEmpty) {
         partNumberController.text = globals.partNumber;
-        partNumberController.selection = TextSelection.fromPosition(
-            TextPosition(offset: partNumberController.text.length));
+        partNumberController.selection = TextSelection.fromPosition(TextPosition(offset: partNumberController.text.length));
       }
 
       return Container(
@@ -342,54 +288,40 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
                       orderNumberFocus.unfocus();
                       FocusScope.of(context).requestFocus(partNumberFocus);
                     },
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                              child: Material(
-                                  color: Colors.transparent,
-                                  child: Text(
-                                    Strings.PART_NUMBER,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                        color: HexColor(ColorStrings.HEADING),
-                                        fontFamily: "SourceSansPro",
-                                        fontSize: 12.0,
-                                        fontStyle: FontStyle.normal),
-                                  ))),
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                              child: new Material(
-                                  color: Colors.transparent,
-                                  child: new TextFormField(
-                                    keyboardType: TextInputType.text,
-                                    textCapitalization:
-                                        TextCapitalization.sentences,
-                                    style: TextStyle(
-                                        color: HexColor(ColorStrings.VALUES),
-                                        fontSize: 16),
-                                    autofocus: true,
-                                    decoration: InputDecoration.collapsed(
-                                        focusColor: HexColor(
-                                            ColorStrings.emailPwdTextColor),
-                                        hintText: Strings.ENTER_PART_NUMBER),
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return Strings
-                                            .TRACKING_NUMBER_VALIDATION_MESSAGE;
-                                      }
-                                      return null;
-                                    },
-                                    controller: partNumberController,
-                                    textInputAction: TextInputAction.done,
-                                    focusNode: partNumberFocus,
-                                    onFieldSubmitted: (v) {
-                                      partNumberFocus.unfocus();
-                                    },
-                                  )))
-                        ])),
+                    child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                          child: Material(
+                              color: Colors.transparent,
+                              child: Text(
+                                Strings.PART_NUMBER,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                              ))),
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                          child: new Material(
+                              color: Colors.transparent,
+                              child: new TextFormField(
+                                keyboardType: TextInputType.text,
+                                textCapitalization: TextCapitalization.sentences,
+                                style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                                autofocus: false,
+                                decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_PART_NUMBER),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return Strings.TRACKING_NUMBER_VALIDATION_MESSAGE;
+                                  }
+                                  return null;
+                                },
+                                controller: partNumberController,
+                                textInputAction: TextInputAction.done,
+                                focusNode: partNumberFocus,
+                                onFieldSubmitted: (v) {
+                                  partNumberFocus.unfocus();
+                                },
+                              )))
+                    ])),
                 flex: 6),
             Flexible(
                 child: GestureDetector(
@@ -397,16 +329,13 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
                     globals.scanOption = Strings.CREATE_PICKUP_PRODUCTION_PARTS;
                     createPickUpBloc.dispatch(PartNumberScanEvent());
                   },
-                  child: Padding(
-                      child: Image.asset("images/ic_scan.png"),
-                      padding: EdgeInsets.fromLTRB(0, 16, 0, 16)),
+                  child: Padding(child: Image.asset("images/ic_scan.png"), padding: EdgeInsets.fromLTRB(0, 16, 0, 16)),
                 ),
                 flex: 1)
           ]));
     }
 
-    Widget getCheckBox(
-        CreatePickUpState state, CreatePickUpBloc createExternalTenderBloc) {
+    Widget getCheckBox(CreatePickUpState state, CreatePickUpBloc createExternalTenderBloc) {
       if (receivedPickUpPart != null) {
         _isKeepScannedValues = receivedPickUpPart.keepScannedValues == 1;
       }
@@ -420,8 +349,7 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
                 value: state is CheckBoxChecked ? true : _isKeepScannedValues,
                 onChanged: (bool value) {
                   _isKeepScannedValues = value;
-                  createExternalTenderBloc.dispatch(
-                      new CheckBoxClick(isChecked: _isKeepScannedValues));
+                  createExternalTenderBloc.dispatch(new CheckBoxClick(isChecked: _isKeepScannedValues));
                 },
               )),
           Expanded(
@@ -429,12 +357,7 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
                   color: Colors.transparent,
                   child: Text(
                     Strings.KEEP_SCANNED_VALUES,
-                    style: const TextStyle(
-                        color: const Color(0xff030303),
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "SourceSansPro",
-                        fontStyle: FontStyle.normal,
-                        fontSize: 16.0),
+                    style: const TextStyle(color: const Color(0xff030303), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0),
                   ))),
         ],
       );
@@ -449,34 +372,18 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
                   elevation: 8.0,
                   clipBehavior: Clip.antiAlias,
                   padding: EdgeInsets.all(16),
-                  child: Text(
-                      receivedPickUpPart != null
-                          ? Strings.SEND
-                          : Strings.ADD_TO_LIST,
-                      style: TextStyle(
-                          color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR),
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "SourceSansPro",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 16.0),
-                      textAlign: TextAlign.center),
+                  child: Text(receivedPickUpPart != null ? Strings.SEND : Strings.ADD_TO_LIST,
+                      style: TextStyle(color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0), textAlign: TextAlign.center),
                   onPressed: () {
                     _savePickUpPartToDb();
-
-
-
-
-
                   },
                   color: const Color(0xff424e53))));
     }
 
-    Widget getScaffold(
-        CreatePickUpState state, CreatePickUpBloc createPickUpBloc) {
+    Widget getScaffold(CreatePickUpState state, CreatePickUpBloc createPickUpBloc) {
       return CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
-              backgroundColor:
-                  HexColor(ColorStrings.boxBackground).withAlpha(30),
+              backgroundColor: HexColor(ColorStrings.boxBackground).withAlpha(30),
               leading: GestureDetector(
                 onTap: () {
                   navigateBack();
@@ -489,9 +396,7 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
           child: Form(
               key: _formKey,
               child: Container(
-                  decoration: BoxDecoration(
-                      color:
-                          HexColor(ColorStrings.boxBackground).withAlpha(30)),
+                  decoration: BoxDecoration(color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
                   child: Stack(children: <Widget>[
                     ListView(
                       children: <Widget>[
@@ -502,9 +407,7 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
                         getCheckBox(state, createPickUpBloc),
                       ],
                     ),
-                    Align(
-                        child: getSendButton(),
-                        alignment: AlignmentDirectional.bottomCenter),
+                    Align(child: getSendButton(), alignment: AlignmentDirectional.bottomCenter),
                     Align(
                       child: _isLoading
                           ? CupertinoActivityIndicator(
@@ -543,15 +446,13 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
           if (state is OrderNumberScanSuccess) {
             globals.orderNumber = state.barCode;
             orderNumberController.text = globals.orderNumber;
-            orderNumberController.selection = TextSelection.fromPosition(
-                TextPosition(offset: orderNumberController.text.length));
+            orderNumberController.selection = TextSelection.fromPosition(TextPosition(offset: orderNumberController.text.length));
           }
 
           if (state is PartNumberScanSuccess) {
             globals.partNumber = state.barCode;
             partNumberController.text = globals.refNumber;
-            partNumberController.selection = TextSelection.fromPosition(
-                TextPosition(offset: partNumberController.text.length));
+            partNumberController.selection = TextSelection.fromPosition(TextPosition(offset: partNumberController.text.length));
           }
 
           if (state is FetchDeviceIdSuccess) {
@@ -564,29 +465,18 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
             PickUpPart pickUpPart;
             if (receivedPickUpPart != null) {
               pickUpPart = receivedPickUpPart;
-              if (_locationList.isNotEmpty)
-                pickUpPart.location = _selectedLocationIndex != -1
-                    ? _locationList[_selectedLocationIndex].code
-                    : receivedPickUpPart.location;
-              if (_destinationList.isNotEmpty)
-                pickUpPart.destination = _selectedDestinationIndex != -1
-                    ? _destinationList[_selectedDestinationIndex].code
-                    : receivedPickUpPart.destination;
+              if (_locationList.isNotEmpty) pickUpPart.location = _selectedLocationIndex != -1 ? _locationList[_selectedLocationIndex].code : receivedPickUpPart.location;
+              if (_destinationList.isNotEmpty) pickUpPart.destination = _selectedDestinationIndex != -1 ? _destinationList[_selectedDestinationIndex].code : receivedPickUpPart.destination;
               pickUpPart.orderNumber = orderNumberController.text;
               pickUpPart.partNumber = partNumberController.text;
-              createPickUpBloc.dispatch(SendPartsButtonClick(
-                  generateTransactionFromPickupPart(
-                      pickUpPart, _deviceIdValue, _userName),
-                  pickUpPart));
+              createPickUpBloc.dispatch(SendPartsButtonClick(generateTransactionFromPickupPart(pickUpPart, _deviceIdValue, _userName), pickUpPart));
             } else {
               pickUpPart = PickUpPart();
               pickUpPart.location = _locationList[_selectedLocationIndex].code;
-              pickUpPart.destination =
-                  _destinationList[_selectedDestinationIndex].code;
+              pickUpPart.destination = _destinationList[_selectedDestinationIndex].code;
               pickUpPart.orderNumber = orderNumberController.text;
               pickUpPart.partNumber = partNumberController.text;
-              pickUpPart.scanTime =
-                  (DateTime.now().millisecondsSinceEpoch / 1000).round();
+              pickUpPart.scanTime = (DateTime.now().millisecondsSinceEpoch / 1000).round();
               pickUpPart.isSynced = 0;
               pickUpPart.isScanned = 0;
               pickUpPart.isDelivered = 0;
@@ -598,11 +488,9 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
           if (state is PickUpPartsSaved) {
             globals.orderNumber = "";
             globals.partNumber = "";
-            Toast.show(state.message, context,
-                duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+            Toast.show(state.message, context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
             globals.selectedPickUpPart = null;
             Navigator.pop(context, "saved");
-
           }
 
           if (state is AddToListPartSuccess) {
@@ -632,9 +520,7 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
               }
             }
 
-            final FixedExtentScrollController scrollController =
-                FixedExtentScrollController(
-                    initialItem: _selectedLocationIndex);
+            final FixedExtentScrollController scrollController = FixedExtentScrollController(initialItem: _selectedLocationIndex);
             showCupertinoModalPopup<void>(
               context: context,
               builder: (BuildContext context) {
@@ -642,13 +528,11 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
                   child: CupertinoPicker(
                     scrollController: scrollController,
                     itemExtent: _kPickerItemHeight,
-                    backgroundColor:
-                        CupertinoColors.systemBackground.resolveFrom(context),
+                    backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
                     onSelectedItemChanged: (int index) {
                       setState(() => _selectedLocationIndex = index);
                     },
-                    children: List<Widget>.generate(_locationList.length,
-                        (int index) {
+                    children: List<Widget>.generate(_locationList.length, (int index) {
                       return Center(
                         child: Text(_locationList[index].code),
                       );
@@ -666,16 +550,13 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
 
             if (receivedPickUpPart != null) {
               for (int i = 0; i < _destinationList.length; i++) {
-                if (_destinationList[i].code ==
-                    receivedPickUpPart.destination) {
+                if (_destinationList[i].code == receivedPickUpPart.destination) {
                   _selectedDestinationIndex = i;
                 }
               }
             }
 
-            final FixedExtentScrollController scrollController =
-                FixedExtentScrollController(
-                    initialItem: _selectedDestinationIndex);
+            final FixedExtentScrollController scrollController = FixedExtentScrollController(initialItem: _selectedDestinationIndex);
             showCupertinoModalPopup<void>(
               context: context,
               builder: (BuildContext context) {
@@ -683,13 +564,11 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
                   child: CupertinoPicker(
                     scrollController: scrollController,
                     itemExtent: _kPickerItemHeight,
-                    backgroundColor:
-                        CupertinoColors.systemBackground.resolveFrom(context),
+                    backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
                     onSelectedItemChanged: (int index) {
                       setState(() => _selectedDestinationIndex = index);
                     },
-                    children: List<Widget>.generate(_destinationList.length,
-                        (int index) {
+                    children: List<Widget>.generate(_destinationList.length, (int index) {
                       return Center(
                         child: Text(_destinationList[index].code),
                       );
@@ -764,7 +643,6 @@ class _CreatePickUpPartFormFormState extends State<CreatePickUpPartForm> {
   void resetValues() {
     globals.orderNumber = "";
     globals.partNumber = "";
-
   }
 
   void navigateBack() {

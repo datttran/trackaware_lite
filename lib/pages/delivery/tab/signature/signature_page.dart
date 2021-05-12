@@ -6,14 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:signature/signature.dart';
 import 'package:trackaware_lite/blocs/signature_bloc.dart';
 import 'package:trackaware_lite/events/signature_event.dart';
-import 'package:trackaware_lite/models/pickup_external_db.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/models/pickup_part_db.dart';
 import 'package:trackaware_lite/states/signature_state.dart';
 import 'package:trackaware_lite/utils/colorstrings.dart';
 import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/transactions.dart';
 import 'package:trackaware_lite/utils/utils.dart';
-import 'package:trackaware_lite/globals.dart' as globals;
 
 class SignaturePage extends StatefulWidget {
   @override
@@ -59,14 +58,12 @@ class _SignaturePageState extends State<SignaturePage> implements AlertClickCall
                   clipBehavior: Clip.antiAlias,
                   padding: EdgeInsets.all(16),
                   child: Text(Strings.DELIVERY_COMPLETE,
-                      style: TextStyle(color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 16.0),
-                      textAlign: TextAlign.center),
+                      style: TextStyle(color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0), textAlign: TextAlign.center),
                   onPressed: () async {
                     if (_controller.isNotEmpty) {
-                      try{
+                      try {
                         signatureBloc.dispatch(FetchPickUpItems());
-                      }
-                      catch(e){
+                      } catch (e) {
                         print(e);
                       }
                     } else {
@@ -148,22 +145,18 @@ class _SignaturePageState extends State<SignaturePage> implements AlertClickCall
         listener: (context, state) {
           if (state is FetchPickUpItemsSuccess) {
             pickUpItems = state.pickUpItems;
-            if(pickUpItems is List<PickUpPart>){
-
+            if (pickUpItems is List<PickUpPart>) {
               pickUpItems.forEach((element) {
                 transactionCount += 1;
                 signatureBloc.dispatch(TransactionEvent(transactionRequests: generateTransactionFromPickupPart(element, _deviceId, _userName), transactionRequestCount: 0));
               });
-            }
-            else{
+            } else {
               pickUpItems.forEach((element) {
                 transactionCount += 1;
                 signatureBloc.dispatch(TransactionEvent(transactionRequests: generateTransactionForDeliveryFromPickupExternal(element, _deviceId, _userName), transactionRequestCount: 0));
               });
             }
-
           }
-
 
           if (state is UserNameFetchSuccess) {
             _userName = state.userName;

@@ -59,10 +59,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xff171721),
-      appBar: AppBar(
-        title: Text('POD'),
-        backgroundColor: Color(0xff171721),
-      ),
+
       // Wait until the controller is initialized before displaying the
       // camera preview. Use a FutureBuilder to display a loading spinner
       // until the controller has finished initializing.
@@ -71,66 +68,114 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             // If the Future is complete, display the preview.
-            return CameraPreview(_controller);
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Container(child: Text('Proof of Delivery (POD)', style: TextStyle(color: Color(0xff6ecaff)))),
+                ),
+                CameraPreview(_controller),
+                SizedBox(height: verticalPixel * 2),
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        // Take the Picture in a try / catch block. If anything goes wrong,
+                        // catch the error.
+                        try {
+                          // Ensure that the camera is initialized.
+                          await _initializeControllerFuture;
+
+                          // Attempt to take a picture and get the file `image`
+                          // where it was saved.
+                          final image = await _controller.takePicture();
+
+                          // If the picture was taken, display it on a new screen.
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DisplayPictureScreen(
+                                // Pass the automatically generated path to
+                                // the DisplayPictureScreen widget.
+                                imagePath: image?.path,
+                              ),
+                            ),
+                          );
+                        } catch (e) {
+                          // If an error occurs, log the error to the console.
+                          print(e);
+                        }
+                      },
+                      child: Container(
+                          height: verticalPixel * 9,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color(0xff4b92fc), Color(0xff4353de)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(00.0)),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.white70,
+                                ),
+                                Text(
+                                  '      Capture',
+                                  style: TextStyle(color: Colors.white70),
+                                ),
+                              ],
+                            ),
+                          )),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                          //height: verticalPixel * 5,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color(0xffec686c), Color(0xffff2f47)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(00.0)),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.clear,
+                                  color: Colors.white70,
+                                ),
+                                Text(
+                                  '       Cancel ',
+                                  style: TextStyle(color: Colors.white70),
+                                ),
+                              ],
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+              ],
+            );
           } else {
             // Otherwise, display a loading indicator.
             return Center(child: CircularProgressIndicator());
           }
         },
-      ),
-      floatingActionButton: GestureDetector(
-        onTap: () async {
-          // Take the Picture in a try / catch block. If anything goes wrong,
-          // catch the error.
-          try {
-            // Ensure that the camera is initialized.
-            await _initializeControllerFuture;
-
-            // Attempt to take a picture and get the file `image`
-            // where it was saved.
-            final image = await _controller.takePicture();
-
-            // If the picture was taken, display it on a new screen.
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DisplayPictureScreen(
-                  // Pass the automatically generated path to
-                  // the DisplayPictureScreen widget.
-                  imagePath: image?.path,
-                ),
-              ),
-            );
-          } catch (e) {
-            // If an error occurs, log the error to the console.
-            print(e);
-          }
-        },
-        child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xff68b3ec), Color(0xff8543de)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.camera_alt,
-                    color: Colors.white70,
-                  ),
-                  Text(
-                    '      Capture',
-                    style: TextStyle(color: Colors.white70),
-                  ),
-                ],
-              ),
-            )),
       ),
     );
   }
@@ -182,7 +227,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
           active: item.isSelected,
           pressEnabled: false,
 
-          activeColor: Color(0xff8068ec),
+          activeColor: Color(0xff6889ec),
 
           textStyle: TextStyle(
             fontSize: 14,
@@ -191,10 +236,13 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
 
           removeButton: ItemTagsRemoveButton(
             onRemoved: () {
+              print(_items.length);
               setState(() {
-                _items.removeAt(index);
                 _items[index].isSelected = false;
+                _items.removeAt(index);
+
                 globals.deliveryList[index].isSelected = false;
+                globals.selectedCard = globals.selectedCard - 1;
               });
               // Remove the item from the data source.
 
@@ -253,7 +301,10 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                   SizedBox(
                     height: verticalPixel * 2,
                   ),
-                  Container(child: Image.file(File(widget.imagePath))),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(height: verticalPixel * 50, child: Image.file(File(widget.imagePath))),
+                  ),
                   Column(
                     children: [
                       Text('Order selected:', style: TextStyle(color: Colors.white70)),
@@ -267,21 +318,33 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-                        child: Text('Note', style: TextStyle(color: Colors.white70)),
-                      ),
-                      Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Color(0xffe4f2ff), Color(0xffece0ff)],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
+                        padding: EdgeInsets.symmetric(horizontal: horizontalPixel * 4, vertical: verticalPixel * 3),
+                        child: TextField(
+                          textInputAction: TextInputAction.done,
+                          minLines: 7,
+                          maxLines: 10,
+                          style: TextStyle(color: Color(0xffc5c5cb)),
+                          onChanged: (value) {
+                            //Do something with the user input.
+                          },
+                          decoration: InputDecoration(
+                            hintText: 'Note',
+                            hintStyle: TextStyle(color: Colors.white70.withOpacity(.2)),
+                            contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(12.0)),
                             ),
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xff8091ff), width: .5),
+                              borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xff4d5cde), width: 1.0),
+                              borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                            ),
                           ),
-                          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                          child: TextField()),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -289,23 +352,27 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      setState(() {
-                        _items.forEach((element) {
-                          globals.deliveryList.remove(element);
-                          globals.delivered = globals.delivered + 1;
-                          globals.selectedCard = globals.selectedCard - 1;
+                      if (_items.isNotEmpty) {
+                        setState(() {
+                          _items.forEach((element) {
+                            globals.deliveryList.remove(element);
+                            globals.delivered = globals.delivered + 1;
+                            globals.selectedCard = globals.selectedCard - 1;
+                          });
+
+                          showToast('Success!', context: context, axis: Axis.horizontal, alignment: Alignment.center, position: StyledToastPosition.center);
+
+                          Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
                         });
-
-                        showToast('Success!', context: context, axis: Axis.horizontal, alignment: Alignment.center, position: StyledToastPosition.center);
-
-                        Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
-                      });
+                      } else {
+                        showToast('No item was selected.', context: context, axis: Axis.horizontal, alignment: Alignment.center, position: StyledToastPosition.center);
+                      }
                     },
                     child: Container(
                         width: horizontalPixel * 30,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
-                            colors: [Color(0xff68b3ec), Color(0xff8543de)],
+                            colors: [Color(0xff68b3ec), Color(0xff434bde)],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),

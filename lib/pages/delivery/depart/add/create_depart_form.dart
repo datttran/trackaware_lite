@@ -71,9 +71,7 @@ class _CreateDepartFormState extends State<CreateDepartForm> {
                   ? Text("Select location")
                   : Text(
                       _locationList[_selectedLocationIndex].code,
-                      style: TextStyle(
-                          color: CupertinoDynamicColor.resolve(
-                              CupertinoColors.inactiveGray, context)),
+                      style: TextStyle(color: CupertinoDynamicColor.resolve(CupertinoColors.inactiveGray, context)),
                     )));
     }
 
@@ -99,27 +97,18 @@ class _CreateDepartFormState extends State<CreateDepartForm> {
                     ),
                   )),
               Expanded(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                        child: Material(
-                            color: Colors.transparent,
-                            child: Text(
-                              Strings.LOCATION,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  color: HexColor(ColorStrings.HEADING),
-                                  fontFamily: "SourceSansPro",
-                                  fontSize: 12.0,
-                                  fontStyle: FontStyle.normal),
-                            ))),
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                        child: _buildLocationPicker(context))
-                  ]))
+                  child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                    child: Material(
+                        color: Colors.transparent,
+                        child: Text(
+                          Strings.LOCATION,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                        ))),
+                Padding(padding: EdgeInsets.fromLTRB(14, 10, 10, 16), child: _buildLocationPicker(context))
+              ]))
             ],
           ));
     }
@@ -134,13 +123,7 @@ class _CreateDepartFormState extends State<CreateDepartForm> {
                   clipBehavior: Clip.antiAlias,
                   padding: EdgeInsets.all(16),
                   child: Text(Strings.DELIVERY_COMPLETE,
-                      style: TextStyle(
-                          color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR),
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "SourceSansPro",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 16.0),
-                      textAlign: TextAlign.center),
+                      style: TextStyle(color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0), textAlign: TextAlign.center),
                   onPressed: () {
                     _saveDepartItemToDb();
                   },
@@ -156,65 +139,48 @@ class _CreateDepartFormState extends State<CreateDepartForm> {
               color: Colors.white),
           child: Row(children: <Widget>[
             Flexible(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                          padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                          child: Material(
-                              color: Colors.transparent,
-                              child: Text(
-                                Strings.TRACKING_NUMBER,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    color: HexColor(ColorStrings.HEADING),
-                                    fontFamily: "SourceSansPro",
-                                    fontSize: 12.0,
-                                    fontStyle: FontStyle.normal),
-                              ))),
-                      Padding(
-                          padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                          child: new Material(
-                              color: Colors.transparent,
-                              child: new TextFormField(
-                                keyboardType: TextInputType.text,
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                style: TextStyle(
-                                    color: HexColor(ColorStrings.VALUES),
-                                    fontSize: 16),
-                                autofocus: true,
-                                decoration: InputDecoration.collapsed(
-                                    focusColor: HexColor(
-                                        ColorStrings.emailPwdTextColor),
-                                    hintText: Strings.ENTER_TRACKING_NUMBER),
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return Strings
-                                        .TRACKING_NUMBER_VALIDATION_MESSAGE;
-                                  }
-                                  return null;
-                                },
-                                controller: trackingNumberController,
-                                textInputAction: TextInputAction.next,
-                                focusNode: trackingNumberFocus,
-                                onFieldSubmitted: (v) {
-                                  trackingNumberFocus.unfocus();
-                                  FocusScope.of(context)
-                                      .requestFocus(packagingCountFocus);
-                                },
-                              )))
-                    ]),
+                child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                      child: Material(
+                          color: Colors.transparent,
+                          child: Text(
+                            Strings.TRACKING_NUMBER,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                          ))),
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                      child: new Material(
+                          color: Colors.transparent,
+                          child: new TextFormField(
+                            keyboardType: TextInputType.text,
+                            textCapitalization: TextCapitalization.sentences,
+                            style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                            autofocus: false,
+                            decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_TRACKING_NUMBER),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return Strings.TRACKING_NUMBER_VALIDATION_MESSAGE;
+                              }
+                              return null;
+                            },
+                            controller: trackingNumberController,
+                            textInputAction: TextInputAction.next,
+                            focusNode: trackingNumberFocus,
+                            onFieldSubmitted: (v) {
+                              trackingNumberFocus.unfocus();
+                              FocusScope.of(context).requestFocus(packagingCountFocus);
+                            },
+                          )))
+                ]),
                 flex: 6),
             Flexible(
                 child: GestureDetector(
                   onTap: () {
                     createDepartBloc.dispatch(TrackingNumberScanEvent());
                   },
-                  child: Padding(
-                      child: Image.asset("images/ic_scan.png"),
-                      padding: EdgeInsets.fromLTRB(0, 16, 0, 16)),
+                  child: Padding(child: Image.asset("images/ic_scan.png"), padding: EdgeInsets.fromLTRB(0, 16, 0, 16)),
                 ),
                 flex: 1)
           ]));
@@ -227,58 +193,45 @@ class _CreateDepartFormState extends State<CreateDepartForm> {
                 color: HexColor(ColorStrings.BORDER),
               ),
               color: Colors.white),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                    padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
-                    child: Material(
-                        color: Colors.transparent,
-                        child: Text(
-                          Strings.PACKAGING_COUNT,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              color: HexColor(ColorStrings.HEADING),
-                              fontFamily: "SourceSansPro",
-                              fontSize: 12.0,
-                              fontStyle: FontStyle.normal),
-                        ))),
-                Padding(
-                    padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
-                    child: new Material(
-                        color: Colors.transparent,
-                        child: new TextFormField(
-                          keyboardType: TextInputType.number,
-                          style: TextStyle(
-                              color: HexColor(ColorStrings.VALUES),
-                              fontSize: 16),
-                          autofocus: true,
-                          decoration: InputDecoration.collapsed(
-                              focusColor:
-                                  HexColor(ColorStrings.emailPwdTextColor),
-                              hintText: Strings.ENTER_PACKAGING_COUNT),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return Strings.PACKAGING_COUNT_VALIDATION_MESSAGE;
-                            }
-                            return null;
-                          },
-                          controller: packagingCountController,
-                          textInputAction: TextInputAction.done,
-                          focusNode: packagingCountFocus,
-                          onFieldSubmitted: (v) {
-                            packagingCountFocus.unfocus();
-                          },
-                        )))
-              ]));
+          child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+            Padding(
+                padding: EdgeInsets.fromLTRB(14, 16, 10, 0),
+                child: Material(
+                    color: Colors.transparent,
+                    child: Text(
+                      Strings.PACKAGING_COUNT,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(color: HexColor(ColorStrings.HEADING), fontSize: 12.0, fontStyle: FontStyle.normal),
+                    ))),
+            Padding(
+                padding: EdgeInsets.fromLTRB(14, 10, 10, 16),
+                child: new Material(
+                    color: Colors.transparent,
+                    child: new TextFormField(
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                      autofocus: false,
+                      decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_PACKAGING_COUNT),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return Strings.PACKAGING_COUNT_VALIDATION_MESSAGE;
+                        }
+                        return null;
+                      },
+                      controller: packagingCountController,
+                      textInputAction: TextInputAction.done,
+                      focusNode: packagingCountFocus,
+                      onFieldSubmitted: (v) {
+                        packagingCountFocus.unfocus();
+                      },
+                    )))
+          ]));
     }
 
     Widget getScaffold() {
       return CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
-              backgroundColor:
-                  HexColor(ColorStrings.boxBackground).withAlpha(30),
+              backgroundColor: HexColor(ColorStrings.boxBackground).withAlpha(30),
               leading: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
@@ -315,8 +268,7 @@ class _CreateDepartFormState extends State<CreateDepartForm> {
               ]))));
     }
 
-    Widget getCupertinoScaffold(
-        CreateDepartState state, CreateDepartBloc createArriveBloc) {
+    Widget getCupertinoScaffold(CreateDepartState state, CreateDepartBloc createArriveBloc) {
       return Platform.isAndroid
           ? WillPopScope(
               onWillPop: () {
@@ -331,13 +283,11 @@ class _CreateDepartFormState extends State<CreateDepartForm> {
         listener: (context, state) {
           if (state is TrackingNumberScanSuccess) {
             trackingNumberController.text = state.barCode;
-            trackingNumberController.selection = TextSelection.fromPosition(
-                TextPosition(offset: trackingNumberController.text.length));
+            trackingNumberController.selection = TextSelection.fromPosition(TextPosition(offset: trackingNumberController.text.length));
           }
 
           if (state is DepartItemSaved) {
-            Toast.show("Depart entry created", context,
-                duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+            Toast.show("Depart entry created", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
             Navigator.pop(context, "saved");
           }
 
@@ -352,13 +302,9 @@ class _CreateDepartFormState extends State<CreateDepartForm> {
             depart.location = _locationList[_selectedLocationIndex].code;
             depart.trackingNo = trackingNumberController.text;
             depart.packageCount = int.parse(packagingCountController.text);
-            depart.scanTime =
-                (DateTime.now().millisecondsSinceEpoch / 1000).round();
+            depart.scanTime = (DateTime.now().millisecondsSinceEpoch / 1000).round();
             depart.isSynced = 1;
-            createDepartBloc.dispatch(DeliveryCompleteButtonClick(
-                depart,
-                generateDeliveryListFromDepartItem(
-                    depart, _deviceIdValue, _userName)));
+            createDepartBloc.dispatch(DeliveryCompleteButtonClick(depart, generateDeliveryListFromDepartItem(depart, _deviceIdValue, _userName)));
           }
 
           if (state is LocationApiCallLoading || state is DeliveryLoading) {
@@ -370,9 +316,7 @@ class _CreateDepartFormState extends State<CreateDepartForm> {
             _locationList.clear();
             _locationList.addAll(state.locationResponse);
 
-            final FixedExtentScrollController scrollController =
-                FixedExtentScrollController(
-                    initialItem: _selectedLocationIndex);
+            final FixedExtentScrollController scrollController = FixedExtentScrollController(initialItem: _selectedLocationIndex);
             showCupertinoModalPopup<void>(
               context: context,
               builder: (BuildContext context) {
@@ -380,13 +324,11 @@ class _CreateDepartFormState extends State<CreateDepartForm> {
                   child: CupertinoPicker(
                     scrollController: scrollController,
                     itemExtent: _kPickerItemHeight,
-                    backgroundColor:
-                        CupertinoColors.systemBackground.resolveFrom(context),
+                    backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
                     onSelectedItemChanged: (int index) {
                       setState(() => _selectedLocationIndex = index);
                     },
-                    children: List<Widget>.generate(_locationList.length,
-                        (int index) {
+                    children: List<Widget>.generate(_locationList.length, (int index) {
                       return Center(
                         child: Text(_locationList[index].code),
                       );

@@ -32,8 +32,7 @@ class _TabsConfigPageState extends State<TabsConfigPage> {
     Widget getScaffold() {
       return CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
-              backgroundColor:
-                  HexColor(ColorStrings.boxBackground).withAlpha(30),
+              backgroundColor: HexColor(ColorStrings.boxBackground).withAlpha(30),
               leading: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
@@ -44,21 +43,14 @@ class _TabsConfigPageState extends State<TabsConfigPage> {
               ),
               middle: Text(Strings.TABS)),
           child: Container(
-              decoration: BoxDecoration(
-                  color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
+              decoration: BoxDecoration(color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
               child: Stack(children: <Widget>[
                 ListView(
                   children: <Widget>[
                     Material(
                         color: Colors.transparent,
                         child: ListTile(
-                          title: Text(Strings.tenderTitle,
-                              style: TextStyle(
-                                  color: const Color(0xff202020),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "SourceSansPro",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16.0)),
+                          title: Text(Strings.tenderTitle, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0)),
                           trailing: Image.asset("images/ic_chevron_right.png"),
                           onTap: () {
                             tabsConfigBloc.dispatch(TenderClickAction());
@@ -68,13 +60,7 @@ class _TabsConfigPageState extends State<TabsConfigPage> {
                     Material(
                         color: Colors.transparent,
                         child: ListTile(
-                          title: Text(Strings.pickUpTitle,
-                              style: TextStyle(
-                                  color: const Color(0xff202020),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "SourceSansPro",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16.0)),
+                          title: Text(Strings.pickUpTitle, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0)),
                           trailing: Image.asset("images/ic_chevron_right.png"),
                           onTap: () {
                             tabsConfigBloc.dispatch(PickUpClickAction());
@@ -84,13 +70,7 @@ class _TabsConfigPageState extends State<TabsConfigPage> {
                     Material(
                         color: Colors.transparent,
                         child: ListTile(
-                          title: Text(Strings.deliveryTitle,
-                              style: TextStyle(
-                                  color: const Color(0xff202020),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "SourceSansPro",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16.0)),
+                          title: Text(Strings.deliveryTitle, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0)),
                           trailing: Image.asset("images/ic_chevron_right.png"),
                           onTap: () {
                             tabsConfigBloc.dispatch(DeliveryClickAction());

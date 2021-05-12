@@ -58,47 +58,7 @@ class _SignState extends State<Sign> {
   }
 
   Widget getTags() {
-    return Tags(
-      key: _tagStateKey,
-
-      itemCount: _items.length, // required
-      itemBuilder: (int index) {
-        final item = _items[index];
-
-        return ItemTags(
-          // Each ItemTags must contain a Key. Keys allow Flutter to
-          // uniquely identify widgets.
-          key: Key(index.toString()),
-          index: index, // required
-          title: item.orderNumber,
-          active: item.isSelected,
-          pressEnabled: false,
-
-          activeColor: Color(0xff446af3),
-
-          textStyle: TextStyle(
-            fontSize: 14,
-          ),
-          combine: ItemTagsCombine.withTextBefore,
-
-          removeButton: ItemTagsRemoveButton(
-            onRemoved: () {
-              setState(() {
-                _items.removeAt(index);
-                _items[index].isSelected = false;
-                globals.deliveryList[index].isSelected = false;
-              });
-              // Remove the item from the data source.
-
-              //required
-              return true;
-            },
-          ), // OR null,
-          onPressed: (item) => print(item),
-          onLongPressed: (item) => print(item),
-        );
-      },
-    );
+    return null;
   }
 
   @override
@@ -131,7 +91,49 @@ class _SignState extends State<Sign> {
             SizedBox(
               height: 20,
             ),
-            getTags(),
+            Tags(
+              key: _tagStateKey,
+
+              itemCount: _items.length, // required
+              itemBuilder: (int index) {
+                final item = _items[index];
+
+                return ItemTags(
+                  // Each ItemTags must contain a Key. Keys allow Flutter to
+                  // uniquely identify widgets.
+                  key: Key(index.toString()),
+                  index: index, // required
+                  title: item.orderNumber,
+                  active: item.isSelected,
+                  pressEnabled: false,
+
+                  activeColor: Color(0xff446af3),
+
+                  textStyle: TextStyle(
+                    fontSize: 14,
+                  ),
+                  combine: ItemTagsCombine.withTextBefore,
+
+                  removeButton: ItemTagsRemoveButton(
+                    onRemoved: () {
+                      _items[index].isSelected = false;
+                      _items.removeAt(index);
+
+                      globals.deliveryList[index].isSelected = false;
+                      setState(() {
+                        globals.selectedCard = globals.selectedCard - 1;
+                      });
+                      // Remove the item from the data source.
+
+                      //required
+                      return true;
+                    },
+                  ), // OR null,
+                  onPressed: (item) => print(item),
+                  onLongPressed: (item) => print(item),
+                );
+              },
+            ),
 
             //SIGNATURE CANVAS
             Signature(
@@ -168,7 +170,11 @@ class _SignState extends State<Sign> {
                     icon: const Icon(Icons.clear),
                     color: Colors.redAccent,
                     onPressed: () {
-                      setState(() => _controller.clear());
+                      if (_controller.isNotEmpty) {
+                        setState(() => _controller.clear());
+                      } else {
+                        Navigator.pop(context);
+                      }
                     },
                   ),
                   IconButton(
@@ -177,13 +183,14 @@ class _SignState extends State<Sign> {
                     onPressed: () async {
                       if (_controller.isNotEmpty) {
                         final Uint8List data = await _controller.toPngBytes();
-                        if (data != null && globals.receiver != null) {
+                        if (data != null && globals.receiver != null && _items.length > 0) {
                           try {
                             setState(() {
                               _items.forEach((element) {
                                 globals.deliveryList.remove(element);
                                 globals.delivered = globals.delivered + 1;
                                 globals.selectedCard = globals.selectedCard - 1;
+                                globals.receiver = null;
                               });
                               showToast('Success!', context: context, axis: Axis.horizontal, alignment: Alignment.center, position: StyledToastPosition.center);
 
@@ -197,6 +204,8 @@ class _SignState extends State<Sign> {
 
                         } else if (data != null && globals.receiver == null) {
                           showToast('Please type in receiver name', context: context, axis: Axis.horizontal, alignment: Alignment.center, position: StyledToastPosition.center);
+                        } else if (_items.isEmpty) {
+                          showToast('No item was selected.', context: context, axis: Axis.horizontal, alignment: Alignment.center, position: StyledToastPosition.center);
                         }
                       } else {
                         showToast('Please sign first!', context: context, axis: Axis.horizontal, alignment: Alignment.center, position: StyledToastPosition.center);

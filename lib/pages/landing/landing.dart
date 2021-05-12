@@ -1,44 +1,42 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
-import 'package:flutter_icons/flutter_icons.dart';
 
-import 'package:marquee/marquee.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:geocoding/geocoding.dart' as geo;
 import 'package:location/location.dart';
+import 'package:marquee/marquee.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:toast/toast.dart';
 import 'package:trackaware_lite/blocs/landing_page_bloc.dart';
 import 'package:trackaware_lite/events/delivery_event.dart';
 import 'package:trackaware_lite/events/landing_page_event.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/models/arrive_db.dart';
 import 'package:trackaware_lite/models/delivery_request.dart';
 import 'package:trackaware_lite/models/depart_db.dart';
 import 'package:trackaware_lite/models/tender_external_db.dart';
 import 'package:trackaware_lite/models/tender_parts_db.dart';
 import 'package:trackaware_lite/models/transaction_request.dart';
-import 'package:trackaware_lite/pages/landing/landingappbar.dart';
 import 'package:trackaware_lite/pages/delivery/tab/delivery_page.dart';
-import 'package:trackaware_lite/pages/landing/tabwidgets/arrive_tab_widget.dart';
+import 'package:trackaware_lite/pages/landing/landingappbar.dart';
 import 'package:trackaware_lite/pages/landing/tabwidgets/deliver_tab_widget.dart';
-import 'package:trackaware_lite/pages/landing/tabwidgets/depart_tab_widget.dart';
 import 'package:trackaware_lite/pages/landing/tabwidgets/pickup_tab_widget.dart';
-import 'package:trackaware_lite/pages/landing/tabwidgets/tender_tab_widget.dart';
 import 'package:trackaware_lite/pages/tender/external/add/create_external_tender_parts.dart';
 import 'package:trackaware_lite/repositories/delivery_repository.dart';
 import 'package:trackaware_lite/repositories/external_tender_repository.dart';
 import 'package:trackaware_lite/repositories/landing_page_repository.dart';
 import 'package:trackaware_lite/responsive/size_config.dart';
 import 'package:trackaware_lite/states/landing_page_state.dart';
+import 'package:trackaware_lite/utils/bubble_tab_indicator.dart';
 import 'package:trackaware_lite/utils/colorstrings.dart'; // ignore: unused_import
 import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/transactions.dart';
 import 'package:trackaware_lite/utils/utils.dart'; // ignore: unused_import
-import 'package:trackaware_lite/globals.dart' as globals;
-import 'package:geocoding/geocoding.dart' as geo;
 
 import '../../constants.dart';
 
@@ -60,76 +58,45 @@ var deviceIdValue;
 File _imageFile;
 bool _displayScan = false;
 
-
-
 class LandingPage extends StatefulWidget {
   final LandingPageApiRepository landingPageApiRepository;
   final TenderApiRepository externalTenderApiRepository;
   final DeliveryApiRepository deliveryApiRepository;
 
-
-
-
-
-  LandingPage(
-      {Key key,
-      this.landingPageApiRepository,
-      this.externalTenderApiRepository,
-      this.deliveryApiRepository,
-
-
-      })
-      : assert(landingPageApiRepository != null),
+  LandingPage({
+    Key key,
+    this.landingPageApiRepository,
+    this.externalTenderApiRepository,
+    this.deliveryApiRepository,
+  })  : assert(landingPageApiRepository != null),
         super(key: key);
 
-
   @override
-  State<StatefulWidget> createState() => new _LandingPageState(
-      landingPageApiRepository: landingPageApiRepository,
-      externalTenderApiRepository: externalTenderApiRepository,
-      deliveryApiRepository: deliveryApiRepository);
+  State<StatefulWidget> createState() =>
+      new _LandingPageState(landingPageApiRepository: landingPageApiRepository, externalTenderApiRepository: externalTenderApiRepository, deliveryApiRepository: deliveryApiRepository);
 }
 
-class _LandingPageState extends  State<LandingPage> with SingleTickerProviderStateMixin{
+class _LandingPageState extends State<LandingPage> with SingleTickerProviderStateMixin {
   final LandingPageApiRepository landingPageApiRepository;
   final TenderApiRepository externalTenderApiRepository;
   final DeliveryApiRepository deliveryApiRepository;
 
-
-
-
-
-
-
-
-
-
-
-
-
   LandingPageBloc _landingPageBloc;
 
-  _LandingPageState(
-      {@required this.landingPageApiRepository,
-      @required this.externalTenderApiRepository,
-      @required this.deliveryApiRepository,
-
-
-      });
-
-
+  _LandingPageState({
+    @required this.landingPageApiRepository,
+    @required this.externalTenderApiRepository,
+    @required this.deliveryApiRepository,
+  });
 
   final List<Tab> driverModeTabs = <Tab>[
     new Tab(text: Strings.pickUpTitle),
     new Tab(text: Strings.deliveryTitle),
-
   ];
 
   final List<Tab> tenderModeTabs = <Tab>[
-
     new Tab(text: Strings.pickUpTitle),
     new Tab(text: Strings.deliveryTitle),
-
   ];
 
   List<Widget> driverWidgets;
@@ -142,65 +109,44 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
   StreamSubscription<LocationData> _locationSubscription;
   bool isPermissionEnabled = false;
 
-
-
-
   @override
-  void initState(){
-
-
-
-
-
-
+  void initState() {
     _tabController = getTabController();
     if (globals.isDriverMode)
       _tabController.addListener(_handleDriverTabSelection);
     else
       _tabController.addListener(_handleTenderTabSelection);
 
-
-
     driverWidgets = <Widget>[
       PickUpTabWidget(tabController: _tabController),
       DeliveryTabWidget(
         deliveryApiRepository: deliveryApiRepository,
       ),
-
     ];
 
     tenderWidgets = <Widget>[
-
       PickUpTabWidget(),
       DeliveryTabWidget(
         deliveryApiRepository: deliveryApiRepository,
       ),
-
     ];
     super.initState();
     local();
 
-
-
     //scanner
-
   }
 
-  void local() async{
+  void local() async {
     _locationData = await location.getLocation();
 
     List<geo.Placemark> placeMarks = await geo.placemarkFromCoordinates(_locationData.latitude, _locationData.longitude);
     globals.currentLocation = placeMarks[0];
   }
 
-
-
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
-
-
   }
 
   Widget getTrackAwareScaffold(BuildContext context) {
@@ -224,8 +170,7 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
               if (state is PermissionStatusResult) {
                 isPermissionEnabled = state.isPermissionEnabled;
                 if (isPermissionEnabled) {
-                  _landingPageBloc
-                      .dispatch(CheckLocationService(location: location));
+                  _landingPageBloc.dispatch(CheckLocationService(location: location));
                 }
               }
 
@@ -243,23 +188,18 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
               if (state is FetchLocationSuccess) {
                 var locationList = state.locationList;
                 if (locationList.isNotEmpty) {
-                  var gpsPollInterval =
-                      locationList[locationList.length - 1].gpsPollInterval;
-                  _landingPageBloc.dispatch(ChangeLocationFetchInterval(
-                      interval: gpsPollInterval, location: location));
+                  var gpsPollInterval = locationList[locationList.length - 1].gpsPollInterval;
+                  _landingPageBloc.dispatch(ChangeLocationFetchInterval(interval: gpsPollInterval, location: location));
                 }
               }
 
               if (state is LocationSettingsChangeSuccess) {
-                _locationSubscription =
-                    location.onLocationChanged.handleError((dynamic err) {
+                _locationSubscription = location.onLocationChanged.handleError((dynamic err) {
                   _locationSubscription.cancel();
                 }).listen((LocationData currentLocation) {
                   //todo - implement post interval from settings
-                  var locationRequest = getLocationRequest(
-                      currentLocation, deviceIdValue, _userName);
-                  _landingPageBloc
-                      .dispatch(PeriodicLocationUpdate(locationRequest));
+                  var locationRequest = getLocationRequest(currentLocation, deviceIdValue, _userName);
+                  _landingPageBloc.dispatch(PeriodicLocationUpdate(locationRequest));
                   print(currentLocation);
                 });
               }
@@ -270,8 +210,7 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
                     Navigator.push(
                       context,
                       CupertinoPageRoute(
-                        builder: (context) => CreateExternalTenderParts(
-                            tenderApiRepository: externalTenderApiRepository),
+                        builder: (context) => CreateExternalTenderParts(tenderApiRepository: externalTenderApiRepository),
                         // Pass the arguments as part of the RouteSettings. The
                         // DetailScreen reads the arguments from these settings.
                         settings: RouteSettings(
@@ -294,8 +233,7 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
 
               if (state is SyncLoading) {
                 _isLoading = true;
-                Toast.show("Syncing", context,
-                    duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                Toast.show("Syncing", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
               }
 
               if (state is ScanFailure) {
@@ -303,8 +241,7 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
               }
 
               if (state is TenderTransactionRequestSuccess) {
-                if (transactionCount != 0 &&
-                    transactionCount == _transactionRequestItems.length) {
+                if (transactionCount != 0 && transactionCount == _transactionRequestItems.length) {
                   transactionCount = 0;
                   _isLoading = false;
                   print(state.message);
@@ -314,8 +251,7 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
               }
 
               if (state is DeliveryRequestSuccess) {
-                if (deliveryCount != 0 &&
-                    deliveryCount == _delieryRequestItems.length) {
+                if (deliveryCount != 0 && deliveryCount == _delieryRequestItems.length) {
                   deliveryCount = 0;
                   _isLoading = false;
                   print(state.message);
@@ -338,9 +274,7 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
                   if (_transactionRequestItems.isNotEmpty) {
                     for (var i = 0; i < _transactionRequestItems.length; i++) {
                       transactionCount += 1;
-                      _landingPageBloc.dispatch(SyncButtonClick(
-                          transactionRequests: _transactionRequestItems[i],
-                          transactionRequestCount: 0));
+                      _landingPageBloc.dispatch(SyncButtonClick(transactionRequests: _transactionRequestItems[i], transactionRequestCount: 0));
                     }
                   } else {
                     print("No transactions to be synced");
@@ -352,15 +286,12 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
                 _tenderPartsListItems.clear();
                 _tenderPartsListItems.addAll(state.tenderPartsResponse);
 
-                if (_tenderPartsListItems
-                    .isNotEmpty /*  && _userName!=null && _userName.isNotEmpty */) {
+                if (_tenderPartsListItems.isNotEmpty /*  && _userName!=null && _userName.isNotEmpty */) {
                   _generateTransactionRequest();
                   if (_transactionRequestItems.isNotEmpty) {
                     for (var i = 0; i < _transactionRequestItems.length; i++) {
                       transactionCount += 1;
-                      _landingPageBloc.dispatch(SyncButtonClick(
-                          transactionRequests: _transactionRequestItems[i],
-                          transactionRequestCount: 0));
+                      _landingPageBloc.dispatch(SyncButtonClick(transactionRequests: _transactionRequestItems[i], transactionRequestCount: 0));
                     }
                   } else {
                     print("No transactions to be synced");
@@ -377,9 +308,7 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
                   if (_delieryRequestItems.isNotEmpty) {
                     for (var i = 0; i < _delieryRequestItems.length; i++) {
                       deliveryCount += 1;
-                      _landingPageBloc.dispatch(SyncDeliveryItems(
-                          deliveryRequest: _delieryRequestItems[i],
-                          deliveryRequestCount: 0));
+                      _landingPageBloc.dispatch(SyncDeliveryItems(deliveryRequest: _delieryRequestItems[i], deliveryRequestCount: 0));
                     }
                   } else {
                     print("No transactions to be synced");
@@ -396,9 +325,7 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
                   if (_delieryRequestItems.isNotEmpty) {
                     for (var i = 0; i < _delieryRequestItems.length; i++) {
                       deliveryCount += 1;
-                      _landingPageBloc.dispatch(SyncDeliveryItems(
-                          deliveryRequest: _delieryRequestItems[i],
-                          deliveryRequestCount: 0));
+                      _landingPageBloc.dispatch(SyncDeliveryItems(deliveryRequest: _delieryRequestItems[i], deliveryRequestCount: 0));
                     }
                   } else {
                     print("No transactions to be synced");
@@ -418,8 +345,7 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
               if (state is UserNameFetchSuccess) {
                 _userName = state.userName;
                 _token = state.token;
-                _landingPageBloc.dispatch(
-                    FetchUserProfileImage(userName: _userName, token: _token));
+                _landingPageBloc.dispatch(FetchUserProfileImage(userName: _userName, token: _token));
                 _landingPageBloc.dispatch(FetchSettings(userName: _userName));
               }
 
@@ -428,8 +354,7 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
               }
 
               if (state is UpdatePickUpItemSuccess) {
-                deliveryBloc.dispatch(FetchDestinationList(
-                    location: locationList[selectedLocationIndex].code));
+                deliveryBloc.dispatch(FetchDestinationList(location: locationList[selectedLocationIndex].code));
               }
 
               if (state is FetchUserProfileImageSuccess) {
@@ -452,16 +377,12 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
                   BuildContext context,
                   LandingPageState state,
                 ) {
-
-                  if (_landingPageBloc == null)
-                    _landingPageBloc =
-                        BlocProvider.of<LandingPageBloc>(context);
+                  if (_landingPageBloc == null) _landingPageBloc = BlocProvider.of<LandingPageBloc>(context);
 
                   if (!isPermissionEnabled) {
                     _landingPageBloc.dispatch(FetchUserName());
                     _landingPageBloc.dispatch(FetchDeviceId());
-                    _landingPageBloc
-                        .dispatch(CheckLocationPermission(location: location));
+                    _landingPageBloc.dispatch(CheckLocationPermission(location: location));
                     _landingPageBloc.dispatch(PriorityFetch());
                     _landingPageBloc.dispatch(LocationFetch());
                   }
@@ -480,67 +401,103 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
                           )*/
                         ),
                       ),
-
                       Scaffold(
-                        backgroundColor: Colors.transparent,
-
+                          backgroundColor: Colors.transparent,
                           appBar: LandingAppBarImage(
-                              Icon(EvilIcons.user, size: 10,color: Colors.white,),
-                              Icon(EvilIcons.navicon, size: 30,color: Color(0xff68b0ff),),
+                              Icon(
+                                EvilIcons.user,
+                                size: 10,
+                                color: Colors.white,
+                              ),
+                              Icon(
+                                EvilIcons.navicon,
+                                size: 30,
+                                color: Color(0xff68b0ff),
+                              ),
                               _tabController),
                           resizeToAvoidBottomInset: false,
                           body: Container(
-                              color: Color(0xfff0ccff).withOpacity(0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Container( height: verticalPixel*2,
-                                    margin: EdgeInsets.symmetric(horizontal: horizontalPixel*3.5),
-                                    decoration: BoxDecoration(
-
-                                      color: Color(0xff2C2C34),
-                                      borderRadius: BorderRadius.circular(7),
-
-
-                                    ),
-                                    child: FutureBuilder(
-                                      builder: (context , data ){
-                                        if (globals.currentLocation != null){
-                                          return Marquee(
-                                            text: "Location:" + " " + globals.currentLocation.street + " " + globals.currentLocation.locality + "             |             "
-                                                + "Total order: " + globals.deliveryList.length.toString()  + "             |             "
-                                                + "Delivered: " + globals.delivered.toString() + "             |             ",
-                                            velocity: 30.0,
-                                            style: TextStyle( fontSize: 12 , color: Color(0xff090b1d)),
-                                          );
-                                        }
-                                        else{
-                                          return Marquee(
-                                            text: "                                Loading ...                                     |",
-                                            blankSpace: 1000,
-                                            velocity: 30.0,
-                                            style: TextStyle( fontSize: 12 , color: Color(0xff090b1d)),
-                                          );
-                                        }
-
-                                      },
-                                    ),
+                            color: Color(0xfff0ccff).withOpacity(0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  height: verticalPixel * 2.5,
+                                  width: horizontalPixel * 100,
+                                  margin: EdgeInsets.symmetric(horizontal: horizontalPixel * 0, vertical: verticalPixel * 2),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xff2C2C34),
+                                    borderRadius: BorderRadius.circular(0),
                                   ),
-                                  Flexible(
-                                    child: new TabBarView(
-                                      controller: _tabController,
-                                      children: globals.isDriverMode
-                                          ? driverWidgets
-                                          : tenderWidgets,
-                                    ),
-                                    flex: globals.isDriverMode ? 2 : 2,
+                                  child: FutureBuilder(
+                                    builder: (context, data) {
+                                      if (globals.currentLocation != null) {
+                                        return Marquee(
+                                          text: "Location:" +
+                                              " " +
+                                              globals.currentLocation.street +
+                                              " " +
+                                              globals.currentLocation.locality +
+                                              "             |             " +
+                                              "Total order: " +
+                                              globals.deliveryList.length.toString() +
+                                              "             |             " +
+                                              "Delivered: " +
+                                              globals.delivered.toString() +
+                                              "             |             ",
+                                          velocity: 30.0,
+                                          style: TextStyle(fontSize: verticalPixel * 1.8, color: Color(0xff171721)),
+                                        );
+                                      } else {
+                                        return Marquee(
+                                          text: "                                Loading ...                                     |",
+                                          blankSpace: 1000,
+                                          velocity: 30.0,
+                                          style: TextStyle(fontSize: verticalPixel * 1.8, color: Color(0xff171721)),
+                                        );
+                                      }
+                                    },
                                   ),
-                                  /* Flexible(
+                                ),
+                                Container(
+                                  height: verticalPixel * 5.5,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xff2C2C34),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: TabBar(
+                                    labelStyle: TextStyle(fontSize: verticalPixel * 1.8),
+                                    isScrollable: true,
+                                    unselectedLabelColor: Color(0xff68b0fd).withOpacity(1),
+                                    indicatorPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                                    labelPadding: EdgeInsets.symmetric(horizontal: horizontalPixel * 16, vertical: verticalPixel * 0),
+                                    labelColor: Colors.white,
+                                    indicatorSize: TabBarIndicatorSize.tab,
+                                    indicator: new BubbleTabIndicator(
+                                      indicatorRadius: 10,
+                                      indicatorHeight: verticalPixel * 4.5,
+                                      indicatorColor: Color(0xff45454f).withOpacity(1),
+                                      tabBarIndicatorSize: TabBarIndicatorSize.tab,
+                                    ),
+                                    tabs: <Tab>[
+                                      new Tab(text: Strings.pickUpTitle),
+                                      new Tab(text: Strings.deliveryTitle),
+                                    ],
+                                    controller: _tabController,
+                                  ),
+                                ),
+                                Flexible(
+                                  child: new TabBarView(
+                                    controller: _tabController,
+                                    children: globals.isDriverMode ? driverWidgets : tenderWidgets,
+                                  ),
+                                  flex: globals.isDriverMode ? 2 : 2,
+                                ),
+                                /* Flexible(
                                     child:  */
-
-                                ],
-                              ),)),
-
+                              ],
+                            ),
+                          )),
                     ],
                   );
                 })));
@@ -698,28 +655,14 @@ class _LandingPageState extends  State<LandingPage> with SingleTickerProviderSta
         print(element.toString());
         print(globals.selectedLoc);
         print('end');
-        if( element.isScanned == 0){
-          if (element.trackingNumber.contains(barCode)  ) {
+        if (element.isScanned == 0) {
+          if (element.trackingNumber.contains(barCode)) {
             element.isScanned = 1;
 
             _landingPageBloc.dispatch(UpdatePickUpItem(pickUpExternal: element));
           }
-
-
         }
-
-
-
-
-
       });
     }
   }
-
-
-
-
-
-
 }
-

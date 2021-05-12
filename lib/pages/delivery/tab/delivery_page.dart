@@ -3,25 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:toast/toast.dart';
 import 'package:trackaware_lite/blocs/delivery_bloc.dart';
+import 'package:trackaware_lite/blocs/landing_page_bloc.dart';
 import 'package:trackaware_lite/events/delivery_event.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/models/location_response.dart';
-import 'package:trackaware_lite/models/pickup_external_db.dart';
 import 'package:trackaware_lite/states/delivery_state.dart';
 import 'package:trackaware_lite/utils/colorstrings.dart';
 import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/utils.dart';
-import 'package:trackaware_lite/globals.dart' as globals;
-import 'package:trackaware_lite/main.dart';
-import 'package:trackaware_lite/pages/landing/landing.dart' as landing;
-import 'package:trackaware_lite/blocs/landing_page_bloc.dart' ;
 //import 'package:trackaware_lite/events/landing_page_event.dart';
 
 class DeliveryPage extends StatefulWidget {
-
-
   @override
   State<DeliveryPage> createState() {
     return DeliveryPageState();
@@ -39,7 +33,6 @@ const double _kPickerSheetHeight = 216.0;
 List pickUpItems = [];
 
 class DeliveryPageState extends State<DeliveryPage> {
-
   LandingPageBloc _landingPageBloc;
   @override
   void dispose() {
@@ -66,10 +59,8 @@ class DeliveryPageState extends State<DeliveryPage> {
                   clipBehavior: Clip.antiAlias,
                   padding: EdgeInsets.all(16),
                   child: Text(Strings.NEXT,
-                      style: TextStyle(color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 16.0),
-                      textAlign: TextAlign.center),
+                      style: TextStyle(color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0), textAlign: TextAlign.center),
                   onPressed: () {
-
                     deliveryBloc.dispatch(NextButtonClick());
                   },
                   color: const Color(0xff424e53))));
@@ -87,39 +78,21 @@ class DeliveryPageState extends State<DeliveryPage> {
                 itemBuilder: (context, position) {
                   return GestureDetector(
                       onTap: () {
-                        globals.barCode = pickUpItems[position].trackingNumber.split(':')[0] ;
+                        globals.barCode = pickUpItems[position].trackingNumber.split(':')[0];
                         print(globals.barCode);
 
-
-
-
-                        if(pickUpItems[position].isScanned == 1){
+                        if (pickUpItems[position].isScanned == 1) {
                           setState(() {
                             pickUpItems[position].isScanned = 0;
                             globals.showNextButton = false;
-
-
                           });
-
-                        }
-                        else{
+                        } else {
                           setState(() {
                             pickUpItems[position].isScanned = 1;
 
                             globals.showNextButton = true;
-
-
-
                           });
-
-
-
-
                         }
-
-
-
-
 
 /*                        showCupertinoModalBottomSheet(
                             context: context,
@@ -161,8 +134,7 @@ class DeliveryPageState extends State<DeliveryPage> {
                                                 alignment: Alignment.topLeft,
                                                 child: Text("# Tracking Number",
                                                     textAlign: TextAlign.start,
-                                                    style: const TextStyle(
-                                                        color: const Color(0xff767272), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 13.0)))),
+                                                    style: const TextStyle(color: const Color(0xff767272), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 13.0)))),
                                         Container(
                                             padding: EdgeInsets.fromLTRB(20.0, 2.0, 0.0, 0.0),
                                             child: Align(
@@ -173,8 +145,7 @@ class DeliveryPageState extends State<DeliveryPage> {
                                                       maxLines: 1,
                                                       overflow: TextOverflow.ellipsis,
                                                       textAlign: TextAlign.right,
-                                                      style: const TextStyle(
-                                                          color: const Color(0xff000000), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 18.0))),
+                                                      style: const TextStyle(color: const Color(0xff000000), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 18.0))),
                                             ))
                                       ]),
                                       flex: 1,
@@ -208,22 +179,16 @@ class DeliveryPageState extends State<DeliveryPage> {
                                       children: <Widget>[
                                         Column(
                                           children: <Widget>[
-                                            Text("Pick Up Site",
-                                                style: const TextStyle(
-                                                    color: const Color(0xff767272), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 13.0)),
+                                            Text("Pick Up Site", style: const TextStyle(color: const Color(0xff767272), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 13.0)),
                                             Text(pickUpItems[position].pickUpSite != null ? pickUpItems[position].pickUpSite : "",
-                                                style: const TextStyle(
-                                                    color: const Color(0xff202020), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 13.0))
+                                                style: const TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 13.0))
                                           ],
                                         ),
                                         Column(
                                           children: <Widget>[
-                                            Text("Delivery Site",
-                                                style: const TextStyle(
-                                                    color: const Color(0xff767272), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 13.0)),
+                                            Text("Delivery Site", style: const TextStyle(color: const Color(0xff767272), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 13.0)),
                                             Text(pickUpItems[position].deliverySite,
-                                                style: const TextStyle(
-                                                    color: const Color(0xff202020), fontWeight: FontWeight.w400, fontFamily: "SourceSansPro", fontStyle: FontStyle.normal, fontSize: 13.0))
+                                                style: const TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 13.0))
                                           ],
                                         ),
                                       ],
@@ -242,10 +207,13 @@ class DeliveryPageState extends State<DeliveryPage> {
           child: new Material(
               color: Colors.transparent,
               child: locationList.isEmpty
-                  ? Text("Pick location" , style: TextStyle(color: Color(0xff35357a).withOpacity(.5)),)
+                  ? Text(
+                      "Pick location",
+                      style: TextStyle(color: Color(0xff35357a).withOpacity(.5)),
+                    )
                   : Text(
                       locationList[selectedLocationIndex].code,
-                      style: TextStyle(color: CupertinoDynamicColor.resolve( Color(0xff35357a).withOpacity(.5), context)),
+                      style: TextStyle(color: CupertinoDynamicColor.resolve(Color(0xff35357a).withOpacity(.5), context)),
                     )));
     }
 
@@ -259,15 +227,7 @@ class DeliveryPageState extends State<DeliveryPage> {
               padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
               width: double.infinity,
               decoration: new BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [
-                        Color(0xffdac2ff).withOpacity(.4),
-                        Color(0xffdac2ff).withOpacity(.6)
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      stops: [0, 1]
-                  ),
+                  gradient: LinearGradient(colors: [Color(0xffdac2ff).withOpacity(.4), Color(0xffdac2ff).withOpacity(.6)], begin: Alignment.topLeft, end: Alignment.bottomRight, stops: [0, 1]),
                   borderRadius: new BorderRadius.all(Radius.circular(16))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -277,7 +237,7 @@ class DeliveryPageState extends State<DeliveryPage> {
                     padding: const EdgeInsets.fromLTRB(20.0, 0, 8.0, 0),
                     child: Icon(
                       Icons.arrow_drop_down,
-                      color:   Color(0xff35357a).withOpacity(.5),
+                      color: Color(0xff35357a).withOpacity(.5),
                       size: 36.0,
                     ),
                   ),
@@ -290,13 +250,10 @@ class DeliveryPageState extends State<DeliveryPage> {
           child: Stack(children: <Widget>[
         ListView(
           children: <Widget>[
-            SizedBox(height: 15,),
+            SizedBox(
+              height: 15,
+            ),
             getDropDownWidget(),
-
-
-
-
-
             Padding(padding: EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 0.0), child: Divider(thickness: 1.0, color: const Color(0xff979797))),
           ],
         ),
@@ -314,12 +271,11 @@ class DeliveryPageState extends State<DeliveryPage> {
             ? Align(
                 alignment: Alignment.center,
                 child: Container(
-                  margin: EdgeInsets.only(top: 70),
+                    margin: EdgeInsets.only(top: 70),
                     height: 150,
                     color: Colors.transparent,
                     child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
                       SvgPicture.asset(
-
                         "assets/ic_box.svg",
                         semanticsLabel: "empty icon",
                         height: 100,
@@ -441,9 +397,6 @@ class DeliveryPageState extends State<DeliveryPage> {
 }
 
 class _BottomPicker extends StatelessWidget {
-
-
-
   const _BottomPicker({
     Key key,
     @required this.child,
@@ -451,7 +404,6 @@ class _BottomPicker extends StatelessWidget {
         super(key: key);
 
   final Widget child;
-
 
   @override
   Widget build(BuildContext context) {

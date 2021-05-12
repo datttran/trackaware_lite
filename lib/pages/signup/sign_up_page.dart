@@ -7,13 +7,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:trackaware_lite/blocs/sign_up_bloc.dart';
 import 'package:trackaware_lite/events/sign_up_event.dart';
 import 'package:trackaware_lite/states/sign_up_state.dart';
 import 'package:trackaware_lite/utils/colorstrings.dart';
 import 'package:trackaware_lite/utils/strings.dart';
 import 'package:trackaware_lite/utils/utils.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -81,23 +81,18 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
                 context: context,
                 child: CupertinoActionSheet(
                     title: const Text('Select source'),
-                    message:
-                        const Text('Please select from the below two options'),
+                    message: const Text('Please select from the below two options'),
                     actions: <Widget>[
                       CupertinoActionSheetAction(
                         child: const Text('Camera'),
                         onPressed: () {
-                          signUpBloc.dispatch(ImageButtonClick(
-                              imageSource: ImageSource.camera,
-                              imagePicker: ImagePicker()));
+                          signUpBloc.dispatch(ImageButtonClick(imageSource: ImageSource.camera, imagePicker: ImagePicker()));
                         },
                       ),
                       CupertinoActionSheetAction(
                         child: const Text('Gallery'),
                         onPressed: () {
-                          signUpBloc.dispatch(ImageButtonClick(
-                              imageSource: ImageSource.gallery,
-                              imagePicker: ImagePicker()));
+                          signUpBloc.dispatch(ImageButtonClick(imageSource: ImageSource.gallery, imagePicker: ImagePicker()));
                         },
                       ),
                     ],
@@ -133,13 +128,7 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
                     Align(
                       child: Material(
                           color: Colors.transparent,
-                          child: Text(Strings.EMAIL,
-                              style: TextStyle(
-                                  color: const Color(0xff202020),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "SourceSansPro",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16.0))),
+                          child: Text(Strings.EMAIL, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0))),
                       alignment: Alignment.centerLeft,
                     ),
                     Padding(
@@ -148,14 +137,9 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
                             color: Colors.transparent,
                             child: new TextFormField(
                               keyboardType: TextInputType.emailAddress,
-                              style: TextStyle(
-                                  color: HexColor(ColorStrings.VALUES),
-                                  fontSize: 16),
-                              autofocus: true,
-                              decoration: InputDecoration.collapsed(
-                                  focusColor:
-                                      HexColor(ColorStrings.emailPwdTextColor),
-                                  hintText: Strings.ENTER_EMAIL),
+                              style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                              autofocus: false,
+                              decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_EMAIL),
                               validator: (value) {
                                 if (validateEmail(value)) {
                                   return Strings.PLEASE_CHECK_EMAIL_ENTERED;
@@ -168,8 +152,7 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
                               focusNode: _emailFocus,
                               onFieldSubmitted: (v) {
                                 _emailFocus.unfocus();
-                                FocusScope.of(context)
-                                    .requestFocus(_firstNameFocus);
+                                FocusScope.of(context).requestFocus(_firstNameFocus);
                               },
                             )))
                   ],
@@ -196,13 +179,7 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
                     Align(
                       child: Material(
                           color: Colors.transparent,
-                          child: Text(Strings.FIRST_NAME,
-                              style: TextStyle(
-                                  color: const Color(0xff202020),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "SourceSansPro",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16.0))),
+                          child: Text(Strings.FIRST_NAME, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0))),
                       alignment: Alignment.centerLeft,
                     ),
                     Padding(
@@ -211,14 +188,9 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
                             color: Colors.transparent,
                             child: new TextFormField(
                               keyboardType: TextInputType.text,
-                              style: TextStyle(
-                                  color: HexColor(ColorStrings.VALUES),
-                                  fontSize: 16),
-                              autofocus: true,
-                              decoration: InputDecoration.collapsed(
-                                  focusColor:
-                                      HexColor(ColorStrings.emailPwdTextColor),
-                                  hintText: Strings.ENTER_FIRST_NAME),
+                              style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                              autofocus: false,
+                              decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_FIRST_NAME),
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return Strings.FIELD_CANNOT_BE_EMPTY;
@@ -231,8 +203,7 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
                               focusNode: _firstNameFocus,
                               onFieldSubmitted: (v) {
                                 _firstNameFocus.unfocus();
-                                FocusScope.of(context)
-                                    .requestFocus(_lastNameFocus);
+                                FocusScope.of(context).requestFocus(_lastNameFocus);
                               },
                             )))
                   ],
@@ -260,13 +231,7 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
                     Align(
                       child: Material(
                           color: Colors.transparent,
-                          child: Text(Strings.LAST_NAME,
-                              style: TextStyle(
-                                  color: const Color(0xff202020),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "SourceSansPro",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16.0))),
+                          child: Text(Strings.LAST_NAME, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0))),
                       alignment: Alignment.centerLeft,
                     ),
                     Padding(
@@ -275,14 +240,9 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
                             color: Colors.transparent,
                             child: new TextFormField(
                               keyboardType: TextInputType.text,
-                              style: TextStyle(
-                                  color: HexColor(ColorStrings.VALUES),
-                                  fontSize: 16),
-                              autofocus: true,
-                              decoration: InputDecoration.collapsed(
-                                  focusColor:
-                                      HexColor(ColorStrings.emailPwdTextColor),
-                                  hintText: Strings.ENTER_LAST_NAME),
+                              style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                              autofocus: false,
+                              decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_LAST_NAME),
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return Strings.FIELD_CANNOT_BE_EMPTY;
@@ -295,8 +255,7 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
                               focusNode: _lastNameFocus,
                               onFieldSubmitted: (v) {
                                 _lastNameFocus.unfocus();
-                                FocusScope.of(context)
-                                    .requestFocus(_userNameFocus);
+                                FocusScope.of(context).requestFocus(_userNameFocus);
                               },
                             )))
                   ],
@@ -324,13 +283,7 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
                     Align(
                       child: Material(
                           color: Colors.transparent,
-                          child: Text(Strings.USER_NAME_HEADING,
-                              style: TextStyle(
-                                  color: const Color(0xff202020),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "SourceSansPro",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16.0))),
+                          child: Text(Strings.USER_NAME_HEADING, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0))),
                       alignment: Alignment.centerLeft,
                     ),
                     Padding(
@@ -339,14 +292,9 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
                             color: Colors.transparent,
                             child: new TextFormField(
                               keyboardType: TextInputType.text,
-                              style: TextStyle(
-                                  color: HexColor(ColorStrings.VALUES),
-                                  fontSize: 16),
-                              autofocus: true,
-                              decoration: InputDecoration.collapsed(
-                                  focusColor:
-                                      HexColor(ColorStrings.emailPwdTextColor),
-                                  hintText: Strings.ENTER_USERNAME),
+                              style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                              autofocus: false,
+                              decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_USERNAME),
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return Strings.FIELD_CANNOT_BE_EMPTY;
@@ -359,8 +307,7 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
                               focusNode: _userNameFocus,
                               onFieldSubmitted: (v) {
                                 _userNameFocus.unfocus();
-                                FocusScope.of(context)
-                                    .requestFocus(_passwordFocus);
+                                FocusScope.of(context).requestFocus(_passwordFocus);
                               },
                             )))
                   ],
@@ -388,13 +335,7 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
                     Align(
                       child: Material(
                           color: Colors.transparent,
-                          child: Text(Strings.PASSWORD,
-                              style: TextStyle(
-                                  color: const Color(0xff202020),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "SourceSansPro",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16.0))),
+                          child: Text(Strings.PASSWORD, style: TextStyle(color: const Color(0xff202020), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0))),
                       alignment: Alignment.centerLeft,
                     ),
                     Padding(
@@ -403,14 +344,9 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
                             color: Colors.transparent,
                             child: new TextFormField(
                               keyboardType: TextInputType.visiblePassword,
-                              style: TextStyle(
-                                  color: HexColor(ColorStrings.VALUES),
-                                  fontSize: 16),
-                              autofocus: true,
-                              decoration: InputDecoration.collapsed(
-                                  focusColor:
-                                      HexColor(ColorStrings.emailPwdTextColor),
-                                  hintText: Strings.ENTER_PASSWORD),
+                              style: TextStyle(color: HexColor(ColorStrings.VALUES), fontSize: 16),
+                              autofocus: false,
+                              decoration: InputDecoration.collapsed(focusColor: HexColor(ColorStrings.emailPwdTextColor), hintText: Strings.ENTER_PASSWORD),
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return Strings.FIELD_CANNOT_BE_EMPTY;
@@ -438,13 +374,7 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
                   clipBehavior: Clip.antiAlias,
                   padding: EdgeInsets.all(16),
                   child: Text(Strings.SAVE,
-                      style: TextStyle(
-                          color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR),
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "SourceSansPro",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 16.0),
-                      textAlign: TextAlign.center),
+                      style: TextStyle(color: HexColor(ColorStrings.SEND_BUTTON_TEXT_COLOR), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 16.0), textAlign: TextAlign.center),
                   onPressed: () {
                     _saveUser();
                   },
@@ -454,8 +384,7 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
     Widget getScaffold() {
       return CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
-              backgroundColor:
-                  HexColor(ColorStrings.boxBackground).withAlpha(30),
+              backgroundColor: HexColor(ColorStrings.boxBackground).withAlpha(30),
               leading: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
@@ -468,9 +397,7 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
           child: Form(
               key: _createUserFormKey,
               child: Container(
-                  decoration: BoxDecoration(
-                      color:
-                          HexColor(ColorStrings.boxBackground).withAlpha(30)),
+                  decoration: BoxDecoration(color: HexColor(ColorStrings.boxBackground).withAlpha(30)),
                   child: Stack(children: <Widget>[
                     ListView(
                       children: <Widget>[
@@ -483,9 +410,7 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
                         lastName,
                         userName,
                         password,
-                        Align(
-                            child: getSaveButton(),
-                            alignment: AlignmentDirectional.bottomCenter)
+                        Align(child: getSaveButton(), alignment: AlignmentDirectional.bottomCenter)
                       ],
                     ),
                     Align(
@@ -552,7 +477,7 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
   }
 
   Future<void> _saveUser() async {
-    /* 
+    /*
     Commented out to make photo optional on signup
     if (_imageFile == null) {
       showDemoDialog<String>(
@@ -588,8 +513,7 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
         final dir = await path_provider.getApplicationDocumentsDirectory();
         var imagePath = dir.path + "/ic_user.png";
         ByteData data = await rootBundle.load("images/ic_user.png");
-        List<int> bytes =
-            data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+        List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
         await File(imagePath).writeAsBytes(bytes);
         signUpBloc.dispatch(SaveBtnClick(map: userMap, file: File(imagePath)));
       }
@@ -605,12 +529,9 @@ class _SignUpPageState extends State<SignUpPage> implements AlertClickCallBack {
     return file;
   }
 
-  Future<File> testCompressAndGetFile(
-      PickedFile file, String targetPath) async {
+  Future<File> testCompressAndGetFile(PickedFile file, String targetPath) async {
     print("testCompressAndGetFile");
-    final result = await FlutterImageCompress.compressAndGetFile(
-        file.path, targetPath,
-        quality: 90, minWidth: 200, minHeight: 200);
+    final result = await FlutterImageCompress.compressAndGetFile(file.path, targetPath, quality: 90, minWidth: 200, minHeight: 200);
 
     print(result.lengthSync());
     return result;
@@ -631,8 +552,7 @@ showDemoDialog<T>({BuildContext context, Widget child}) {
 }
 
 bool validateEmail(String value) {
-  String pattern =
-      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  String pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
   RegExp regExp = new RegExp(pattern);
   if (value.isEmpty) {
     return true;

@@ -311,7 +311,7 @@ class PickUpTab extends State<PickUpTabWidget> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-              height: verticalPixel * 72,
+              height: verticalPixel * 65,
               margin: EdgeInsets.symmetric(horizontal: horizontalPixel * 3.5, vertical: verticalPixel * 1),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
@@ -334,7 +334,7 @@ class PickUpTab extends State<PickUpTabWidget> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.only(top: verticalPixel * .2),
+                              padding: EdgeInsets.only(top: verticalPixel * 0.3),
                               child: Text(
                                 '   Total: ' + globals.pickupList.length.toString(),
                                 style: TextStyle(color: Colors.white70, fontSize: 12),
@@ -378,7 +378,7 @@ class PickUpTab extends State<PickUpTabWidget> {
           Visibility(
             visible: globals.popup == 0,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPixel * 3.5),
+              padding: EdgeInsets.symmetric(horizontal: horizontalPixel * 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -391,7 +391,7 @@ class PickUpTab extends State<PickUpTabWidget> {
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           side: BorderSide(color: Color(0xff171721)),
-                          borderRadius: BorderRadius.horizontal(left: Radius.circular(12)),
+                          borderRadius: BorderRadius.horizontal(left: Radius.circular(15)),
                         ),
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 4),
@@ -423,7 +423,7 @@ class PickUpTab extends State<PickUpTabWidget> {
                   Visibility(
                     visible: globals.pickupList.length > 0,
                     child: ButtonTheme(
-                      height: verticalPixel * 5.2,
+                      height: verticalPixel * 5,
                       minWidth: horizontalPixel * 10,
                       child: RaisedButton(
                         color: Color(0xffff2a46),
@@ -468,7 +468,7 @@ class PickUpTab extends State<PickUpTabWidget> {
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           side: BorderSide(color: Color(0xff171721)),
-                          borderRadius: BorderRadius.horizontal(right: Radius.circular(12)),
+                          borderRadius: BorderRadius.horizontal(right: Radius.circular(15)),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
