@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -7,12 +8,15 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:http/http.dart' as http;
 import 'package:location/location.dart' as location;
 import 'package:trackaware_lite/blocs/pickup_tab_bloc.dart';
 import 'package:trackaware_lite/constants.dart';
 import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/models/pickup_part_db.dart';
+import 'package:trackaware_lite/models/transaction_request.dart';
 import 'package:trackaware_lite/pages/pickup/add_popup.dart';
+import 'package:trackaware_lite/utils/transactions.dart';
 
 var loca = new location.Location();
 bool _serviceEnabled;
@@ -154,121 +158,138 @@ class PickUpTab extends State<PickUpTabWidget> {
                           },
                         )
                       ],
-                      child: Card(
-                        elevation: 0,
-                        color: Colors.transparent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, verticalPixel * 2),
-                        child: Container(
-                            height: 100,
-                            decoration: new BoxDecoration(
-                              gradient: new LinearGradient(
-                                  colors: [Color(0xff9cffff).withOpacity(.5), Color(0xcb81adff).withOpacity(.5)],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  stops: [0.0, 1.0],
-                                  tileMode: TileMode.clamp),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(children: <Widget>[
-                                      Container(
-                                          padding: EdgeInsets.fromLTRB(20, 12.0, 0.0, 0.0),
-                                          child: Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Container(
-                                                height: 17,
-                                                padding: EdgeInsets.fromLTRB(5.0, 2, 5.0, 0),
-                                                margin: EdgeInsets.only(right: 5),
-                                                decoration: new BoxDecoration(
-                                                    color: Color(0xe2d1fffd).withOpacity(.2),
-                                                    borderRadius: new BorderRadius.only(
-                                                        topLeft: const Radius.circular(16.0),
-                                                        topRight: const Radius.circular(16.0),
-                                                        bottomLeft: const Radius.circular(16.0),
-                                                        bottomRight: const Radius.circular(16.0))),
-                                                child: Text(
-                                                  ' N O ',
-                                                  style: TextStyle(color: Color(0xe2131313).withOpacity(.2), fontSize: 11.0, fontWeight: FontWeight.bold),
-                                                )),
-                                          )),
-                                      Container(
-                                          padding: EdgeInsets.fromLTRB(16.0, 0, 0.0, 0.0),
-                                          child: Align(
+                      child: GestureDetector(
+                        onTap: () {
+                          print(globals.pickupList[position]);
+                        },
+                        child: Card(
+                          elevation: 0,
+                          color: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, verticalPixel * 2),
+                          child: Container(
+                              height: 100,
+                              decoration: new BoxDecoration(
+                                gradient: new LinearGradient(
+                                    colors: [Color(0xff9cffff).withOpacity(.5), Color(0xcb81adff).withOpacity(.5)],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    stops: [0.0, 1.0],
+                                    tileMode: TileMode.clamp),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: horizontalPixel * 4,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                              padding: EdgeInsets.fromLTRB(0, 12.0, 0.0, 0.0),
+                                              child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Container(
+                                                    height: 17,
+                                                    padding: EdgeInsets.fromLTRB(5.0, 2, 5.0, 0),
+                                                    margin: EdgeInsets.only(right: 5),
+                                                    decoration: new BoxDecoration(
+                                                        color: Color(0xe2d1fffd).withOpacity(.2),
+                                                        borderRadius: new BorderRadius.only(
+                                                            topLeft: const Radius.circular(16.0),
+                                                            topRight: const Radius.circular(16.0),
+                                                            bottomLeft: const Radius.circular(16.0),
+                                                            bottomRight: const Radius.circular(16.0))),
+                                                    child: Text(
+                                                      " " + (globals.pickupList.length - position).toString() + " ",
+                                                      style: TextStyle(color: Color(0xe2131313).withOpacity(.2), fontSize: 11.0, fontWeight: FontWeight.bold),
+                                                    )),
+                                              )),
+                                          SizedBox(
+                                            height: verticalPixel * .5,
+                                          ),
+                                          Container(
+                                              padding: EdgeInsets.fromLTRB(20, 0, 24.0, 0.0),
+                                              child: Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: Text("Note", textAlign: TextAlign.right, style: const TextStyle(color: const Color(0xffffffff), fontSize: 11.0)))),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: horizontalPixel * 5,
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                              padding: EdgeInsets.fromLTRB(0.0, 12, 0.0, 0),
+                                              child: Text(globals.pickupList[position].orderNumber,
+                                                  maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.right, style: const TextStyle(color: const Color(0xffffffff), fontSize: 16.0))),
+                                          SizedBox(
+                                            height: verticalPixel * .5,
+                                          ),
+                                          Align(
                                             alignment: Alignment.bottomCenter,
                                             child: Container(
-                                                padding: EdgeInsets.fromLTRB(0.0, 10, 0.0, 0),
-                                                child: Text(globals.pickupList[position].orderNumber,
-                                                    maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.right, style: const TextStyle(color: const Color(0xffffffff), fontSize: 16.0))),
-                                          )),
-                                    ]),
-                                    /*Icon(
-                                      Entypo.dot_single,
-                                      color: Color(0xfff1f8ff).withOpacity(.5),
-                                      size: 32,
-                                    )*/
-                                  ],
-                                ),
-                                Row(crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[
-                                  Container(
-                                      padding: EdgeInsets.fromLTRB(20, 0, 24.0, 0.0),
-                                      child: Align(
-                                          alignment: Alignment.topRight, child: Text(" Note ", textAlign: TextAlign.right, style: const TextStyle(color: const Color(0xffffffff), fontSize: 11.0)))),
-                                  SizedBox(
-                                    width: horizontalPixel * 1,
+                                                width: horizontalPixel * 63,
+                                                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                                child: Text(globals.pickupList[position].partNumber != null ? globals.pickupList[position].partNumber : "N/A",
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.clip,
+                                                    textAlign: TextAlign.left,
+                                                    style: const TextStyle(color: const Color(0xffe0dee7), fontStyle: FontStyle.normal, fontSize: 11.0))),
+                                          )
+                                        ],
+                                      ),
+                                      /*Icon(
+                                        Entypo.dot_single,
+                                        color: Color(0xfff1f8ff).withOpacity(.5),
+                                        size: 32,
+                                      )*/
+                                    ],
                                   ),
-                                  Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Container(
-                                        width: horizontalPixel * 63,
-                                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                        child: Text(globals.pickupList[position].partNumber != null ? globals.pickupList[position].partNumber : "N/A",
-                                            maxLines: 1,
-                                            overflow: TextOverflow.clip,
-                                            textAlign: TextAlign.left,
-                                            style: const TextStyle(color: const Color(0xffe0dee7), fontStyle: FontStyle.normal, fontSize: 11.0))),
-                                  )
-                                ]),
-                                Divider(
-                                  color: const Color(0xfffff2f2),
-                                ),
-                                Container(
-                                    padding: EdgeInsets.fromLTRB(18.0, 5.0, 18.0, 0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Column(
-                                          children: <Widget>[
-                                            Text("Location", style: const TextStyle(color: const Color(0xff241835), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 13.0)),
-                                            Text(globals.pickupList[position].location != null ? globals.pickupList[position].location : "",
-                                                style: TextStyle(color: Color(0xff0e0935).withOpacity(.5), fontWeight: FontWeight.w400, fontSize: 11.0))
-                                          ],
-                                        ),
-                                        Icon(
-                                          Icons.sync_alt,
-                                          size: verticalPixel * 2,
-                                          color: Colors.white70.withOpacity(.3),
-                                        ),
-                                        Column(
-                                          children: <Widget>[
-                                            Text("Destination", style: const TextStyle(color: const Color(0xff241835), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 13.0)),
-                                            globals.pickupList[position].destination == null
-                                                ? Text("")
-                                                : Text(globals.pickupList[position].destination,
-                                                    style: TextStyle(color: Color(0xff0e0935).withOpacity(.5), fontWeight: FontWeight.w400, fontSize: 11.0))
-                                          ],
-                                        ),
-                                      ],
-                                    ))
-                              ],
-                            )),
+                                  Divider(
+                                    color: const Color(0xfffff2f2),
+                                  ),
+                                  Container(
+                                      padding: EdgeInsets.fromLTRB(18.0, 5.0, 18.0, 0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Column(
+                                            children: <Widget>[
+                                              Text("Location", style: const TextStyle(color: const Color(0xff241835), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 13.0)),
+                                              Text(globals.pickupList[position].location != null ? globals.pickupList[position].location : "",
+                                                  style: TextStyle(color: Color(0xff0e0935).withOpacity(.5), fontWeight: FontWeight.w400, fontSize: 11.0))
+                                            ],
+                                          ),
+                                          Icon(
+                                            Icons.sync_alt,
+                                            size: verticalPixel * 2,
+                                            color: Colors.white70.withOpacity(.3),
+                                          ),
+                                          Column(
+                                            children: <Widget>[
+                                              Text("Destination", style: const TextStyle(color: const Color(0xff241835), fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: 13.0)),
+                                              globals.pickupList[position].destination == null
+                                                  ? Text("")
+                                                  : Text(globals.pickupList[position].destination,
+                                                      style: TextStyle(color: Color(0xff0e0935).withOpacity(.5), fontWeight: FontWeight.w400, fontSize: 11.0))
+                                            ],
+                                          ),
+                                        ],
+                                      ))
+                                ],
+                              )),
+                        ),
                       ),
                     );
                   },
@@ -446,6 +467,8 @@ class PickUpTab extends State<PickUpTabWidget> {
                           try {
                             setState(() {
                               globals.pickupList.forEach((element) {
+                                //SEND ITEM HERE
+                                _generateTransactionList(element);
                                 globals.deliveryList.add(element);
                               });
 
@@ -453,7 +476,7 @@ class PickUpTab extends State<PickUpTabWidget> {
                               showToast('Success!', context: context, axis: Axis.horizontal, alignment: Alignment.center, position: StyledToastPosition.center);
                             });
                           } catch (e) {
-                            showToast('Fail!', context: context, axis: Axis.horizontal, alignment: Alignment.center, position: StyledToastPosition.center);
+                            showToast('Fail! ' + e.toString(), context: context, axis: Axis.horizontal, alignment: Alignment.center, position: StyledToastPosition.center);
                           }
                         },
                       ),
@@ -494,5 +517,49 @@ class PickUpTab extends State<PickUpTabWidget> {
         ],
       ),
     );
+  }
+
+  _sendToServer(TransactionRequest transactionRequest) async {
+    try {
+      final response = await http.post(
+        Uri.parse(globals.baseUrl + '/transaction/'),
+        headers: <String, String>{'Content-Type': 'application/json', 'Authorization': 'Basic cmtoYW5kaGVsZGFwaTppMjExVTI7'},
+        body: jsonEncode(transactionRequest.toJson()),
+      );
+      print(response.statusCode);
+      print(transactionRequest.toString());
+      print('finish');
+    } catch (E) {
+      print('SEND TO SERVER ERROR' + E.toString());
+    }
+  }
+
+  _generateTransactionList(pickUpPart) {
+    try {
+      print('generate transaction');
+      print(pickUpPart.toString());
+
+      TransactionRequest transactionRequest = TransactionRequest();
+
+      transactionRequest.handHeldId = 'Android_TestDevice';
+      transactionRequest.id = 232;
+
+      transactionRequest.location = pickUpPart.location;
+
+      transactionRequest.status = 'pickup';
+      transactionRequest.user = 'testtest';
+
+      transactionRequest.packages = [getPackageFromPickUpPart(pickUpPart)];
+      print(transactionRequest.toString());
+
+      //_transactionRequestItems.add(transactionRequest);
+      _sendToServer(transactionRequest);
+    } catch (e) {
+      print('GENERATE TRANSACTION ERROR ' + e.toString());
+    }
+  }
+
+  _getDeviceInfo() {
+    //get device info here
   }
 }

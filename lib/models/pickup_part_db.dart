@@ -4,8 +4,7 @@
 
 import 'dart:convert';
 
-PickUpPart pickUpPartFromJson(String str) =>
-    PickUpPart.fromJson(json.decode(str));
+PickUpPart pickUpPartFromJson(String str) => PickUpPart.fromJson(json.decode(str));
 
 String pickUpPartToJson(PickUpPart data) => json.encode(data.toJson());
 
@@ -16,6 +15,8 @@ class PickUpPart {
   String destination;
   String orderNumber;
   String partNumber;
+  String receivedBy;
+  String receiverSignature;
   int scanTime;
   int isSynced;
   int isScanned;
@@ -29,6 +30,8 @@ class PickUpPart {
       this.destination,
       this.orderNumber,
       this.partNumber,
+      this.receivedBy,
+      this.receiverSignature,
       this.scanTime,
       this.isSynced,
       this.isScanned,
@@ -46,6 +49,8 @@ class PickUpPart {
       destination: json["dest_location"],
       orderNumber: json["order_number"],
       partNumber: json["part_number"],
+      receivedBy: json["ReceivedBy"],
+      receiverSignature: json["ReceiverSignature"],
       scanTime: json["scan_time"],
       isSynced: json["is_synced"],
       isScanned: json["is_scanned"],
@@ -58,11 +63,12 @@ class PickUpPart {
         "dest_location": destination,
         "order_number": orderNumber,
         "part_number": partNumber,
+        "ReceivedBy": receivedBy,
+        "ReceiverSignature": receiverSignature,
         "scan_time": scanTime,
         "is_synced": isSynced,
         "is_scanned": isScanned,
         "is_delivered": isDelivered,
         "keep_scanned_values": keepScannedValues,
-        
       };
 }

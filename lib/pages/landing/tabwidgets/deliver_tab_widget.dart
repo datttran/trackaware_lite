@@ -151,7 +151,7 @@ class _DeliveryState extends State<DeliveryTabWidget> {
                                                           bottomLeft: const Radius.circular(16.0),
                                                           bottomRight: const Radius.circular(16.0))),
                                                   child: Text(
-                                                    ' N O ',
+                                                    " " + (position + 1).toString() + " ",
                                                     style: TextStyle(color: Color(0xe2131313).withOpacity(.2), fontSize: 11.0, fontWeight: FontWeight.bold),
                                                   )),
                                             )),

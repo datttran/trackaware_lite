@@ -68,7 +68,7 @@ class _PopState extends State<Pop> {
     pickupItem.location = globals.currentLocation.thoroughfare;
     pickupItem.destination = destination;
 
-    globals.pickupList.add(pickupItem);
+    globals.pickupList.insert(0, pickupItem);
   }
 
   PageController _pageController;

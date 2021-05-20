@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui';
 
@@ -7,6 +8,7 @@ import 'package:flutter_tags/flutter_tags.dart';
 import 'package:signature/signature.dart';
 import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/models/pickup_part_db.dart';
+import 'package:trackaware_lite/new logic/APIlogic.dart';
 
 List<PickUpPart> devList = [];
 List _items = [];
@@ -183,10 +185,20 @@ class _SignState extends State<Sign> {
                     onPressed: () async {
                       if (_controller.isNotEmpty) {
                         final Uint8List data = await _controller.toPngBytes();
+
                         if (data != null && globals.receiver != null && _items.length > 0) {
                           try {
                             setState(() {
                               _items.forEach((element) {
+                                element.receivedBy = globals.receiver;
+                                element.receiverSignature = base64.encode(data);
+                                print('signature is ' + element.receiverSignature);
+
+                                try {
+                                  deliTrans(element);
+                                } catch (e) {
+                                  print('fail - cannot send POD : sign ' + e);
+                                }
                                 globals.deliveryList.remove(element);
                                 globals.delivered = globals.delivered + 1;
                                 globals.selectedCard = globals.selectedCard - 1;

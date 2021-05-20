@@ -66,6 +66,7 @@ var cameras;
 var selectedCard = 0;
 int delivered = 0;
 var receiver;
+String signature;
 //List
 List pickupList = [];
 List deliveryList = [];

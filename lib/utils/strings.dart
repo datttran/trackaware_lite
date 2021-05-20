@@ -8,15 +8,14 @@ class Strings {
   static const String forgotpassword = "Forgot Password?";
 
   static const String trackaware_title = "TrackAware";
-  static const String termsandconditionsMessage =
-      "By logging in you agree to terms and use of Trackaware";
+  static const String termsandconditionsMessage = "By logging in you agree to terms and use of Trackaware";
   static const String rememberMe = "Remember me";
   static const String loginValidation = "Please check your credentials";
 
   //tender page
   static const String tenderTitle = "Tender";
   static const String pickUpTitle = "Pickup";
-  static const String deliveryTitle = "Delivery";
+  static const String deliveryTitle = "Deliver";
   static const String departTitle = "Depart";
   static const String arriveTitle = "Arrive";
   static const String tenderExternal = "Tender External";
@@ -50,30 +49,21 @@ class Strings {
   static const ORDER_NUMBER_VALIDATION_MESSAGE = "Please enter order number";
   static const REF_NUMBER_VALIDATION_MESSAGE = "Please enter ref number";
   static const PART_NUMBER_VALIDATION_MESSAGE = "Please enter part number";
-  static const TRACKING_NUMBER_VALIDATION_MESSAGE =
-      "Please enter tracking number";
-  static const PACKAGING_COUNT_VALIDATION_MESSAGE =
-      "Please enter packaging count";
+  static const TRACKING_NUMBER_VALIDATION_MESSAGE = "Please enter tracking number";
+  static const PACKAGING_COUNT_VALIDATION_MESSAGE = "Please enter packaging count";
   static const String LOCATION_VALIDATION_MESSAGE = "Unable to fetch location";
-  static const String PACKAGE_DETAILS_VALIDATION_MESSAGE =
-      "Unable to fetch package details";
+  static const String PACKAGE_DETAILS_VALIDATION_MESSAGE = "Unable to fetch package details";
   static const String ENTER_REF_NUMBER = "Enter ref number";
   static const String ENTER_PART_NUMBER = "Enter part number";
   static const String ENTER_TRACKING_NUMBER = "Enter tracking number";
   static const String ENTER_TOOL_NUMBER = "Enter tool number";
   static const String ENTER_ORDER_NUMBER = "Enter order number";
-  static const String UNABLE_TO_FETCH_TENDER_EXTERNAL_LIST =
-      "Unable to fetch tender external items";
-  static const String UNABLE_TO_FETCH_TENDER_PARTS_LIST =
-      "Unable to fetch tender parts items";
-  static const String UNABLE_TO_FETCH_PICKUP_EXTERNAL_LIST =
-      "Unable to fetch pickup external  items";
-  static const String UNABLE_TO_FETCH_PICKUP_PARTS_LIST =
-      "Unable to fetch pickup parts items";
-  static const String UNABLE_TO_FETCH_ARRIVE_LIST =
-      "Unable to fetch arrive items";
-  static const String UNABLE_TO_FETCH_DEPART_LIST =
-      "Unable to fetch depart items";
+  static const String UNABLE_TO_FETCH_TENDER_EXTERNAL_LIST = "Unable to fetch tender external items";
+  static const String UNABLE_TO_FETCH_TENDER_PARTS_LIST = "Unable to fetch tender parts items";
+  static const String UNABLE_TO_FETCH_PICKUP_EXTERNAL_LIST = "Unable to fetch pickup external  items";
+  static const String UNABLE_TO_FETCH_PICKUP_PARTS_LIST = "Unable to fetch pickup parts items";
+  static const String UNABLE_TO_FETCH_ARRIVE_LIST = "Unable to fetch arrive items";
+  static const String UNABLE_TO_FETCH_DEPART_LIST = "Unable to fetch depart items";
 
   //list tender screen
   static const String NO_TENDER_ITEMS = "No tender items found!";
@@ -91,8 +81,7 @@ class Strings {
 
   static const String NEW_TENDER_PARTS = "New Tender Part";
 
-  static const String TOOL_NUMBER_VALIDATION_MESSAGE =
-      "Please enter tool number";
+  static const String TOOL_NUMBER_VALIDATION_MESSAGE = "Please enter tool number";
   static const String EXTERNAL = "external";
   static const String PART = "part";
 
@@ -137,12 +126,10 @@ class Strings {
 
   static const String SAVE = "Save";
 
-  static const String UNABLE_TO_FETCH_LOCATION_LIST =
-      "Unable to fetch location list";
+  static const String UNABLE_TO_FETCH_LOCATION_LIST = "Unable to fetch location list";
 
   static const String URL_VALIDATION = "Please check the url entered";
-  static const String NUMBER_LENGTH_VALIDATION =
-      "Entered digits cannot be greater than 4";
+  static const String NUMBER_LENGTH_VALIDATION = "Entered digits cannot be greater than 4";
   static const String LOCATION_UPDATE_FAILURE = "Unable to update location";
 
   static const String DRIVER_MODE = "Driver Mode";
@@ -154,40 +141,29 @@ class Strings {
   static const String PICKUP_EXTERNAL_PACKAGES = "PickUp External Packages";
   static const String SCAN_OPTION = "Scan Option";
 
-  static const String CREATE_TENDER_PRODUCTION_PARTS =
-      "Create Tender Production Parts";
-  static const String CREATE_TENDER_EXTERNAL_PACKAGES =
-      "Create Tender External Packages";
-  static const String CREATE_PICKUP_PRODUCTION_PARTS =
-      "Create PickUp Production Parts";
-  static const String CREATE_PICKUP_EXTERNAL_PACKAGES =
-      "Create PickUp External Packages";
+  static const String CREATE_TENDER_PRODUCTION_PARTS = "Create Tender Production Parts";
+  static const String CREATE_TENDER_EXTERNAL_PACKAGES = "Create Tender External Packages";
+  static const String CREATE_PICKUP_PRODUCTION_PARTS = "Create PickUp Production Parts";
+  static const String CREATE_PICKUP_EXTERNAL_PACKAGES = "Create PickUp External Packages";
 
   //discipline keys
-  static const String TENDER_PRODUCTION_PARTS_KEY =
-      "tender_production_parts_key";
-  static const String TENDER_EXTERNAL_PACKAGES_KEY =
-      "tender_external_packages_key";
-  static const String PICKUP_PRODUCTION_PARTS_KEY =
-      "pickup_production_parts_key";
-  static const String PICKUP_EXTERNAL_PACKAGES_KEY =
-      "pickup_external_packages_key";
+  static const String TENDER_PRODUCTION_PARTS_KEY = "tender_production_parts_key";
+  static const String TENDER_EXTERNAL_PACKAGES_KEY = "tender_external_packages_key";
+  static const String PICKUP_PRODUCTION_PARTS_KEY = "pickup_production_parts_key";
+  static const String PICKUP_EXTERNAL_PACKAGES_KEY = "pickup_external_packages_key";
   static const String DEPART_KEY = "depart_key";
   static const String ARRIVE_KEY = "arrive_key";
 
   static const String DISPLAY_NAME = "Display Name";
-  static const String DISPLAY_NAME_EMPTY_VALIDATION_MSG =
-      "Display name cannot be empty";
+  static const String DISPLAY_NAME_EMPTY_VALIDATION_MSG = "Display name cannot be empty";
   static const String ENTER_DISPLAY_NAME = "Enter display name";
-  static const String UNABLE_TO_FETCH_USER_DETAILS =
-      "Unable to fetch user details";
+  static const String UNABLE_TO_FETCH_USER_DETAILS = "Unable to fetch user details";
   static const String UNABLE_TO_FETCH_IMAGE = "Unable to fetch image";
   static const String UNABLE_TO_LOGOUT = "Unable to logout";
 
   static const String SIGN_UP = "Sign Up";
 
-  static const String PLEASE_CHECK_EMAIL_ENTERED =
-      "Please check the email entered";
+  static const String PLEASE_CHECK_EMAIL_ENTERED = "Please check the email entered";
 
   static const String FIELD_CANNOT_BE_EMPTY = "Field cannot be empty";
 
@@ -238,8 +214,7 @@ class Strings {
   static const ENTER_URL = "Enter Url";
 
   static const String SERVER = "Server";
-  static const UNABLE_TO_FETCH_SERVER_CONFIG_VALUES =
-      "Unable to fetch server config values";
+  static const UNABLE_TO_FETCH_SERVER_CONFIG_VALUES = "Unable to fetch server config values";
 
   static const PLEASE_PICK_LOCATION = "Please pick location";
 
@@ -268,6 +243,5 @@ class Strings {
   static const PICKUP_ON_TENDER = "Pickup on Tender";
   static const SYNC = "Sync";
   static const ADD_TO_LIST = "Add to List";
-  static const TERMS_CONDITIONS =
-      "By logging in, you agree to the Terms of Use for Sensitel Services.";
+  static const TERMS_CONDITIONS = "By logging in, you agree to the Terms of Use for Sensitel Services.";
 }

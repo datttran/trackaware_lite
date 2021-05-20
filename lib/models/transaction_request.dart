@@ -1,19 +1,15 @@
 import 'package:trackaware_lite/globals.dart' as globals;
+
 class TransactionRequest {
   String handHeldId;
   String user;
   String location;
   String status;
+  String receiverSignature;
   int id;
   List<Packages> packages;
 
-  TransactionRequest(
-      {this.handHeldId,
-      this.user,
-      this.location,
-      this.status,
-      this.id,
-      this.packages});
+  TransactionRequest({this.handHeldId, this.user, this.location, this.status, this.receiverSignature, this.id, this.packages});
 
   TransactionRequest.fromJson(Map<String, dynamic> json) {
     handHeldId = json['HandHeldId'];
@@ -21,6 +17,7 @@ class TransactionRequest {
     location = json['Location'];
     status = json['Status'];
     id = json['id'];
+    receiverSignature = json['ReceiverSignature'];
     if (json['Packages'] != null) {
       packages = new List<Packages>();
       json['Packages'].forEach((v) {
@@ -41,6 +38,7 @@ class TransactionRequest {
     data['Location'] = this.location.toString();
     data['Status'] = this.status;
     data["id"] = this.id;
+    data['ReceiverSignature'] = this.receiverSignature;
     if (this.packages != null) {
       data['Packages'] = this.packages.map((v) => v.toJson()).toList();
     }
@@ -58,6 +56,7 @@ class Packages {
   String scanTime;
   String receiverBadgeId;
   String receivedBy;
+
   String item;
   String status;
   int isPart;
@@ -86,6 +85,7 @@ class Packages {
     scanTime = json['ScanTime'];
     receiverBadgeId = json['ReceiverBadgeId'];
     receivedBy = json['ReceivedBy'];
+
     item = json['Item'];
     status = json['Status'];
     isPart = json["is_part"];
@@ -103,23 +103,21 @@ class Packages {
 
       data['LabelNum'] = 'something_else'; // use to be this.labelNum
     }*/
-    data['LabelNum'] = this.labelNum == null ? this.orderNum +":" +this.item : this.labelNum;
+    data['LabelNum'] = this.labelNum == null ? this.orderNum + ":" + this.item : this.labelNum;
 
     data['Priority'] = this.priority;
     data['Quantity'] = this.quantity;
     data['ScanTime'] = this.scanTime;
     data['ReceiverBadgeId'] = this.receiverBadgeId;
     data['ReceivedBy'] = this.receivedBy;
+
     data['Item'] = this.item;
     data['Status'] = this.status;
-    if(globals.useToolNumber == true){
+    if (globals.useToolNumber == true) {
       data["TagType"] = "7";
-    }
-    else if ( this.item.contains('KIT')){
+    } else if (this.item.contains('KIT')) {
       data["TagType"] = "6";
-
-    }
-    else{
+    } else {
       data["TagType"] = "5";
     }
     data['is_part'] = this.isPart;

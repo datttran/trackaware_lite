@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
+import 'package:trackaware_lite/globals.dart' as globals;
 import 'package:trackaware_lite/models/arrive_db.dart';
 import 'package:trackaware_lite/models/delivery_request.dart';
 import 'package:trackaware_lite/models/depart_db.dart';
@@ -10,52 +12,35 @@ import 'package:trackaware_lite/models/tender_external_db.dart';
 import 'package:trackaware_lite/models/tender_parts_db.dart';
 import 'package:trackaware_lite/models/transaction_request.dart';
 import 'package:trackaware_lite/utils/strings.dart';
-import 'package:trackaware_lite/globals.dart' as globals;
-import 'package:http/http.dart' as http;
-
 
 _sendToServer(TransactionRequest transactionRequest) async {
-
-  try{
+  try {
     final response = await http.post(
       Uri.parse(globals.baseUrl + '/transaction/'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic cmtoYW5kaGVsZGFwaTppMjExVTI7'
-      },
+      headers: <String, String>{'Content-Type': 'application/json', 'Authorization': 'Basic cmtoYW5kaGVsZGFwaTppMjExVTI7'},
       body: jsonEncode(transactionRequest.toJson()),
     );
     print(response.statusCode);
     print(transactionRequest.toString());
+  } catch (E) {
+    print('ERROR' + E);
   }
-  catch(E) {
-
-    print('ERROR' +E);
-  }
-
-
-
-
 }
-
-
 
 Packages getPackageFromPickUpPart(PickUpPart pickUpPart) {
   Packages packages = Packages();
-  packages.deliveryLocation = pickUpPart.destination;
-  if (pickUpPart.partNumber == null || pickUpPart.partNumber.isEmpty)
-    packages.item = "LAM_01";
-  else
-    packages.item = pickUpPart.partNumber;
-  packages.labelNum = pickUpPart.orderNumber + ":" + pickUpPart.partNumber;
+  packages.deliveryLocation = 'N/A';
+  packages.item = "N/A";
+  packages.labelNum = pickUpPart.orderNumber; //tracking number
   packages.quantity = "";
-  packages.orderNum = pickUpPart.orderNumber;
+  packages.orderNum = "ReferenceNumber";
   packages.priority = "";
-  packages.receivedBy = "";
+  packages.receivedBy = pickUpPart.receivedBy != null ? pickUpPart.receivedBy : 'Unknown user';
   packages.receiverBadgeId = "";
   packages.status = "";
-  packages.scanTime = pickUpPart.scanTime.toString();
+  packages.scanTime = "";
   packages.containerNum = "";
+
   return packages;
 }
 
@@ -114,8 +99,7 @@ Packages getPackageFromTenderPart(TenderParts tenderParts) {
   return packages;
 }
 
-String getLocationRequest(
-    LocationData currentLocation, String deviceIdValue, String userName) {
+String getLocationRequest(LocationData currentLocation, String deviceIdValue, String userName) {
   return "[" +
       "{" +
       "Deviceid='" +
@@ -136,8 +120,7 @@ String getLocationRequest(
       "]";
 }
 
-TransactionRequest generateTransactionForDeliveryFromPickupExternal(
-    PickUpExternal pickUpExternal, String deviceIdValue, String userName) {
+TransactionRequest generateTransactionForDeliveryFromPickupExternal(PickUpExternal pickUpExternal, String deviceIdValue, String userName) {
   TransactionRequest transactionRequest = TransactionRequest();
 
   transactionRequest.handHeldId = deviceIdValue;
@@ -150,8 +133,7 @@ TransactionRequest generateTransactionForDeliveryFromPickupExternal(
   return transactionRequest;
 }
 
-TransactionRequest generateTransactionFromPickupExternal(
-    PickUpExternal pickUpExternal, String deviceIdValue, String userName) {
+TransactionRequest generateTransactionFromPickupExternal(PickUpExternal pickUpExternal, String deviceIdValue, String userName) {
   TransactionRequest transactionRequest = TransactionRequest();
 
   transactionRequest.handHeldId = deviceIdValue;
@@ -163,8 +145,7 @@ TransactionRequest generateTransactionFromPickupExternal(
   return transactionRequest;
 }
 
-TransactionRequest generateTransactionFromPickupPart(
-    PickUpPart pickUpPart, String deviceIdValue, String userName) {
+TransactionRequest generateTransactionFromPickupPart(PickUpPart pickUpPart, String deviceIdValue, String userName) {
   TransactionRequest transactionRequest = TransactionRequest();
 
   transactionRequest.handHeldId = deviceIdValue;
@@ -177,8 +158,7 @@ TransactionRequest generateTransactionFromPickupPart(
   return transactionRequest;
 }
 
-TransactionRequest generateTransactionListFromTenderParts(
-    TenderParts tenderParts, String deviceIdValue, String userName) {
+TransactionRequest generateTransactionListFromTenderParts(TenderParts tenderParts, String deviceIdValue, String userName) {
   TransactionRequest transactionRequest = TransactionRequest();
 
   transactionRequest.handHeldId = deviceIdValue;
@@ -191,8 +171,7 @@ TransactionRequest generateTransactionListFromTenderParts(
   return transactionRequest;
 }
 
-TransactionRequest generateTransactionList(
-    TenderExternal tenderExternal, String deviceIdValue, String userName) {
+TransactionRequest generateTransactionList(TenderExternal tenderExternal, String deviceIdValue, String userName) {
   TransactionRequest transactionRequest = TransactionRequest();
 
   transactionRequest.handHeldId = deviceIdValue;
@@ -205,8 +184,7 @@ TransactionRequest generateTransactionList(
   return transactionRequest;
 }
 
-DeliveryRequest generateDeliveryList(
-    Arrive arrive, String deviceIdValue, String userName) {
+DeliveryRequest generateDeliveryList(Arrive arrive, String deviceIdValue, String userName) {
   DeliveryRequest deliveryRequest = new DeliveryRequest();
   deliveryRequest.handHeldId = deviceIdValue;
   deliveryRequest.id = arrive.id;
@@ -217,8 +195,7 @@ DeliveryRequest generateDeliveryList(
   return deliveryRequest;
 }
 
-DeliveryRequest generateDeliveryListFromDepartItem(
-    Depart depart, String deviceIdValue, String userName) {
+DeliveryRequest generateDeliveryListFromDepartItem(Depart depart, String deviceIdValue, String userName) {
   DeliveryRequest deliveryRequest = new DeliveryRequest();
   deliveryRequest.handHeldId = deviceIdValue;
   deliveryRequest.id = depart.id;
